@@ -27,7 +27,7 @@ export function KeystoreDetailsPage() {
               </Anchor>
             );
           })}
-          <Text size="sm" fw={600} c="dark" aria-current="page">
+          <Text size="sm" fw={600} c="var(--mantine-color-text)" aria-current="page">
             {item?.property ?? 'Keystore not found'}
           </Text>
         </Breadcrumbs>

@@ -30,7 +30,7 @@ export function VaultTable({ folders, onOpen }: VaultTableProps) {
             <Table.Tr key={folder.fullPath}>
               <Table.Td>
                 <Group gap="sm" wrap="nowrap">
-                  <IconFolder size={19} color="var(--mantine-color-teal-7)" fill="var(--mantine-color-teal-1)" />
+                  <IconFolder size={19} color="var(--mantine-color-blue-7)" fill="var(--mantine-color-blue-1)" />
                   <div>
                     <Text component="button" className="folder-link" fw={600} onClick={() => onOpen(folder.fullPath)}>
                       {folder.name}
@@ -44,7 +44,7 @@ export function VaultTable({ folders, onOpen }: VaultTableProps) {
                 <Group gap={5}>
                   {Object.entries(folder.aggregate.keyCountByType).map(([type, count]) => (
                     <Tooltip key={type} label={type.replaceAll('_', ' ').toLocaleLowerCase()}>
-                      <Badge variant="light" color="teal" size="sm">{count} {type === 'TRUSTED_CERTIFICATE' ? 'trusted' : type.replaceAll('_', ' ').toLocaleLowerCase()}</Badge>
+                      <Badge variant="light" color="blue" size="sm">{count} {type === 'TRUSTED_CERTIFICATE' ? 'trusted' : type.replaceAll('_', ' ').toLocaleLowerCase()}</Badge>
                     </Tooltip>
                   ))}
                 </Group>
@@ -63,7 +63,7 @@ export function VaultTable({ folders, onOpen }: VaultTableProps) {
               </Table.Td>
               <Table.Td>
                 <Tooltip label={`Open ${folder.name}`}>
-                  <ActionIcon variant="subtle" color="teal" aria-label={`Open ${folder.name}`} onClick={() => onOpen(folder.fullPath)}>
+                  <ActionIcon variant="subtle" color="blue" aria-label={`Open ${folder.name}`} onClick={() => onOpen(folder.fullPath)}>
                     <IconChevronRight size={18} />
                   </ActionIcon>
                 </Tooltip>

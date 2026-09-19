@@ -2,6 +2,7 @@ import { Box, Burger, Group, Text, ThemeIcon } from '@mantine/core';
 import { IconLockSquareRounded } from '@tabler/icons-react';
 import { CurrentUser } from '../features/user/CurrentUser';
 import { NavMenu } from './NavMenu';
+import { ThemeToggle } from './ThemeToggle';
 
 interface AppHeaderProps {
   mobileOpened: boolean;
@@ -20,7 +21,7 @@ export function AppHeader({ mobileOpened, onMobileToggle }: AppHeaderProps) {
           size="sm"
           aria-label="Toggle navigation"
         />
-        <ThemeIcon size={34} color="teal" variant="filled" radius="sm">
+        <ThemeIcon size={34} color="blue" variant="filled" radius="sm">
           <IconLockSquareRounded size={22} stroke={1.8} />
         </ThemeIcon>
         <Box>
@@ -29,7 +30,10 @@ export function AppHeader({ mobileOpened, onMobileToggle }: AppHeaderProps) {
         </Box>
       </Group>
       <Box visibleFrom="md" className="header-nav"><NavMenu /></Box>
-      <CurrentUser />
+      <Group gap="sm" wrap="nowrap">
+        <ThemeToggle />
+        <CurrentUser />
+      </Group>
     </Group>
   );
 }

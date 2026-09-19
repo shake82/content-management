@@ -22,7 +22,7 @@ export function VaultBreadcrumbs({ path }: VaultBreadcrumbsProps) {
             component={Link}
             to={vaultPathRoute(crumb.path)}
             key={crumb.path || 'root'}
-            c={current ? 'dark' : 'teal'}
+            c={current ? 'var(--mantine-color-text)' : 'blue'}
             fw={current ? 600 : 400}
             aria-current={current ? 'page' : undefined}
           >

@@ -20,7 +20,7 @@ export function CurrentUser() {
   const initials = data.displayName.split(' ').map((part) => part[0]).join('').slice(0, 2);
   return (
     <Group gap="sm" wrap="nowrap">
-      <Avatar color="teal" size={34} radius="xl">{initials}</Avatar>
+      <Avatar color="blue" size={34} radius="xl">{initials}</Avatar>
       <Stack gap={0} className="current-user-copy">
         <Text size="sm" fw={600} c="white" lineClamp={1}>{data.displayName}</Text>
         <Text size="xs" c="gray.5" lineClamp={1}>{data.roles[0]}</Text>

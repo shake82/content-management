@@ -34,7 +34,7 @@ export function VaultItemsTable({ items }: VaultItemsTableProps) {
               <Table.Td>
                 <Group gap={5}>
                   {Object.entries(item.secretSummary.keyCountByType).map(([type, count]) => (
-                    <Badge key={type} variant="light" color="teal">{count} {type.replaceAll('_', ' ').toLocaleLowerCase()}</Badge>
+                    <Badge key={type} variant="light" color="blue">{count} {type.replaceAll('_', ' ').toLocaleLowerCase()}</Badge>
                   ))}
                 </Group>
               </Table.Td>
@@ -58,7 +58,7 @@ export function VaultItemsTable({ items }: VaultItemsTableProps) {
                     component={Link}
                     to={keystoreDetailsRoute(item.catalogId)}
                     variant="subtle"
-                    color="teal"
+                    color="blue"
                     aria-label={`View keystore #${item.catalogId}`}
                   >
                     <IconChevronRight size={18} />

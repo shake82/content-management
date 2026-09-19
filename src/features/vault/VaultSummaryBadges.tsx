@@ -28,7 +28,7 @@ export function VaultSummaryBadges({ summary }: VaultSummaryBadgesProps) {
         <Group gap={6}>
           <Badge variant="filled" color="dark">{summary.itemCount} stores</Badge>
           {keyCounts.map(([type, count]) => (
-            <Badge key={type} variant="light" color="teal">{count} {readable(type)}</Badge>
+            <Badge key={type} variant="light" color="blue">{count} {readable(type)}</Badge>
           ))}
         </Group>
       </Stack>
