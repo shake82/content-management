@@ -1,0 +1,25 @@
+[
+  {
+    "catalogId": 123,
+    "secretEngine": "kubernetes",
+    "path": "path1/path2/path3",
+    "secretVersion": 5,
+    "property": "prop1",
+    "type": "JKS",
+    "secretSummary": {
+      "type": "JKS",
+      "keyCountByType": {
+        "KEY_PAIR": 1
+      },
+      "issueSummaryBySeverity": {
+        "HIGH": {
+          "count": 1,
+          "issueCountsByType": {
+            "EXPIRED_CERTIFICATE": 1
+          }
+        }
+      }
+    }
+
+  }
+]

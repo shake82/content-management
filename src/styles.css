@@ -1,0 +1,147 @@
+:root {
+  color: #17211f;
+  background: #f5f7f6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: #f5f7f6;
+}
+
+button,
+a,
+input {
+  letter-spacing: 0;
+}
+
+.app-header {
+  background: #17211f;
+  border-bottom: 1px solid #2e3b38;
+}
+
+.header-nav {
+  align-self: stretch;
+}
+
+.nav-menu-horizontal {
+  height: 100%;
+  flex-direction: row;
+  align-items: center;
+}
+
+.nav-button {
+  min-height: 36px;
+  white-space: nowrap;
+}
+
+.header-nav .nav-button[data-variant='subtle'] {
+  color: #c8d0ce;
+}
+
+.header-nav .nav-button[data-variant='subtle']:hover {
+  color: white;
+  background: #26322f;
+}
+
+.header-nav .nav-button[data-variant='light'] {
+  color: #72e2ce;
+  background: #23423d;
+}
+
+.nav-submenu-active {
+  color: var(--mantine-color-teal-8);
+  background: var(--mantine-color-teal-0);
+  font-weight: 600;
+}
+
+.current-user-copy {
+  width: 142px;
+}
+
+.page-eyebrow {
+  color: #087f6d;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.vault-filter {
+  width: min(320px, 100%);
+}
+
+.summary-strip {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 28px;
+  padding: 16px 18px;
+  background: white;
+  border: 1px solid #dde3e1;
+  border-left: 4px solid #0ca88d;
+  border-radius: 4px;
+}
+
+.folder-link {
+  appearance: none;
+  padding: 0;
+  color: #087f6d;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.folder-link:hover,
+.folder-link:focus-visible {
+  color: #055f52;
+  text-decoration: underline;
+}
+
+.status-view {
+  min-height: 210px;
+}
+
+section {
+  background: white;
+  border: 1px solid #dde3e1;
+  border-radius: 4px;
+  padding: 16px 18px 4px;
+}
+
+@media (max-width: 62em) {
+  .current-user-copy {
+    display: none;
+  }
+}
+
+@media (max-width: 48em) {
+  .page-heading {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .vault-filter {
+    width: 100%;
+  }
+
+  .summary-strip {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+}
+
+@media (max-width: 30em) {
+  .app-header .mantine-ThemeIcon-root,
+  .app-header .mantine-Box-root:has(> .mantine-Text-root) {
+    display: none;
+  }
+
+  section {
+    padding-inline: 12px;
+  }
+}

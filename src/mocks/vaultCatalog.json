@@ -1,0 +1,121 @@
+[
+  {
+    "catalogId": 123,
+    "secretEngine": "kubernetes",
+    "path": "platform/production/payments",
+    "secretVersion": 5,
+    "property": "keystore",
+    "type": "JKS",
+    "secretSummary": {
+      "type": "JKS",
+      "keyCountByType": { "KEY_PAIR": 2, "TRUSTED_CERTIFICATE": 1 },
+      "issueSummaryBySeverity": {
+        "HIGH": { "count": 1, "issueCountsByType": { "EXPIRED_CERTIFICATE": 1 } },
+        "MEDIUM": { "count": 1, "issueCountsByType": { "WEAK_SIGNATURE": 1 } }
+      }
+    }
+  },
+  {
+    "catalogId": 124,
+    "secretEngine": "kubernetes",
+    "path": "platform/production/identity",
+    "secretVersion": 3,
+    "property": "tlsBundle",
+    "type": "PKCS12",
+    "secretSummary": {
+      "type": "PKCS12",
+      "keyCountByType": { "KEY_PAIR": 1, "TRUSTED_CERTIFICATE": 3 },
+      "issueSummaryBySeverity": {
+        "LOW": { "count": 2, "issueCountsByType": { "EXPIRING_SOON": 2 } }
+      }
+    }
+  },
+  {
+    "catalogId": 125,
+    "secretEngine": "shared-services",
+    "path": "platform/staging/payments",
+    "secretVersion": 7,
+    "property": "applicationKeyStore",
+    "type": "JKS",
+    "secretSummary": {
+      "type": "JKS",
+      "keyCountByType": { "KEY_PAIR": 1 },
+      "issueSummaryBySeverity": {}
+    }
+  },
+  {
+    "catalogId": 126,
+    "secretEngine": "shared-services",
+    "path": "platform/staging/notifications",
+    "secretVersion": 2,
+    "property": "truststore",
+    "type": "JKS",
+    "secretSummary": {
+      "type": "JKS",
+      "keyCountByType": { "TRUSTED_CERTIFICATE": 4 },
+      "issueSummaryBySeverity": {
+        "CRITICAL": { "count": 1, "issueCountsByType": { "REVOKED_CERTIFICATE": 1 } }
+      }
+    }
+  },
+  {
+    "catalogId": 127,
+    "secretEngine": "corp-pki",
+    "path": "infrastructure/network/edge",
+    "secretVersion": 11,
+    "property": "gatewayCertificates",
+    "type": "PEM_BUNDLE",
+    "secretSummary": {
+      "type": "PEM_BUNDLE",
+      "keyCountByType": { "PRIVATE_KEY": 1, "CERTIFICATE": 2 },
+      "issueSummaryBySeverity": {
+        "HIGH": { "count": 1, "issueCountsByType": { "HOSTNAME_MISMATCH": 1 } }
+      }
+    }
+  },
+  {
+    "catalogId": 128,
+    "secretEngine": "corp-pki",
+    "path": "infrastructure/network/internal",
+    "secretVersion": 4,
+    "property": "serviceCertificates",
+    "type": "PKCS12",
+    "secretSummary": {
+      "type": "PKCS12",
+      "keyCountByType": { "KEY_PAIR": 2 },
+      "issueSummaryBySeverity": {
+        "MEDIUM": { "count": 1, "issueCountsByType": { "EXPIRING_SOON": 1 } }
+      }
+    }
+  },
+  {
+    "catalogId": 129,
+    "secretEngine": "data-platform",
+    "path": "data/warehouse/production",
+    "secretVersion": 8,
+    "property": "clientStore",
+    "type": "JKS",
+    "secretSummary": {
+      "type": "JKS",
+      "keyCountByType": { "KEY_PAIR": 1, "TRUSTED_CERTIFICATE": 2 },
+      "issueSummaryBySeverity": {
+        "LOW": { "count": 1, "issueCountsByType": { "LONG_VALIDITY": 1 } }
+      }
+    }
+  },
+  {
+    "catalogId": 130,
+    "secretEngine": "data-platform",
+    "path": "data/streaming/production",
+    "secretVersion": 6,
+    "property": "kafkaKeyStore",
+    "type": "JKS",
+    "secretSummary": {
+      "type": "JKS",
+      "keyCountByType": { "KEY_PAIR": 3 },
+      "issueSummaryBySeverity": {
+        "HIGH": { "count": 2, "issueCountsByType": { "EXPIRED_CERTIFICATE": 1, "WEAK_KEY": 1 } }
+      }
+    }
+  }
+]
