@@ -1,4 +1,5 @@
 import { ActionIcon, Box, Divider, Group, Pagination, Stack, Text, TextInput, Title, Tooltip } from '@mantine/core';
+import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch, IconX } from '@tabler/icons-react';
 import { useState } from 'react';
 import { StatusView } from '../../components/StatusView';
@@ -6,11 +7,13 @@ import { CertificateCatalogTable } from './CertificateCatalogTable';
 import { useCertificateCatalog } from './useCertificateCatalog';
 
 const PAGE_SIZE = 15;
+const SEARCH_DEBOUNCE_MS = 300;
 
 export function CertificateViewPage() {
   const [pageNumber, setPageNumber] = useState(0);
   const [search, setSearch] = useState('');
-  const { status, data, error, refetch } = useCertificateCatalog(pageNumber, PAGE_SIZE, search);
+  const [debouncedSearch] = useDebouncedValue(search, SEARCH_DEBOUNCE_MS);
+  const { status, data, error, refetch } = useCertificateCatalog(pageNumber, PAGE_SIZE, debouncedSearch);
 
   const updateSearch = (value: string) => {
     setSearch(value);
@@ -56,7 +59,7 @@ export function CertificateViewPage() {
         {noResults ? (
           <StatusView
             kind="empty"
-            message={search.trim() ? `No certificates match “${search.trim()}”.` : 'The certificate catalog is empty.'}
+            message={debouncedSearch.trim() ? `No certificates match “${debouncedSearch.trim()}”.` : 'The certificate catalog is empty.'}
           />
         ) : null}
         {status === 'success' && content.length > 0 ? (

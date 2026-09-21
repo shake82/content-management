@@ -9,14 +9,18 @@ export interface CertificateVaultReference {
   type: string;
 }
 
+export interface CertificateChainDetails {
+  certificates: KeystoreCertificate[];
+  issues?: KeystoreIssue[];
+}
+
 export interface CertificateCatalogItem {
   id: number;
   shortName: string;
   entryType: string;
   expirationDate: string | null;
-  certificates: KeystoreCertificate[];
+  certChainDetails: CertificateChainDetails;
   vaultReferences: CertificateVaultReference[];
-  issues?: KeystoreIssue[];
 }
 
 export interface CertificateCatalogPage {

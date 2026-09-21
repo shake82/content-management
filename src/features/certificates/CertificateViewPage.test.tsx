@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, expect, it, vi } from 'vitest';
 import { renderApp } from '../../test/render';
@@ -24,12 +24,16 @@ it('renders the catalog and updates API paging and search inputs', async () => {
   expect(screen.getByText('18 total')).toBeInTheDocument();
   expect(useCertificateCatalog).toHaveBeenLastCalledWith(0, 15, '');
 
-  await userEvent.type(screen.getByRole('textbox', { name: 'Search certificates' }), 'payments');
-  expect(useCertificateCatalog).toHaveBeenLastCalledWith(0, 15, 'payments');
+  const search = screen.getByRole('textbox', { name: 'Search certificates' });
+  await userEvent.type(search, 'payments');
+  expect(search).toHaveValue('payments');
+  expect(useCertificateCatalog).toHaveBeenLastCalledWith(0, 15, '');
+  await waitFor(() => expect(useCertificateCatalog).toHaveBeenLastCalledWith(0, 15, 'payments'));
 
   await userEvent.click(screen.getByRole('button', { name: '2' }));
   expect(useCertificateCatalog).toHaveBeenLastCalledWith(1, 15, 'payments');
 
   await userEvent.click(screen.getByRole('button', { name: 'Clear search' }));
-  expect(useCertificateCatalog).toHaveBeenLastCalledWith(0, 15, '');
+  expect(search).toHaveValue('');
+  await waitFor(() => expect(useCertificateCatalog).toHaveBeenLastCalledWith(0, 15, ''));
 });

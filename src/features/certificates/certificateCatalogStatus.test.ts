@@ -8,13 +8,18 @@ it('reports explicit and derived certificate validity and formats catalog dates'
   const expired = getCertificateCatalogValidity(
     {
       ...item,
-      issues: [],
-      certificates: [{ ...item.certificates[0]!, endDate: '2020-01-01T00:00:000Z' }],
+      certChainDetails: {
+        issues: [],
+        certificates: [{
+          ...item.certChainDetails.certificates[0]!,
+          endDate: '2020-01-01T00:00:000Z',
+        }],
+      },
     },
     new Date('2026-01-01T00:00:00Z'),
   );
   const valid = getCertificateCatalogValidity(
-    { ...item, issues: [], certificates: item.certificates },
+    { ...item, certChainDetails: { ...item.certChainDetails, issues: [] } },
     new Date('2026-01-01T00:00:00Z'),
   );
 

@@ -21,9 +21,9 @@ function entryForTree(item: CertificateCatalogItem): KeystoreKeyEntry {
   return {
     alias: item.shortName,
     entryType: item.entryType,
-    certificates: item.certificates,
+    certificates: item.certChainDetails.certificates,
     expirationDate: item.expirationDate,
-    issues: item.issues ?? [],
+    issues: item.certChainDetails.issues ?? [],
     lastModifiedDate: null,
   };
 }

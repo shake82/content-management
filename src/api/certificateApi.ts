@@ -11,9 +11,12 @@ const CERTIFICATE_CATALOG_DATA_URL = `${CERTIFICATE_CATALOG_ENDPOINT}.json`;
 function normalizeItem(item: CertificateCatalogItem): CertificateCatalogItem {
   return {
     ...item,
-    certificates: item.certificates ?? [],
+    certChainDetails: {
+      ...item.certChainDetails,
+      certificates: item.certChainDetails?.certificates ?? [],
+      issues: item.certChainDetails?.issues ?? [],
+    },
     vaultReferences: item.vaultReferences ?? [],
-    issues: item.issues ?? [],
   };
 }
 

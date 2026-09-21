@@ -21,12 +21,14 @@ export function getCertificateCatalogValidity(
   item: CertificateCatalogItem,
   now = new Date(),
 ): CertificateCatalogValidity {
-  const explicitIssues = (item.issues ?? []).map(formatIssue);
+  const explicitIssues = (item.certChainDetails.issues ?? []).map(formatIssue);
   if (explicitIssues.length > 0) {
     return { isValid: false, severity: 'error', issues: explicitIssues };
   }
 
-  const statuses = new Set(item.certificates.flatMap((certificate) => getCertificateStatuses(certificate, now)));
+  const statuses = new Set(
+    item.certChainDetails.certificates.flatMap((certificate) => getCertificateStatuses(certificate, now)),
+  );
   const invalidStatusNames: CertificateStatus[] = ['Expired', 'Not Started', 'Revoked'];
   const invalidStatuses = invalidStatusNames.filter((status) => statuses.has(status));
   if (invalidStatuses.length > 0) {
