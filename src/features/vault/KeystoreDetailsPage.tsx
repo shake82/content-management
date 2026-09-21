@@ -85,7 +85,7 @@ export function KeystoreDetailsPage() {
 
         {activeVersion === currentVersion ? (
           <KeystoreEntriesTable
-            entries={details.data.keyEntries}
+            entries={details.data.secretMetaData.keyEntries}
             subtitle={`Version ${details.data.version}`}
           />
         ) : (

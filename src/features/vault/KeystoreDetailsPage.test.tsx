@@ -13,8 +13,10 @@ vi.mock('./useKeystoreComparison', () => ({ useKeystoreComparison: vi.fn() }));
 
 const detailsFixture: KeystoreDetails = {
   version: 17,
-  keyEntries: [
-    {
+  secretMetaData: {
+    type: 'JKS',
+    keyEntries: [
+      {
       alias: 'cert1',
       entryType: 'TRUST_CERT',
       certificates: [
@@ -33,8 +35,8 @@ const detailsFixture: KeystoreDetails = {
       expirationDate: '2027-05-28T00:00:000Z',
       issues: [],
       lastModifiedDate: '2025-05-28T00:00:000Z',
-    },
-    {
+      },
+      {
       alias: 'kp1',
       entryType: 'KEY_PAIR',
       certificates: [
@@ -64,16 +66,17 @@ const detailsFixture: KeystoreDetails = {
       expirationDate: '2026-01-28T00:00:000Z',
       issues: [{ type: 'EXPIRED_CERTIFICATE', severity: 'HIGH' }],
       lastModifiedDate: '2025-05-28T00:00:000Z',
-    },
-    {
+      },
+      {
       alias: 'cert-warning',
       entryType: 'TRUST_CERT',
       certificates: [],
       expirationDate: '2027-01-28T00:00:000Z',
       issues: [{ type: 'EXPIRING_CERTIFICATE', severity: 'MEDIUM' }],
       lastModifiedDate: '2025-05-28T00:00:000Z',
-    },
-  ],
+      },
+    ],
+  },
   versions: [
     { createdDate: '2024-01-01T00:00:00', version: 15 },
     { createdDate: '2024-01-01T00:00:00', version: 16 },
@@ -86,11 +89,11 @@ const comparisonFixture: KeystoreComparison = {
     {
       alias: 'cert1',
       comparisonResult: 'CERTIFICATE_MISMATCH',
-      sourceKeyEntry: detailsFixture.keyEntries[0]!,
+      sourceKeyEntry: detailsFixture.secretMetaData.keyEntries[0]!,
       targetKeyEntry: {
-        ...detailsFixture.keyEntries[0]!,
+        ...detailsFixture.secretMetaData.keyEntries[0]!,
         certificates: [{
-          ...detailsFixture.keyEntries[0]!.certificates[0]!,
+          ...detailsFixture.secretMetaData.keyEntries[0]!.certificates[0]!,
           shortName: 'Historical Cert1',
           fingerpring: 'historical-fingerprint',
         }],

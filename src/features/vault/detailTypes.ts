@@ -28,8 +28,13 @@ export interface KeystoreKeyEntry {
 
 export interface KeystoreDetails {
   version: number;
-  keyEntries: KeystoreKeyEntry[];
+  secretMetaData: SecretMetaData;
   versions: KeystoreVersion[];
+}
+
+export interface SecretMetaData {
+  type: string;
+  keyEntries: KeystoreKeyEntry[];
 }
 
 export interface KeystoreVersion {
