@@ -1,39 +1,12 @@
-# hashicorp vault certificate browser
-
-## Context
-This application should let you browse the vault to view Java key store contents stored in its KV2 secret engine as base64 encoded within a json property
-API for the application already exists. It returns content in the form of the sample.json file attached. Only build the react front end app
-
-## Setup
-1. All API calls need to be mocked. Create JSON files that mock API calls.
-
 ## Requirement
-### Header
-1. Header should create an icon/brand for secret browser.
-2. Navigation:
-  - It should contain mutiple navigational items. Default to the "Vault View". 
-  - Create three more that navigate to a dummy page. 
-    - Have atleast one of them be a dropdown menu with multiple sub items. 
-  - The current navigational path must be highlighted in the menu
-3. Show the current logged in user's information. The data for this needs to come from an API call from path "/api/user/current"
-### "Vault View" page
-1. Get data from an API call to path "/api/secret/vaultcatalog". Data format can be infered from the sample.json file. All data is returned on the first call and there are no paging requirements
-2. Create a data structure that consolidates all the "path" properties to create a folder structure. Also consolidate the keyCountByType and issueSummaryBySeverity properties as well
-3. Show the top level folder in a tabular format initially. Also show the consolidated content and issue summary at the root folder level.
-4. Let the user drill down to sub paths, expanding on each click. Show details per row for each item at the current level
-5. Show breadcrumbs that show at which level of hierarchy you are. Let the user click on the breadcrumbs to move up to a higher level
-6. Add a filter at the top to narrow down rows
-
-
-
-## Toolset
-1. Latest version of react
-2. Typescript
-3. Vite
-4. mantine react components
-
-## Architectural Expections
-1. All API calls will be hook based that will cycle through different states (called, success, failed etc)
+Create a new component called "Certificate View" the follows the following requirements
+1. Create a nav for it in the header
+2. On the page itself, get data  from an API call called "/api/secret/certCatalog". Data format can be infered from the sample.json file. The API supports paging of the format "?pageNumber=0&pageSize=15"
+3. Render the data in tabular format with paging. Expected columns are "Type", "Is Valid", "Name", "Expiration". Hovering over the "Is Valid" cell should should the issue in a tooltip if any.
+4. All each row to be expanded to show the two sections side by side:
+  1. CertificateChain component that shows the current row's certificate chain information
+  2. References section that shows all the places the certificate is being used. This can be rendered as a table with two columns, "Path" and "Type". Each row should also have a nav link to open the related "KeystoreDetailsPage" referenced here. This section can have a lot of rows so should have a max height with scrolling
+5. Add a search bar the lets the user search. The API above supports searching by adding the querystring param "search"
 
 ## Unit Tests
 1. Every UI component will have a unit test

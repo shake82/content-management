@@ -10,16 +10,18 @@ interface NavMenuProps {
 
 const directLinks = [
   { label: 'Vault View', to: routes.vault },
+  { label: 'Certificate View', to: routes.certificates },
   { label: 'Reports', to: routes.reports },
-  { label: 'Settings', to: routes.settings },
 ];
+
+const settings = { label: 'Settings', to: routes.settings };
 
 export function NavMenu({ orientation = 'horizontal', onNavigate }: NavMenuProps) {
   const { pathname } = useLocation();
   const vertical = orientation === 'vertical';
   const isActive = (path: string) => pathname === path || pathname.startsWith(`${path}/`);
 
-  const linkButtons = directLinks.slice(0, 2).map((item) => (
+  const linkButtons = directLinks.map((item) => (
     <Button
       component={Link}
       to={item.to}
@@ -35,7 +37,6 @@ export function NavMenu({ orientation = 'horizontal', onNavigate }: NavMenuProps
     </Button>
   ));
 
-  const settings = directLinks[2];
   return (
     <Stack gap={4} className={vertical ? undefined : 'nav-menu-horizontal'}>
       {linkButtons}

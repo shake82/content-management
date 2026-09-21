@@ -1,6 +1,7 @@
 export const routes = {
   vault: '/vault',
   vaultKeystorePattern: '/vault/keystore/:catalogId',
+  certificates: '/certificates',
   reports: '/reports',
   toolsImport: '/tools/import',
   toolsAudit: '/tools/audit',

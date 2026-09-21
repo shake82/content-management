@@ -7,6 +7,7 @@ it('highlights the active route and exposes grouped tool destinations', async ()
   renderApp(<NavMenu />, { route: '/tools/import' });
 
   expect(screen.getByRole('button', { name: /Tools/ })).toHaveAttribute('data-variant', 'light');
+  expect(screen.getByRole('link', { name: 'Certificate View' })).toHaveAttribute('href', '/certificates');
   expect(screen.getByRole('link', { name: 'Reports' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'Settings' })).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: /Tools/ }));

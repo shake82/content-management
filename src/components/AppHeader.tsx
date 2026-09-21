@@ -1,5 +1,4 @@
-import { Box, Burger, Group, Text, ThemeIcon } from '@mantine/core';
-import { IconLockSquareRounded } from '@tabler/icons-react';
+import { Box, Burger, Group, Text } from '@mantine/core';
 import { CurrentUser } from '../features/user/CurrentUser';
 import { NavMenu } from './NavMenu';
 import { ThemeToggle } from './ThemeToggle';
@@ -21,11 +20,9 @@ export function AppHeader({ mobileOpened, onMobileToggle }: AppHeaderProps) {
           size="sm"
           aria-label="Toggle navigation"
         />
-        <ThemeIcon size={34} color="blue" variant="filled" radius="sm">
-          <IconLockSquareRounded size={22} stroke={1.8} />
-        </ThemeIcon>
+        <img className="app-brand-icon" src="/elis-vault-icon.png" alt="ELIS vault" />
         <Box>
-          <Text fw={700} c="white" lh={1.1}>Secret Browser</Text>
+          <Text fw={700} c="white" lh={1.1}>PHO</Text>
           <Text size="xs" c="gray.5">Vault certificate inventory</Text>
         </Box>
       </Group>

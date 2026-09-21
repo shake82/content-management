@@ -13,7 +13,7 @@ const certificateStatusColor: Record<CertificateStatus, string> = {
   Revoked: 'red',
 };
 
-function CertificateNode({ node, onSelect }: { node: CertificateChainNode; onSelect: (certificate: KeystoreCertificate) => void }) {
+function CertificateNode({ node, onSelect }: { node: CertificateChainNode; onSelect?: (certificate: KeystoreCertificate) => void }) {
   const title = getCertificateTitle(node.certificate);
   const statuses = getCertificateStatuses(node.certificate);
 
@@ -23,9 +23,11 @@ function CertificateNode({ node, onSelect }: { node: CertificateChainNode; onSel
         <IconCertificate size={18} color="var(--mantine-color-blue-7)" />
         <div className="certificate-tree-content">
           <Group gap="xs" wrap="wrap">
-            <Button variant="subtle" size="compact-sm" px={4} onClick={() => onSelect(node.certificate)}>
-              {title}
-            </Button>
+            {onSelect ? (
+              <Button variant="subtle" size="compact-sm" px={4} onClick={() => onSelect(node.certificate)}>
+                {title}
+              </Button>
+            ) : <Text size="sm" fw={600}>{title}</Text>}
             {statuses.map((status) => (
               <Badge key={status} size="xs" color={certificateStatusColor[status]} variant="light">
                 {status}
@@ -46,7 +48,7 @@ function CertificateNode({ node, onSelect }: { node: CertificateChainNode; onSel
   );
 }
 
-export function CertificateTree({ entry, onSelect }: { entry: KeystoreKeyEntry; onSelect: (certificate: KeystoreCertificate) => void }) {
+export function CertificateTree({ entry, onSelect }: { entry: KeystoreKeyEntry; onSelect?: (certificate: KeystoreCertificate) => void }) {
   const roots = useMemo(() => buildCertificateChain(entry.certificates), [entry.certificates]);
 
   if (entry.certificates.length === 0) {
