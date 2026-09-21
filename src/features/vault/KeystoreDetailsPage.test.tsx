@@ -222,10 +222,10 @@ it('keeps multiple entries expanded and opens certificate details', async () => 
 
   await userEvent.click(screen.getByRole('button', { name: 'Leaf' }));
   const dialog = await screen.findByRole('dialog');
-  expect(dialog).toHaveTextContent('Leaf');
+  expect(within(dialog).getByRole('heading', { name: 'Certificate Detail' })).toBeInTheDocument();
   expect(within(dialog).getByText('CN=LEAF,C=US')).toBeInTheDocument();
   expect(within(dialog).getByText('CN=ROOT,C=US')).toBeInTheDocument();
-  expect(within(dialog).getByText('leaf-fingerprint')).toBeInTheDocument();
+  expect(within(dialog).queryByText('leaf-fingerprint')).not.toBeInTheDocument();
 });
 
 it('selects a historical version and renders side-by-side comparison trees', async () => {
@@ -242,7 +242,6 @@ it('selects a historical version and renders side-by-side comparison trees', asy
 
   expect(useKeystoreComparison).toHaveBeenCalledWith(
     { engine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
-    17,
     16,
   );
   expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
@@ -259,5 +258,7 @@ it('selects a historical version and renders side-by-side comparison trees', asy
   expect(screen.getByRole('button', { name: 'Historical Cert1' })).toBeInTheDocument();
 
   await userEvent.click(screen.getByRole('button', { name: 'Historical Cert1' }));
-  expect(await screen.findByRole('dialog')).toHaveTextContent('historical-fingerprint');
+  const dialog = await screen.findByRole('dialog');
+  expect(within(dialog).getByRole('heading', { name: 'Certificate Detail' })).toBeInTheDocument();
+  expect(within(dialog).queryByText('historical-fingerprint')).not.toBeInTheDocument();
 });

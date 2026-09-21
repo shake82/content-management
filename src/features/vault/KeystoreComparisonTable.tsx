@@ -45,7 +45,7 @@ export function KeystoreComparisonTable({
   selectedVersion: number;
   onSelectCertificate: (certificate: KeystoreCertificate) => void;
 }) {
-  const comparison = useKeystoreComparison(location, currentVersion, selectedVersion);
+  const comparison = useKeystoreComparison(location, selectedVersion);
   const [expandedAliases, setExpandedAliases] = useState<Set<string>>(() => new Set());
 
   const toggleExpanded = (alias: string) => {

@@ -13,8 +13,7 @@ export function getVaultCatalog(): Promise<VaultCatalogItem[]> {
 
 export function getKeystoreComparison(
   location: Partial<KeystoreLocation>,
-  currentVersion: number,
-  selectedVersion: number,
+  version: number,
 ): Promise<KeystoreComparison> {
   if (!isCompleteKeystoreLocation(location)) {
     return Promise.reject(new Error('A secret engine, path, and property are required.'));
@@ -25,8 +24,7 @@ export function getKeystoreComparison(
       engine: location.engine,
       path: location.path,
       prop: location.prop,
-      sourceVersion: currentVersion,
-      targetVersion: selectedVersion,
+      version,
     },
   });
 }

@@ -5,11 +5,10 @@ import type { KeystoreLocation } from './keystoreLocation';
 
 export function useKeystoreComparison(
   location: Partial<KeystoreLocation>,
-  currentVersion: number,
-  selectedVersion: number,
+  version: number,
 ) {
   return useApi<KeystoreComparison>(
-    () => getKeystoreComparison(location, currentVersion, selectedVersion),
-    [location.engine, location.path, location.prop, currentVersion, selectedVersion],
+    () => getKeystoreComparison(location, version),
+    [location.engine, location.path, location.prop, version],
   );
 }

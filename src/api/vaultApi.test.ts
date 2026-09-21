@@ -15,10 +15,9 @@ beforeEach(() => {
   vi.mocked(getJson).mockClear();
 });
 
-it('requests a comparison between the current and selected versions', async () => {
+it('requests a comparison between the latest and target versions', async () => {
   await getKeystoreComparison(
     { engine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
-    17,
     16,
   );
 
@@ -27,8 +26,7 @@ it('requests a comparison between the current and selected versions', async () =
       engine: 'engine-a',
       path: 'apps/prod/payments',
       prop: 'store',
-      sourceVersion: 17,
-      targetVersion: 16,
+      version: 16,
     },
   });
 });
