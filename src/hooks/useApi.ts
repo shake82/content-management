@@ -1,7 +1,7 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState, type DependencyList } from 'react';
 import type { ApiState } from '../api/apiState';
 
-export function useApi<T>(request: () => Promise<T>): ApiState<T> {
+export function useApi<T>(request: () => Promise<T>, dependencies: DependencyList = []): ApiState<T> {
   const requestRef = useRef(request);
   const [attempt, setAttempt] = useState(0);
   const [state, setState] = useState<Omit<ApiState<T>, 'refetch'>>({ status: 'idle' });
@@ -28,7 +28,7 @@ export function useApi<T>(request: () => Promise<T>): ApiState<T> {
     return () => {
       active = false;
     };
-  }, [attempt]);
+  }, [attempt, ...dependencies]);
 
   const refetch = useCallback(() => setAttempt((value) => value + 1), []);
   return { ...state, refetch };

@@ -139,6 +139,78 @@ input {
   text-decoration: underline;
 }
 
+.keystore-chain-cell {
+  padding-top: 0;
+  padding-bottom: 0;
+  background: color-mix(in srgb, var(--sb-surface) 86%, var(--mantine-color-blue-0));
+}
+
+.certificate-tree {
+  margin: 0;
+  padding-left: 22px;
+  list-style: none;
+}
+
+.certificate-tree-root {
+  padding-left: 0;
+}
+
+.certificate-tree li {
+  position: relative;
+  margin: 8px 0;
+}
+
+.certificate-tree li::before {
+  position: absolute;
+  top: -8px;
+  bottom: 14px;
+  left: -12px;
+  width: 1px;
+  content: '';
+  background: var(--sb-border);
+}
+
+.certificate-tree li::after {
+  position: absolute;
+  top: 15px;
+  left: -12px;
+  width: 10px;
+  height: 1px;
+  content: '';
+  background: var(--sb-border);
+}
+
+.certificate-tree-root > li::before,
+.certificate-tree-root > li::after {
+  display: none;
+}
+
+.certificate-tree-node {
+  min-height: 34px;
+}
+
+.certificate-tree-content {
+  min-width: 0;
+}
+
+.keystore-version-select {
+  width: min(290px, 100%);
+}
+
+.comparison-trees {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.comparison-tree-panel {
+  min-width: 0;
+  padding-inline: 18px;
+}
+
+.comparison-tree-panel + .comparison-tree-panel {
+  border-left: 1px solid var(--sb-border);
+}
+
 .status-view {
   min-height: 210px;
 }
@@ -169,6 +241,16 @@ section {
   .summary-strip {
     grid-template-columns: 1fr;
     gap: 18px;
+  }
+
+  .comparison-trees {
+    grid-template-columns: 1fr;
+  }
+
+  .comparison-tree-panel + .comparison-tree-panel {
+    padding-top: 18px;
+    border-top: 1px solid var(--sb-border);
+    border-left: 0;
   }
 }
 

@@ -44,7 +44,7 @@ export function VaultViewPage() {
 
   const noMatches = folders.length === 0 && filteredItems.length === 0;
   return (
-    <Box maw={1440} mx="auto">
+    <Box mx="auto">
       <Group justify="space-between" align="flex-end" mb="lg" className="page-heading">
         <div>
           <Text className="page-eyebrow">Certificate inventory</Text>
