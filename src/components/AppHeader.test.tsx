@@ -11,7 +11,7 @@ it('renders product identity, navigation, user area, and mobile toggle', async (
   renderApp(<AppHeader mobileOpened={false} onMobileToggle={toggle} />, { route: '/vault' });
 
   expect(screen.getByText('PHO')).toBeInTheDocument();
-  expect(screen.getByRole('img', { name: 'ELIS vault' })).toHaveAttribute('src', '/elis-vault-icon.png');
+  expect(screen.getByRole('img', { name: 'ELIS vault' })).toHaveAttribute('src', '/elis-vault-icon-readable.svg');
   expect(screen.getByText('Vault certificate inventory')).toBeInTheDocument();
   expect(screen.getByText('Current user')).toBeInTheDocument();
   expect(screen.getByRole('button', { name: /Switch to (dark|light) mode/ })).toBeInTheDocument();

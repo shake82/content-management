@@ -20,7 +20,7 @@ export function AppHeader({ mobileOpened, onMobileToggle }: AppHeaderProps) {
           size="sm"
           aria-label="Toggle navigation"
         />
-        <img className="app-brand-icon" src="/elis-vault-icon.png" alt="ELIS vault" />
+        <img className="app-brand-icon" src="/elis-vault-icon-readable.svg" alt="ELIS vault" />
         <Box>
           <Text fw={700} c="white" lh={1.1}>PHO</Text>
           <Text size="xs" c="gray.5">Vault certificate inventory</Text>

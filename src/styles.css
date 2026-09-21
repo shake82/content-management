@@ -49,9 +49,9 @@ input {
 
 .app-brand-icon {
   display: block;
-  width: 36px;
+  width: 108px;
   height: 36px;
-  flex: 0 0 36px;
+  flex: 0 0 108px;
   object-fit: contain;
 }
 
@@ -312,6 +312,11 @@ section {
 }
 
 @media (max-width: 30em) {
+  .app-brand-icon {
+    width: 92px;
+    flex-basis: 92px;
+  }
+
   .app-header .mantine-ThemeIcon-root,
   .app-header .mantine-Box-root:has(> .mantine-Text-root) {
     display: none;

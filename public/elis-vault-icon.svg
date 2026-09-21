@@ -1,0 +1,26 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ELIS vault icon</title>
+  <desc id="desc">A compact vault and keyhole mark for ELIS secret management.</desc>
+  <defs>
+    <linearGradient id="door" x1="10" y1="8" x2="38" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0DD2FF"/>
+      <stop offset="0.48" stop-color="#1266A8"/>
+      <stop offset="1" stop-color="#07284A"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="6" y1="5" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#D7E2EE"/>
+    </linearGradient>
+  </defs>
+  <circle cx="24" cy="24" r="21" fill="url(#steel)"/>
+  <circle cx="24" cy="24" r="16.25" fill="url(#door)"/>
+  <path d="M24 3.5V12" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M24 36V44.5" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M3.5 24H12" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M36 24H44.5" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M18.6 31.9H29.4L27.85 24.9C29.2 23.8 30 22.15 30 20.35C30 17.05 27.35 14.4 24 14.4C20.65 14.4 18 17.05 18 20.35C18 22.15 18.8 23.8 20.15 24.9L18.6 31.9Z" fill="#FFFFFF"/>
+  <path d="M20.95 29.85H27.05L25.75 23.85L26.55 23.25C27.45 22.55 28 21.5 28 20.35C28 18.15 26.25 16.4 24 16.4C21.75 16.4 20 18.15 20 20.35C20 21.5 20.55 22.55 21.45 23.25L22.25 23.85L20.95 29.85Z" fill="#0DD2FF"/>
+  <path d="M30.5 16.2H36.8C37.45 16.2 38 16.75 38 17.4V18.25C38 18.9 37.45 19.45 36.8 19.45H31.85C31.5 18.15 31.05 17.1 30.5 16.2Z" fill="#0DD2FF"/>
+  <path d="M31.8 22.35H38V25.65H31.8C31.95 24.55 31.95 23.45 31.8 22.35Z" fill="#0DD2FF"/>
+  <path d="M31.85 28.55H36.8C37.45 28.55 38 29.1 38 29.75V30.6C38 31.25 37.45 31.8 36.8 31.8H30.5C31.05 30.9 31.5 29.85 31.85 28.55Z" fill="#0DD2FF"/>
+</svg>

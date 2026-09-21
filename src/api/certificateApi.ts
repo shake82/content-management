@@ -1,12 +1,12 @@
-import certificateCatalog from '../../sample.json';
 import type {
   CertificateCatalogItem,
   CertificateCatalogPage,
   CertificateCatalogRequest,
 } from '../features/certificates/certificateCatalogTypes';
-import { mockGet } from './apiClient';
+import { getJson } from './apiClient';
 
 export const CERTIFICATE_CATALOG_ENDPOINT = '/api/secret/certCatalog';
+const CERTIFICATE_CATALOG_DATA_URL = `${CERTIFICATE_CATALOG_ENDPOINT}.json`;
 
 function normalizeItem(item: CertificateCatalogItem): CertificateCatalogItem {
   return {
@@ -22,17 +22,14 @@ export async function getCertificateCatalog({
   pageSize,
   search,
 }: CertificateCatalogRequest): Promise<CertificateCatalogPage> {
-  const query = new URLSearchParams({
+  const params = new URLSearchParams({
     pageNumber: String(pageNumber),
     pageSize: String(pageSize),
   });
   const trimmedSearch = search?.trim();
-  if (trimmedSearch) query.set('search', trimmedSearch);
+  if (trimmedSearch) params.set('search', trimmedSearch);
 
-  const page = await mockGet(
-    `${CERTIFICATE_CATALOG_ENDPOINT}?${query}`,
-    certificateCatalog as unknown as CertificateCatalogPage,
-  );
+  const page = await getJson<CertificateCatalogPage>(CERTIFICATE_CATALOG_DATA_URL, { params });
 
   return {
     ...page,

@@ -1,0 +1,36 @@
+<svg width="144" height="48" viewBox="0 0 144 48" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ELIS vault icon with wordmark</title>
+  <desc id="desc">A readable ELIS header mark paired with a vault keyhole for secret management.</desc>
+  <defs>
+    <linearGradient id="door" x1="10" y1="8" x2="38" y2="42" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0DD2FF"/>
+      <stop offset="0.48" stop-color="#1266A8"/>
+      <stop offset="1" stop-color="#07284A"/>
+    </linearGradient>
+    <linearGradient id="steel" x1="6" y1="5" x2="42" y2="44" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#D7E2EE"/>
+    </linearGradient>
+    <linearGradient id="word" x1="55" y1="11" x2="123" y2="34" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#CFEFFF"/>
+    </linearGradient>
+  </defs>
+  <circle cx="24" cy="24" r="21" fill="url(#steel)"/>
+  <circle cx="24" cy="24" r="16.25" fill="url(#door)"/>
+  <path d="M24 3.5V12" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M24 36V44.5" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M3.5 24H12" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M36 24H44.5" stroke="#D7E2EE" stroke-width="4.2" stroke-linecap="round"/>
+  <path d="M18.6 31.9H29.4L27.85 24.9C29.2 23.8 30 22.15 30 20.35C30 17.05 27.35 14.4 24 14.4C20.65 14.4 18 17.05 18 20.35C18 22.15 18.8 23.8 20.15 24.9L18.6 31.9Z" fill="#FFFFFF"/>
+  <path d="M20.95 29.85H27.05L25.75 23.85L26.55 23.25C27.45 22.55 28 21.5 28 20.35C28 18.15 26.25 16.4 24 16.4C21.75 16.4 20 18.15 20 20.35C20 21.5 20.55 22.55 21.45 23.25L22.25 23.85L20.95 29.85Z" fill="#0DD2FF"/>
+  <path d="M30.5 16.2H36.8C37.45 16.2 38 16.75 38 17.4V18.25C38 18.9 37.45 19.45 36.8 19.45H31.85C31.5 18.15 31.05 17.1 30.5 16.2Z" fill="#0DD2FF"/>
+  <path d="M31.8 22.35H38V25.65H31.8C31.95 24.55 31.95 23.45 31.8 22.35Z" fill="#0DD2FF"/>
+  <path d="M31.85 28.55H36.8C37.45 28.55 38 29.1 38 29.75V30.6C38 31.25 37.45 31.8 36.8 31.8H30.5C31.05 30.9 31.5 29.85 31.85 28.55Z" fill="#0DD2FF"/>
+  <path d="M54 11.5H76.8V17H61V21.55H75.2V26.8H61V31.5H77.15V37H54V11.5Z" fill="url(#word)"/>
+  <path d="M81.4 11.5H88.45V31.25H102.45V37H81.4V11.5Z" fill="url(#word)"/>
+  <path d="M106.15 11.5H113.2V37H106.15V11.5Z" fill="url(#word)"/>
+  <path d="M116.35 33.2L120 28.85C122.45 30.8 125.2 31.85 128.05 31.85C129.9 31.85 130.9 31.2 130.9 30.1V30.05C130.9 28.95 130.1 28.4 126.75 27.6C121.45 26.4 117.35 24.9 117.35 19.6V19.55C117.35 14.85 121.05 11.05 127.1 11.05C131.4 11.05 134.75 12.2 137.5 14.4L134.2 19.05C132 17.5 129.55 16.65 126.9 16.65C125.25 16.65 124.45 17.3 124.45 18.3V18.35C124.45 19.55 125.3 20.05 128.7 20.85C134.45 22.1 138 24.05 138 28.75V28.8C138 34 133.9 37.45 127.8 37.45C123.25 37.45 119 36.05 116.35 33.2Z" fill="url(#word)"/>
+  <path d="M55 42H94" stroke="#0DD2FF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M101 42H126" stroke="#D7E2EE" stroke-width="3" stroke-linecap="round" opacity="0.88"/>
+</svg>

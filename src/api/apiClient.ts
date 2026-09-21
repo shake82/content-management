@@ -1,11 +1,12 @@
-const DEFAULT_DELAY_MS = 180;
+import axios, { type AxiosRequestConfig } from 'axios';
 
-export async function mockGet<T>(path: string, payload: T): Promise<T> {
-  await new Promise((resolve) => window.setTimeout(resolve, DEFAULT_DELAY_MS));
+export const apiClient = axios.create({
+  headers: {
+    Accept: 'application/json',
+  },
+});
 
-  if (!path.startsWith('/api/')) {
-    throw new Error(`Unsupported API path: ${path}`);
-  }
-
-  return structuredClone(payload);
+export async function getJson<T>(url: string, config?: AxiosRequestConfig): Promise<T> {
+  const response = await apiClient.get<T>(url, config);
+  return response.data;
 }

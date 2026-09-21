@@ -1,9 +1,9 @@
-import currentUser from '../mocks/currentUser.json';
 import type { CurrentUser } from '../features/user/userTypes';
-import { mockGet } from './apiClient';
+import { getJson } from './apiClient';
 
 export const CURRENT_USER_ENDPOINT = '/api/user/current';
+const CURRENT_USER_DATA_URL = `${CURRENT_USER_ENDPOINT}.json`;
 
 export function getCurrentUser(): Promise<CurrentUser> {
-  return mockGet(CURRENT_USER_ENDPOINT, currentUser as CurrentUser);
+  return getJson<CurrentUser>(CURRENT_USER_DATA_URL);
 }
