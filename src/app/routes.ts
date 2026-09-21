@@ -5,6 +5,7 @@ export const routes = {
   reports: '/reports',
   toolsImport: '/tools/import',
   toolsAudit: '/tools/audit',
+  toolsLocalCertViewer: '/tools/local-cert-viewer',
   settings: '/settings',
 } as const;
 

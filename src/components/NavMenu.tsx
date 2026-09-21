@@ -57,6 +57,17 @@ export function NavMenu({ orientation = 'horizontal', onNavigate }: NavMenuProps
           <Menu.Label>Certificate tools</Menu.Label>
           <Menu.Item
             component={Link}
+            to={routes.toolsLocalCertViewer}
+            onClick={onNavigate}
+            color={isActive(routes.toolsLocalCertViewer) ? 'blue' : undefined}
+            data-active={isActive(routes.toolsLocalCertViewer) || undefined}
+            className={isActive(routes.toolsLocalCertViewer) ? 'nav-submenu-active' : undefined}
+            aria-current={isActive(routes.toolsLocalCertViewer) ? 'page' : undefined}
+          >
+            Local Cert Viewer
+          </Menu.Item>
+          <Menu.Item
+            component={Link}
             to={routes.toolsImport}
             onClick={onNavigate}
             color={isActive(routes.toolsImport) ? 'blue' : undefined}

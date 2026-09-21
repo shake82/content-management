@@ -240,6 +240,52 @@ input {
   width: min(290px, 100%);
 }
 
+.local-cert-input {
+  padding-bottom: 18px;
+}
+
+.local-cert-dropzone {
+  display: flex;
+  min-height: 230px;
+  padding: 28px;
+  color: var(--sb-text);
+  background: color-mix(in srgb, var(--sb-surface) 94%, var(--mantine-color-blue-0));
+  border: 1px dashed var(--mantine-color-blue-5);
+  border-radius: 4px;
+  cursor: pointer;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+.local-cert-dropzone:hover,
+.local-cert-dropzone:focus-visible {
+  background: color-mix(in srgb, var(--sb-surface) 88%, var(--mantine-color-blue-0));
+  outline: 2px solid var(--mantine-color-blue-5);
+  outline-offset: 2px;
+}
+
+.local-cert-dropzone[aria-disabled='true'] {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.local-cert-file-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.local-cert-result-summary {
+  padding-bottom: 18px;
+}
+
 .comparison-trees {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -292,6 +338,11 @@ section {
 
   .comparison-trees {
     grid-template-columns: 1fr;
+  }
+
+  .local-cert-result-summary > .mantine-Group-root:first-child {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .certificate-view-expanded {

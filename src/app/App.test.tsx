@@ -37,3 +37,14 @@ it('renders Certificate View at its header navigation route', async () => {
   expect(screen.getAllByRole('link', { name: 'Certificate View' })[0]).toHaveAttribute('data-variant', 'light');
   expect(screen.getByText('Payments leaf certificate')).toBeInTheDocument();
 });
+
+it('renders Local Cert Viewer at its tools route', async () => {
+  vi.mocked(getCurrentUser).mockResolvedValue({
+    id: 'u1', displayName: 'Maya Chen', email: 'maya@example.com', roles: ['Auditor'],
+  });
+  renderApp(<App />, { route: '/tools/local-cert-viewer' });
+
+  expect(await screen.findByRole('heading', { name: 'Local Cert Viewer' })).toBeInTheDocument();
+  expect(screen.getByRole('tab', { name: 'Upload file' })).toBeInTheDocument();
+  expect(screen.getAllByRole('button', { name: /Tools/ })[0]).toHaveAttribute('data-variant', 'light');
+});

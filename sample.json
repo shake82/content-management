@@ -1,6 +1,58 @@
 {
-  "content": [{
-    "certificates": [
+   "issueSeveritySummary": {
+    "HIGH": {
+      "EXPIRED_CERTIFICATE": 2
+    }
+   }
+   ,
+  "keyEntries": [
+    {
+      "alias": "cert1",
+      "entryType": "TRUST_CERT",
+      "certificates": [
+        {
+          "shortName": "Cert1",
+          "startDate": "2025-05-28T00:00:000Z",
+          "endDate": "2027-05-28T00:00:000Z",
+          "revocationDate": null,
+          "version": 3,
+          "subject": "CN=ASDF,C=US",
+          "issuer": "CN=ASDF,C=US",
+          "hexSerialNumber": "0x01",
+          "fingerpring": "123456"
+        }
+      ],
+      "expirationDate": "2027-05-28T00:00:000Z",
+      "issues": [],
+      "lastModifiedDate": "2025-05-28T00:00:000Z"
+    },
+    {
+      "alias": "cert2",
+      "entryType": "TRUST_CERT",
+      "certificates": [
+        {
+          "shortName": "Cert2",
+          "startDate": "2025-05-28T00:00:000Z",
+          "endDate": "2026-01-28T00:00:000Z",
+          "revocationDate": null,
+          "version": 3,
+          "subject": "CN=ASDF2,C=US",
+          "issuer": "CN=ASDF2,C=US",
+          "hexSerialNumber": "0x02",
+          "fingerpring": "123456,7"
+        }
+      ],
+      "expirationDate": "2026-01-28T00:00:000Z",
+      "issues": [{
+        "type": "EXPIRED_CERTIFICATE",
+        "severity": "HIGH"
+      }],
+      "lastModifiedDate": "2025-05-28T00:00:000Z"
+    },
+     {
+      "alias": "kp1",
+      "entryType": "KEY_PAIR",
+      "certificates": [
         {
           "shortName": "Cert1",
           "startDate": "2025-05-28T00:00:000Z",
@@ -35,30 +87,13 @@
           "fingerpring": "123456,7"
         }
       ],
-      "entryType": "KEY_PAIR",
       "expirationDate": "2026-01-28T00:00:000Z",
-      "id": 5,
-      "shortName": "AAA Certficate Services",
-      "vaultReferences": [{
-        "catalogId":5,
-        "path": "path1/path2/path3",
-        "property": "prop1",
-        "secretEngine": "kubernetes",
-        "secretVersion": 5,
-        "type": "JKS"
-      }]
-  }],
-  "first": true,
-  "last": false,
-  "number": 0,
-  "numberOfElements": 15,
-  "pageable": {
-    "offset": 0,
-    "pageNumber": 0,
-    "pageSize": 15,
-    "paged": true
-  },
-  "size": 15,
-  "totalElements": 270,
-  "totalPages": 18
+      "issues": [{
+        "type": "EXPIRED_CERTIFICATE",
+        "severity": "HIGH"
+      }],
+      "lastModifiedDate": "2025-05-28T00:00:000Z"
+    }
+  ],
+  "type": "JKS"
 }

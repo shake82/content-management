@@ -1,12 +1,10 @@
 ## Requirement
-Create a new component called "Certificate View" the follows the following requirements
-1. Create a nav for it in the header
-2. On the page itself, get data  from an API call called "/api/secret/certCatalog". Data format can be infered from the sample.json file. The API supports paging of the format "?pageNumber=0&pageSize=15"
-3. Render the data in tabular format with paging. Expected columns are "Type", "Is Valid", "Name", "Expiration". Hovering over the "Is Valid" cell should should the issue in a tooltip if any.
-4. All each row to be expanded to show the two sections side by side:
-  1. CertificateChain component that shows the current row's certificate chain information
-  2. References section that shows all the places the certificate is being used. This can be rendered as a table with two columns, "Path" and "Type". Each row should also have a nav link to open the related "KeystoreDetailsPage" referenced here. This section can have a lot of rows so should have a max height with scrolling
-5. Add a search bar the lets the user search. The API above supports searching by adding the querystring param "search"
+Create a new component called "Local Cert Viewer" the follows the following requirements
+1. Create a nav for it in the header under the "Tools" nav
+2. On the page itself, create two tabs. One with a File update/drag drop component. One second tab, out a multiline textbox with the label "Secret Value". Add an option to paste the contents of the clipboard in the textbox. Add instructions to paste Base64 encoded or plain PEM content in the box.
+3. Either on uploading a file in the first tab or submitting text on the second tab with a button, post the contents to the endpoint "/api/tools/parsesecret". Response from the API can be infered from the sample.json file
+4. Render the response in the same format as the "Keystore Details" page with the ability to view individual rows that can be expanded to show certificate chain
+5. Allow the user to reset view to be able to upload a different secret
 
 ## Unit Tests
 1. Every UI component will have a unit test

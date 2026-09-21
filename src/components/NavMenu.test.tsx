@@ -15,4 +15,5 @@ it('highlights the active route and exposes grouped tool destinations', async ()
   expect(screen.getByText('Import certificates').closest('a')).toHaveAttribute('data-active', 'true');
   expect(screen.getByText('Import certificates').closest('a')).toHaveAttribute('aria-current', 'page');
   expect(screen.getByText('Audit history').closest('a')).toHaveAttribute('href', '/tools/audit');
+  expect(screen.getByText('Local Cert Viewer').closest('a')).toHaveAttribute('href', '/tools/local-cert-viewer');
 });
