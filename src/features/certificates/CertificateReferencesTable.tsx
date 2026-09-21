@@ -1,4 +1,5 @@
 import { Anchor, Table, Text } from '@mantine/core';
+import { IconExternalLink } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { keystoreDetailsRoute } from '../../app/routes';
 import type { CertificateVaultReference } from './certificateCatalogTypes';
@@ -21,12 +22,21 @@ export function CertificateReferencesTable({ references }: { references: Certifi
           {references.map((reference) => (
             <Table.Tr key={`${reference.catalogId}-${reference.secretVersion}-${reference.property}`}>
               <Table.Td>
-                <Anchor component={Link} to={keystoreDetailsRoute({
-                  engine: reference.secretEngine,
-                  path: reference.path,
-                  prop: reference.property,
-                })} size="sm">
-                  {reference.path}
+                <Anchor
+                  component={Link}
+                  to={keystoreDetailsRoute({
+                    engine: reference.secretEngine,
+                    path: reference.path,
+                    prop: reference.property,
+                  })}
+                  size="sm"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={`${reference.path} (opens in a new tab)`}
+                  className="certificate-reference-link"
+                >
+                  <span>{reference.path}</span>
+                  <IconExternalLink size={14} aria-hidden="true" />
                 </Anchor>
               </Table.Td>
               <Table.Td><Text size="sm">{reference.type}</Text></Table.Td>

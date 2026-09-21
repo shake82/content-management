@@ -145,13 +145,16 @@ it('renders the detail title and effective-path breadcrumbs', () => {
     { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
-  expect(screen.getByRole('heading', { name: 'Keystore Details' })).toBeInTheDocument();
+  const heading = screen.getByRole('heading', { name: 'Keystore Details' });
+  const breadcrumbs = screen.getByRole('navigation', { name: 'Keystore path' });
+  expect(heading).toBeInTheDocument();
+  expect(heading.compareDocumentPosition(breadcrumbs) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
   expect(useKeystoreDetails).toHaveBeenCalledWith({
     engine: 'engine-a',
     path: 'apps/prod/payments',
     prop: 'store',
   });
-  expect(screen.getByRole('navigation', { name: 'Keystore path' })).toHaveTextContent('Vault View/engine-a/apps/prod/payments/store');
+  expect(breadcrumbs).toHaveTextContent('Vault View/engine-a/apps/prod/payments/store');
   expect(screen.getByRole('link', { name: 'Vault View' })).toHaveAttribute('href', '/vault');
   expect(screen.getByRole('link', { name: 'engine-a' })).toHaveAttribute('href', '/vault/engine-a');
   expect(screen.getByRole('link', { name: 'apps' })).toHaveAttribute('href', '/vault/engine-a/apps');

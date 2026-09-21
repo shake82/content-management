@@ -8,9 +8,13 @@ it('renders certificate references with links to keystore details', () => {
 
   expect(screen.getByRole('columnheader', { name: 'Path' })).toBeInTheDocument();
   expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'apps/prod/payments' })).toHaveAttribute(
+  const link = screen.getByRole('link', { name: 'apps/prod/payments (opens in a new tab)' });
+  expect(link).toHaveAttribute(
     'href',
     '/vault/keystore?engine=kubernetes&path=apps%2Fprod%2Fpayments&prop=keystore',
   );
+  expect(link).toHaveAttribute('target', '_blank');
+  expect(link).toHaveAttribute('rel', 'noopener noreferrer');
+  expect(link.querySelector('.tabler-icon-external-link')).toBeInTheDocument();
   expect(screen.getByText('JKS')).toBeInTheDocument();
 });

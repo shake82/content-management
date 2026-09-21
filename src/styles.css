@@ -150,6 +150,12 @@ input {
   overflow: auto;
 }
 
+.certificate-reference-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
 .certificate-view-pagination {
   padding: 0 4px 12px;
 }

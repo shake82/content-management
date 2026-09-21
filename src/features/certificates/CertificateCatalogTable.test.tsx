@@ -21,7 +21,7 @@ it('renders certificate columns, validity details, and expanded chain and refere
   expect(screen.getByRole('heading', { name: 'Certificate chain' })).toBeInTheDocument();
   expect(screen.getByText('Root CA')).toBeInTheDocument();
   expect(screen.getByRole('heading', { name: 'References' })).toBeInTheDocument();
-  expect(screen.getByRole('link', { name: 'apps/prod/payments' })).toHaveAttribute(
+  expect(screen.getByRole('link', { name: 'apps/prod/payments (opens in a new tab)' })).toHaveAttribute(
     'href',
     '/vault/keystore?engine=kubernetes&path=apps%2Fprod%2Fpayments&prop=keystore',
   );

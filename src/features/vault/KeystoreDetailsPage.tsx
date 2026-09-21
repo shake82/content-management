@@ -52,7 +52,23 @@ export function KeystoreDetailsPage() {
 
   return (
     <Box mx="auto">
-      <Stack gap="md">
+      <Group justify="space-between" align="flex-end" mb="lg" className="page-heading">
+        <div>
+          <Text className="page-eyebrow">Key store record</Text>
+          <Title order={1} size="h2">Keystore Details</Title>
+        </div>
+        <Select
+          className="keystore-version-select"
+          label="Compare version"
+          aria-label="Compare version"
+          value={String(activeVersion)}
+          data={versionOptions}
+          allowDeselect={false}
+          onChange={(value) => setSelectedVersion(value ? Number(value) : currentVersion)}
+        />
+      </Group>
+
+      <Stack gap="lg">
         <Breadcrumbs component="nav" separator="/" aria-label="Keystore path">
           <Anchor component={Link} to={routes.vault}>Vault View</Anchor>
           {pathSegments.map((segment, index) => {
@@ -67,21 +83,6 @@ export function KeystoreDetailsPage() {
             {location.prop ?? 'Keystore not found'}
           </Text>
         </Breadcrumbs>
-        <Group justify="space-between" align="flex-end" className="page-heading">
-          <div>
-            <Text className="page-eyebrow">Key store record</Text>
-            <Title order={1} size="h2">Keystore Details</Title>
-          </div>
-          <Select
-            className="keystore-version-select"
-            label="Compare version"
-            aria-label="Compare version"
-            value={String(activeVersion)}
-            data={versionOptions}
-            allowDeselect={false}
-            onChange={(value) => setSelectedVersion(value ? Number(value) : currentVersion)}
-          />
-        </Group>
 
         {activeVersion === currentVersion ? (
           <KeystoreEntriesTable
