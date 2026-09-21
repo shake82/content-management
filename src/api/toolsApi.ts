@@ -2,7 +2,7 @@ import type { KeystoreKeyEntry } from '../features/vault/detailTypes';
 import type { ParseSecretRequest, ParsedSecretResponse } from '../features/tools/localCertViewer/localCertViewerTypes';
 import { postJson } from './apiClient';
 
-export const PARSE_SECRET_ENDPOINT = '/api/tools/parsesecret';
+export const PARSE_SECRET_ENDPOINT = '/tools/parsesecret';
 
 function normalizeEntries(entries: KeystoreKeyEntry[] | undefined): KeystoreKeyEntry[] {
   return (entries ?? []).map((entry) => ({

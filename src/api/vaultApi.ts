@@ -2,9 +2,9 @@ import type { VaultCatalogItem } from '../features/vault/catalogTypes';
 import type { KeystoreComparison, KeystoreDetails } from '../features/vault/detailTypes';
 import { getJson } from './apiClient';
 
-export const VAULT_CATALOG_ENDPOINT = '/api/secret/vaultcatalog';
-export const VAULT_DETAIL_ENDPOINT = '/api/secret/vaultcatalog';
-export const VAULT_COMPARE_ENDPOINT = '/api/secret/vault-compare';
+export const VAULT_CATALOG_ENDPOINT = '/secret/vaultcatalog';
+export const VAULT_DETAIL_ENDPOINT = '/secret/vaultcatalog';
+export const VAULT_COMPARE_ENDPOINT = '/secret/vault-compare';
 
 export function getVaultCatalog(): Promise<VaultCatalogItem[]> {
   return getJson<VaultCatalogItem[]>(`${VAULT_CATALOG_ENDPOINT}.json`);

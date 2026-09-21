@@ -1,6 +1,9 @@
 import axios, { type AxiosRequestConfig } from 'axios';
 
+export const API_BASE_URL = import.meta.env.PROD ? '/api' : 'http://localhost:8050/api';
+
 export const apiClient = axios.create({
+  baseURL: API_BASE_URL,
   headers: {
     Accept: 'application/json',
   },

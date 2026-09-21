@@ -5,7 +5,7 @@ import type {
 } from '../features/certificates/certificateCatalogTypes';
 import { getJson } from './apiClient';
 
-export const CERTIFICATE_CATALOG_ENDPOINT = '/api/secret/certCatalog';
+export const CERTIFICATE_CATALOG_ENDPOINT = '/secret/certCatalog';
 const CERTIFICATE_CATALOG_DATA_URL = `${CERTIFICATE_CATALOG_ENDPOINT}.json`;
 
 function normalizeItem(item: CertificateCatalogItem): CertificateCatalogItem {
