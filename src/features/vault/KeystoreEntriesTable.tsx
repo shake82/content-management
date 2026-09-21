@@ -20,6 +20,7 @@ import { CertificateTree } from './CertificateTree';
 import type { KeystoreCertificate, KeystoreKeyEntry } from './detailTypes';
 import { EntryValidity } from './EntryValidity';
 import { formatKeystoreDate } from './keystoreDisplay';
+import { matchesKeystoreEntrySearch } from './keystoreEntrySearch';
 
 interface KeystoreEntriesTableProps {
   entries: KeystoreKeyEntry[];
@@ -44,18 +45,7 @@ export function KeystoreEntriesTable({
     const matchesSeverity = entryFilter === 'all'
       || (entryFilter === 'issues' && entry.issues.length > 0)
       || (entryFilter === 'high' && entry.issues.some((issue) => issue.severity.toUpperCase() === 'HIGH'));
-    const query = search.trim().toLocaleLowerCase();
-    const searchableValues = [
-      entry.alias,
-      ...(entry.certificates ?? []).flatMap((certificate) => [
-        certificate.shortName,
-        certificate.shortname,
-        certificate.hexSerialNumber,
-        certificate.subject,
-      ]),
-    ];
-    const matchesSearch = !query || searchableValues.some((value) => value?.toLocaleLowerCase().includes(query));
-    return matchesSeverity && matchesSearch;
+    return matchesSeverity && matchesKeystoreEntrySearch(entry, search);
   });
 
   const toggleExpanded = (alias: string) => {

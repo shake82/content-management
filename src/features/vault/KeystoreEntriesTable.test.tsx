@@ -1,4 +1,4 @@
-import { screen } from '@testing-library/react';
+import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { renderApp } from '../../test/render';
 import { parsedSecretFixture } from '../tools/localCertViewer/localCertViewerTestFixture';
@@ -12,7 +12,9 @@ it('filters entries, expands certificate chains, and opens certificate details',
   await userEvent.click(screen.getByRole('button', { name: 'Expand payments-cert' }));
   expect(screen.getByText('Certificate chain')).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Payments certificate' }));
-  expect(await screen.findByRole('dialog')).toHaveTextContent('fixture-fingerprint');
+  const dialog = await screen.findByRole('dialog');
+  expect(within(dialog).getByRole('heading', { name: 'Certificate Detail' })).toBeInTheDocument();
+  expect(within(dialog).queryByText('fixture-fingerprint')).not.toBeInTheDocument();
   await userEvent.click(screen.getByText('With issues'));
   expect(screen.getByText('No key entries match this filter.')).toBeInTheDocument();
 });

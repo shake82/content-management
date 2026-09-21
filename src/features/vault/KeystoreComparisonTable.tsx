@@ -1,12 +1,36 @@
-import { ActionIcon, Badge, Box, Collapse, Divider, Group, Table, Text, Title, Tooltip } from '@mantine/core';
-import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Collapse,
+  Divider,
+  Group,
+  SegmentedControl,
+  Stack,
+  Table,
+  Text,
+  TextInput,
+  Title,
+  Tooltip,
+} from '@mantine/core';
+import { IconArrowLeft, IconChevronDown, IconChevronRight, IconSearch } from '@tabler/icons-react';
 import { Fragment, useState } from 'react';
 import { StatusView } from '../../components/StatusView';
 import { CertificateTree } from './CertificateTree';
 import type { KeystoreCertificate, KeystoreKeyEntry } from './detailTypes';
 import { EntryValidity } from './EntryValidity';
+import { matchesKeystoreEntrySearch } from './keystoreEntrySearch';
 import { useKeystoreComparison } from './useKeystoreComparison';
 import type { KeystoreLocation } from './keystoreLocation';
+
+type ComparisonFilter = 'all' | 'mismatches';
+
+const matchingResults = new Set(['MATCH', 'IDENTICAL', 'EQUAL', 'UNCHANGED']);
+
+function isMismatch(comparisonResult: string) {
+  return !matchingResults.has(comparisonResult.toLocaleUpperCase());
+}
 
 function displayComparisonResult(value: string) {
   return value
@@ -39,14 +63,28 @@ export function KeystoreComparisonTable({
   currentVersion,
   selectedVersion,
   onSelectCertificate,
+  onBack,
 }: {
   location: Partial<KeystoreLocation>;
   currentVersion: number;
   selectedVersion: number;
   onSelectCertificate: (certificate: KeystoreCertificate) => void;
+  onBack: () => void;
 }) {
   const comparison = useKeystoreComparison(location, selectedVersion);
+  const [comparisonFilter, setComparisonFilter] = useState<ComparisonFilter>('all');
+  const [search, setSearch] = useState('');
   const [expandedAliases, setExpandedAliases] = useState<Set<string>>(() => new Set());
+  const comparisonEntries = comparison.data?.keyEntries ?? [];
+  const query = search.trim().toLocaleLowerCase();
+  const filteredEntries = comparisonEntries.filter((entry) => {
+    const matchesFilter = comparisonFilter === 'all' || isMismatch(entry.comparisonResult);
+    const matchesSearch = !query
+      || entry.alias.toLocaleLowerCase().includes(query)
+      || matchesKeystoreEntrySearch(entry.sourceKeyEntry, query)
+      || matchesKeystoreEntrySearch(entry.targetKeyEntry, query);
+    return matchesFilter && matchesSearch;
+  });
 
   const toggleExpanded = (alias: string) => {
     setExpandedAliases((current) => {
@@ -59,11 +97,34 @@ export function KeystoreComparisonTable({
 
   return (
     <section aria-labelledby="keystore-comparison-heading">
-      <Group justify="space-between" mb="xs">
+      <Button variant="subtle" px={0} mb="xs" leftSection={<IconArrowLeft size={17} />} onClick={onBack}>
+        Back to keystore details
+      </Button>
+      <Group justify="space-between" align="flex-end" mb="xs">
         <div>
           <Title id="keystore-comparison-heading" order={2} size="h4">Version comparison</Title>
           <Text size="sm" c="dimmed">Current version {currentVersion} compared with version {selectedVersion}</Text>
         </div>
+        <Stack gap={4} align="flex-end">
+          <TextInput
+            aria-label="Search key entries"
+            placeholder="Search name, serial, or subject"
+            leftSection={<IconSearch size={17} />}
+            value={search}
+            onChange={(event) => setSearch(event.currentTarget.value)}
+            className="keystore-entry-search"
+          />
+          <SegmentedControl
+            aria-label="Filter comparison entries"
+            value={comparisonFilter}
+            onChange={(value) => setComparisonFilter(value as ComparisonFilter)}
+            data={[
+              { label: 'All', value: 'all' },
+              { label: 'Mismatches', value: 'mismatches' },
+            ]}
+          />
+          <Text size="sm" c="dimmed">{filteredEntries.length} of {comparisonEntries.length} entries</Text>
+        </Stack>
       </Group>
       <Divider />
 
@@ -87,7 +148,7 @@ export function KeystoreComparisonTable({
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {comparison.data.keyEntries.map((comparisonEntry) => {
+              {filteredEntries.map((comparisonEntry) => {
                 const expanded = expandedAliases.has(comparisonEntry.alias);
                 const displayEntry = comparisonEntry.sourceKeyEntry ?? comparisonEntry.targetKeyEntry;
 
@@ -134,10 +195,10 @@ export function KeystoreComparisonTable({
                   </Fragment>
                 );
               })}
-              {comparison.data.keyEntries.length === 0 && (
+              {filteredEntries.length === 0 && (
                 <Table.Tr>
                   <Table.Td colSpan={6}>
-                    <Text ta="center" c="dimmed" py="lg">No comparison results found.</Text>
+                    <Text ta="center" c="dimmed" py="lg">No comparison results match this filter.</Text>
                   </Table.Td>
                 </Table.Tr>
               )}

@@ -103,6 +103,30 @@ const comparisonFixture: KeystoreComparison = {
         issues: [{ type: 'EXPIRING_CERTIFICATE', severity: 'HIGH' }],
       },
     },
+    {
+      alias: 'unchanged-entry',
+      comparisonResult: 'MATCH',
+      sourceKeyEntry: {
+        ...detailsFixture.secretMetadata.keyEntries[0]!,
+        alias: 'unchanged-entry',
+        certificates: [{
+          ...detailsFixture.secretMetadata.keyEntries[0]!.certificates![0]!,
+          shortName: 'Stable Certificate',
+          subject: 'CN=STABLE,C=US',
+          hexSerialNumber: '0x99',
+        }],
+      },
+      targetKeyEntry: {
+        ...detailsFixture.secretMetadata.keyEntries[0]!,
+        alias: 'unchanged-entry',
+        certificates: [{
+          ...detailsFixture.secretMetadata.keyEntries[0]!.certificates![0]!,
+          shortName: 'Stable Certificate',
+          subject: 'CN=STABLE,C=US',
+          hexSerialNumber: '0x99',
+        }],
+      },
+    },
   ],
 };
 
@@ -261,4 +285,33 @@ it('selects a historical version and renders side-by-side comparison trees', asy
   const dialog = await screen.findByRole('dialog');
   expect(within(dialog).getByRole('heading', { name: 'Certificate Detail' })).toBeInTheDocument();
   expect(within(dialog).queryByText('historical-fingerprint')).not.toBeInTheDocument();
+});
+
+it('searches and filters comparisons and returns to keystore details', async () => {
+  renderApp(
+    <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
+    { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
+  );
+
+  const versionSelect = screen.getByRole('combobox', { name: 'Compare version' });
+  await userEvent.click(versionSelect);
+  await userEvent.keyboard('{ArrowDown}{Enter}');
+
+  const search = screen.getByRole('textbox', { name: 'Search key entries' });
+  expect(screen.getByText('2 of 2 entries')).toBeInTheDocument();
+
+  await userEvent.type(search, 'Stable Certificate');
+  expect(screen.getByText('unchanged-entry')).toBeInTheDocument();
+  expect(screen.queryByText('cert1')).not.toBeInTheDocument();
+  expect(screen.getByText('1 of 2 entries')).toBeInTheDocument();
+
+  await userEvent.clear(search);
+  await userEvent.click(screen.getByText('Mismatches'));
+  expect(screen.getByText('cert1')).toBeInTheDocument();
+  expect(screen.queryByText('unchanged-entry')).not.toBeInTheDocument();
+  expect(screen.getByText('1 of 2 entries')).toBeInTheDocument();
+
+  await userEvent.click(screen.getByRole('button', { name: 'Back to keystore details' }));
+  expect(screen.getByRole('heading', { name: 'Key entries' })).toBeInTheDocument();
+  expect(versionSelect).toHaveValue('Version 17 (Current)');
 });

@@ -94,6 +94,7 @@ export function KeystoreDetailsPage() {
             currentVersion={currentVersion}
             selectedVersion={activeVersion}
             onSelectCertificate={setSelectedCertificate}
+            onBack={() => setSelectedVersion(null)}
           />
         )}
       </Stack>
