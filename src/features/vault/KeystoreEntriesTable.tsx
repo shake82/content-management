@@ -9,10 +9,11 @@ import {
   Stack,
   Table,
   Text,
+  TextInput,
   Title,
   Tooltip,
 } from '@mantine/core';
-import { IconChevronDown, IconChevronRight, IconInfoCircle } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronRight, IconSearch } from '@tabler/icons-react';
 import { Fragment, useState } from 'react';
 import { CertificateDetailsModal } from './CertificateDetailsModal';
 import { CertificateTree } from './CertificateTree';
@@ -36,12 +37,25 @@ export function KeystoreEntriesTable({
   enableFilters = true,
 }: KeystoreEntriesTableProps) {
   const [entryFilter, setEntryFilter] = useState<EntryFilter>('all');
+  const [search, setSearch] = useState('');
   const [expandedAliases, setExpandedAliases] = useState<Set<string>>(() => new Set());
   const [selectedCertificate, setSelectedCertificate] = useState<KeystoreCertificate | null>(null);
   const filteredEntries = entries.filter((entry) => {
-    if (entryFilter === 'issues') return entry.issues.length > 0;
-    if (entryFilter === 'high') return entry.issues.some((issue) => issue.severity.toUpperCase() === 'HIGH');
-    return true;
+    const matchesSeverity = entryFilter === 'all'
+      || (entryFilter === 'issues' && entry.issues.length > 0)
+      || (entryFilter === 'high' && entry.issues.some((issue) => issue.severity.toUpperCase() === 'HIGH'));
+    const query = search.trim().toLocaleLowerCase();
+    const searchableValues = [
+      entry.alias,
+      ...entry.certificates.flatMap((certificate) => [
+        certificate.shortName,
+        certificate.shortname,
+        certificate.hexSerialNumber,
+        certificate.subject,
+      ]),
+    ];
+    const matchesSearch = !query || searchableValues.some((value) => value?.toLocaleLowerCase().includes(query));
+    return matchesSeverity && matchesSearch;
   });
 
   const toggleExpanded = (alias: string) => {
@@ -62,6 +76,14 @@ export function KeystoreEntriesTable({
         </div>
         {enableFilters && (
           <Stack gap={4} align="flex-end">
+            <TextInput
+              aria-label="Search key entries"
+              placeholder="Search name, serial, or subject"
+              leftSection={<IconSearch size={17} />}
+              value={search}
+              onChange={(event) => setSearch(event.currentTarget.value)}
+              className="keystore-entry-search"
+            />
             <SegmentedControl
               aria-label="Filter key entries"
               value={entryFilter}
@@ -110,10 +132,7 @@ export function KeystoreEntriesTable({
                     </Table.Td>
                     <Table.Td><Badge variant="outline" color="gray">{entry.entryType}</Badge></Table.Td>
                     <Table.Td>
-                      <Group gap={6} wrap="nowrap">
-                        <EntryValidity entry={entry} />
-                        {entry.issues.length > 0 && <IconInfoCircle size={16} color="var(--mantine-color-orange-7)" aria-hidden />}
-                      </Group>
+                      <EntryValidity entry={entry} />
                     </Table.Td>
                     <Table.Td><Text size="sm" fw={600}>{entry.alias}</Text></Table.Td>
                     <Table.Td><Text size="sm">{formatKeystoreDate(entry.expirationDate)}</Text></Table.Td>

@@ -240,6 +240,10 @@ input {
   width: min(290px, 100%);
 }
 
+.keystore-entry-search {
+  width: min(320px, 100%);
+}
+
 .local-cert-input {
   padding-bottom: 18px;
 }

@@ -64,7 +64,10 @@ const detailsFixture: KeystoreDetails = {
         },
       ],
       expirationDate: '2026-01-28T00:00:000Z',
-      issues: [{ type: 'EXPIRED_CERTIFICATE', severity: 'HIGH' }],
+      issues: [
+        { type: 'EXPIRING_CERTIFICATE', severity: 'MEDIUM' },
+        { type: 'EXPIRED_CERTIFICATE', severity: 'HIGH' },
+      ],
       lastModifiedDate: '2025-05-28T00:00:000Z',
       },
       {
@@ -132,7 +135,7 @@ it('renders the detail title and effective-path breadcrumbs', () => {
   expect(screen.getByText('store')).toHaveAttribute('aria-current', 'page');
 });
 
-it('renders key entries with validity status and issue details', async () => {
+it('shows the highest issue severity and lists each issue on a separate tooltip line', async () => {
   renderApp(
     <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
     { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
@@ -148,8 +151,35 @@ it('renders key entries with validity status and issue details', async () => {
   expect(screen.getByText('cert1')).toBeInTheDocument();
   expect(screen.getByText('kp1')).toBeInTheDocument();
 
-  await userEvent.hover(screen.getAllByText('No')[0]);
-  expect(await screen.findByText('HIGH: expired certificate')).toBeInTheDocument();
+  expect(screen.getByText('HIGH').closest('[data-severity]')).toHaveAttribute('data-severity', 'HIGH');
+  expect(screen.getByText('MEDIUM').closest('[data-severity]')).toHaveAttribute('data-severity', 'MEDIUM');
+  await userEvent.hover(screen.getByText('HIGH'));
+  expect(await screen.findByText('MEDIUM: ExpiringCertificate')).toBeInTheDocument();
+  expect(await screen.findByText('HIGH: ExpiredCertificate')).toBeInTheDocument();
+});
+
+it('searches key entries by certificate name, serial number, and subject', async () => {
+  renderApp(
+    <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
+    { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
+  );
+
+  const search = screen.getByRole('textbox', { name: 'Search key entries' });
+
+  await userEvent.type(search, 'Leaf');
+  expect(screen.getByText('kp1')).toBeInTheDocument();
+  expect(screen.queryByText('cert1')).not.toBeInTheDocument();
+
+  await userEvent.clear(search);
+  await userEvent.type(search, '0x01');
+  expect(screen.getByText('cert1')).toBeInTheDocument();
+  expect(screen.queryByText('kp1')).not.toBeInTheDocument();
+
+  await userEvent.clear(search);
+  await userEvent.type(search, 'CN=ROOT');
+  expect(screen.getByText('kp1')).toBeInTheDocument();
+  expect(screen.queryByText('cert1')).not.toBeInTheDocument();
+  expect(screen.getByText('1 of 3 entries')).toBeInTheDocument();
 });
 
 it('filters key entries by issue presence and high severity', async () => {
