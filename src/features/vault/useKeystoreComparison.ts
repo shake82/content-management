@@ -1,14 +1,15 @@
 import { getKeystoreComparison } from '../../api/vaultApi';
 import { useApi } from '../../hooks/useApi';
 import type { KeystoreComparison } from './detailTypes';
+import type { KeystoreLocation } from './keystoreLocation';
 
 export function useKeystoreComparison(
-  catalogId: number | undefined,
+  location: Partial<KeystoreLocation>,
   currentVersion: number,
   selectedVersion: number,
 ) {
   return useApi<KeystoreComparison>(
-    () => getKeystoreComparison(catalogId, currentVersion, selectedVersion),
-    [catalogId, currentVersion, selectedVersion],
+    () => getKeystoreComparison(location, currentVersion, selectedVersion),
+    [location.secretEngine, location.path, location.prop, currentVersion, selectedVersion],
   );
 }

@@ -9,7 +9,7 @@ import {
   Title,
 } from '@mantine/core';
 import { useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useSearchParams } from 'react-router-dom';
 import { routes, vaultPathRoute } from '../../app/routes';
 import { StatusView } from '../../components/StatusView';
 import { CertificateDetailsModal } from './CertificateDetailsModal';
@@ -18,26 +18,28 @@ import { KeystoreEntriesTable } from './KeystoreEntriesTable';
 import { KeystoreComparisonTable } from './KeystoreComparisonTable';
 import { formatKeystoreDate } from './keystoreDisplay';
 import { useKeystoreDetails } from './useKeystoreDetails';
-import { useVaultCatalog } from './useVaultCatalog';
 
 export function KeystoreDetailsPage() {
-  const { catalogId } = useParams();
-  const parsedCatalogId = catalogId ? Number(catalogId) : undefined;
-  const catalog = useVaultCatalog();
-  const details = useKeystoreDetails(parsedCatalogId);
+  const [searchParams] = useSearchParams();
+  const location = {
+    secretEngine: searchParams.get('secretEngine') ?? undefined,
+    path: searchParams.get('path') ?? undefined,
+    prop: searchParams.get('prop') ?? undefined,
+  };
+  const details = useKeystoreDetails(location);
   const [selectedVersion, setSelectedVersion] = useState<number | null>(null);
   const [selectedCertificate, setSelectedCertificate] = useState<KeystoreCertificate | null>(null);
-  const item = catalog.data?.find((entry) => entry.catalogId === parsedCatalogId);
 
-  if (catalog.status === 'idle' || catalog.status === 'loading' || details.status === 'idle' || details.status === 'loading') {
+  if (details.status === 'idle' || details.status === 'loading') {
     return <StatusView kind="loading" message="Loading keystore..." />;
   }
-  if (catalog.status === 'error') return <StatusView kind="error" message={catalog.error?.message} onRetry={catalog.refetch} />;
   if (details.status === 'error') return <StatusView kind="error" message={details.error?.message} onRetry={details.refetch} />;
   if (!details.data) return <StatusView kind="empty" message="No keystore details found." />;
 
   const currentVersion = details.data.version;
-  const pathSegments = item ? [item.secretEngine, ...item.path.split('/').filter(Boolean)] : [];
+  const pathSegments = location.secretEngine && location.path
+    ? [location.secretEngine, ...location.path.split('/').filter(Boolean)]
+    : [];
   const activeVersion = selectedVersion ?? currentVersion;
   const versionOptions = [...details.data.versions]
     .sort((left, right) => right.version - left.version)
@@ -62,7 +64,7 @@ export function KeystoreDetailsPage() {
             );
           })}
           <Text size="sm" fw={600} c="var(--mantine-color-text)" aria-current="page">
-            {item?.property ?? 'Keystore not found'}
+            {location.prop ?? 'Keystore not found'}
           </Text>
         </Breadcrumbs>
         <Group justify="space-between" align="flex-end" className="page-heading">
@@ -88,7 +90,7 @@ export function KeystoreDetailsPage() {
           />
         ) : (
           <KeystoreComparisonTable
-            catalogId={parsedCatalogId}
+            location={location}
             currentVersion={currentVersion}
             selectedVersion={activeVersion}
             onSelectCertificate={setSelectedCertificate}

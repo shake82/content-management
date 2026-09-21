@@ -25,7 +25,7 @@ function AppRoutes() {
     <Routes>
       <Route element={<AppLayout />}>
         <Route index element={<Navigate to={routes.vault} replace />} />
-        <Route path={routes.vaultKeystorePattern} element={routePage(<KeystoreDetailsPage />)} />
+        <Route path={routes.vaultKeystore} element={routePage(<KeystoreDetailsPage />)} />
         <Route path={`${routes.vault}/*`} element={routePage(<VaultViewPage />)} />
         <Route path={routes.certificates} element={routePage(<CertificateViewPage />)} />
         <Route path={routes.reports} element={routePage(protectedPage(permissions.viewReports, <DummyPage title="Reports" description="Certificate inventory reporting will appear here." />))} />

@@ -1,6 +1,11 @@
 import { beforeEach, expect, it, vi } from 'vitest';
 import { getJson } from './apiClient';
-import { getKeystoreComparison, VAULT_COMPARE_ENDPOINT } from './vaultApi';
+import {
+  getKeystoreComparison,
+  getKeystoreDetails,
+  VAULT_COMPARE_ENDPOINT,
+  VAULT_DETAIL_ENDPOINT,
+} from './vaultApi';
 
 vi.mock('./apiClient', () => ({
   getJson: vi.fn().mockResolvedValue({ keyEntries: [] }),
@@ -11,13 +16,29 @@ beforeEach(() => {
 });
 
 it('requests a comparison between the current and selected versions', async () => {
-  await getKeystoreComparison(42, 17, 16);
+  await getKeystoreComparison(
+    { secretEngine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
+    17,
+    16,
+  );
 
   expect(getJson).toHaveBeenCalledWith(`${VAULT_COMPARE_ENDPOINT}.json`, {
     params: {
-      catalogId: 42,
+      secretEngine: 'engine-a',
+      path: 'apps/prod/payments',
+      prop: 'store',
       sourceVersion: 17,
       targetVersion: 16,
     },
+  });
+});
+
+it('requests keystore details using its secret location', async () => {
+  const location = { secretEngine: 'engine-a', path: 'apps/prod/payments', prop: 'store' };
+
+  await getKeystoreDetails(location);
+
+  expect(getJson).toHaveBeenCalledWith(`${VAULT_DETAIL_ENDPOINT}.json`, {
+    params: location,
   });
 });

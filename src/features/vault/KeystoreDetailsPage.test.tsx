@@ -2,15 +2,12 @@ import { screen, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router-dom';
 import { vi } from 'vitest';
-import { catalogFixture } from '../../test/fixtures';
 import { renderApp } from '../../test/render';
 import type { KeystoreComparison, KeystoreDetails } from './detailTypes';
 import { KeystoreDetailsPage } from './KeystoreDetailsPage';
 import { useKeystoreComparison } from './useKeystoreComparison';
 import { useKeystoreDetails } from './useKeystoreDetails';
-import { useVaultCatalog } from './useVaultCatalog';
 
-vi.mock('./useVaultCatalog', () => ({ useVaultCatalog: vi.fn() }));
 vi.mock('./useKeystoreDetails', () => ({ useKeystoreDetails: vi.fn() }));
 vi.mock('./useKeystoreComparison', () => ({ useKeystoreComparison: vi.fn() }));
 
@@ -104,9 +101,6 @@ const comparisonFixture: KeystoreComparison = {
 };
 
 beforeEach(() => {
-  vi.mocked(useVaultCatalog).mockReturnValue({
-    status: 'success', data: catalogFixture, refetch: vi.fn(),
-  });
   vi.mocked(useKeystoreDetails).mockReturnValue({
     status: 'success', data: detailsFixture, refetch: vi.fn(),
   });
@@ -117,11 +111,16 @@ beforeEach(() => {
 
 it('renders the detail title and effective-path breadcrumbs', () => {
   renderApp(
-    <Routes><Route path="/vault/keystore/:catalogId" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore/1' },
+    <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
+    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   expect(screen.getByRole('heading', { name: 'Keystore Details' })).toBeInTheDocument();
+  expect(useKeystoreDetails).toHaveBeenCalledWith({
+    secretEngine: 'engine-a',
+    path: 'apps/prod/payments',
+    prop: 'store',
+  });
   expect(screen.getByRole('navigation', { name: 'Keystore path' })).toHaveTextContent('Vault View/engine-a/apps/prod/payments/store');
   expect(screen.getByRole('link', { name: 'Vault View' })).toHaveAttribute('href', '/vault');
   expect(screen.getByRole('link', { name: 'engine-a' })).toHaveAttribute('href', '/vault/engine-a');
@@ -132,8 +131,8 @@ it('renders the detail title and effective-path breadcrumbs', () => {
 
 it('renders key entries with validity status and issue details', async () => {
   renderApp(
-    <Routes><Route path="/vault/keystore/:catalogId" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore/1' },
+    <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
+    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
@@ -152,8 +151,8 @@ it('renders key entries with validity status and issue details', async () => {
 
 it('filters key entries by issue presence and high severity', async () => {
   renderApp(
-    <Routes><Route path="/vault/keystore/:catalogId" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore/1' },
+    <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
+    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   await userEvent.click(screen.getByText('With issues'));
@@ -174,8 +173,8 @@ it('filters key entries by issue presence and high severity', async () => {
 
 it('keeps multiple entries expanded and opens certificate details', async () => {
   renderApp(
-    <Routes><Route path="/vault/keystore/:catalogId" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore/1' },
+    <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
+    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   await userEvent.click(screen.getByRole('button', { name: 'Expand cert1' }));
@@ -198,8 +197,8 @@ it('keeps multiple entries expanded and opens certificate details', async () => 
 
 it('selects a historical version and renders side-by-side comparison trees', async () => {
   renderApp(
-    <Routes><Route path="/vault/keystore/:catalogId" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore/1' },
+    <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
+    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   const versionSelect = screen.getByRole('combobox', { name: 'Compare version' });
@@ -208,7 +207,11 @@ it('selects a historical version and renders side-by-side comparison trees', asy
   await userEvent.click(versionSelect);
   await userEvent.keyboard('{ArrowDown}{Enter}');
 
-  expect(useKeystoreComparison).toHaveBeenCalledWith(1, 17, 16);
+  expect(useKeystoreComparison).toHaveBeenCalledWith(
+    { secretEngine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
+    17,
+    16,
+  );
   expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
   expect(screen.getByRole('columnheader', { name: 'Name' })).toBeInTheDocument();
   expect(screen.getByRole('columnheader', { name: 'Comparison Result' })).toBeInTheDocument();

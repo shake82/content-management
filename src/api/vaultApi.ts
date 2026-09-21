@@ -1,5 +1,6 @@
 import type { VaultCatalogItem } from '../features/vault/catalogTypes';
 import type { KeystoreComparison, KeystoreDetails } from '../features/vault/detailTypes';
+import { isCompleteKeystoreLocation, type KeystoreLocation } from '../features/vault/keystoreLocation';
 import { getJson } from './apiClient';
 
 export const VAULT_CATALOG_ENDPOINT = '/secret/vaultcatalog';
@@ -11,27 +12,31 @@ export function getVaultCatalog(): Promise<VaultCatalogItem[]> {
 }
 
 export function getKeystoreComparison(
-  catalogId: number | undefined,
+  location: Partial<KeystoreLocation>,
   currentVersion: number,
   selectedVersion: number,
 ): Promise<KeystoreComparison> {
-  if (catalogId === undefined || Number.isNaN(catalogId)) {
-    return Promise.reject(new Error('A catalog ID is required.'));
+  if (!isCompleteKeystoreLocation(location)) {
+    return Promise.reject(new Error('A secret engine, path, and property are required.'));
   }
 
   return getJson<KeystoreComparison>(`${VAULT_COMPARE_ENDPOINT}.json`, {
     params: {
-      catalogId,
+      secretEngine: location.secretEngine,
+      path: location.path,
+      prop: location.prop,
       sourceVersion: currentVersion,
       targetVersion: selectedVersion,
     },
   });
 }
 
-export function getKeystoreDetails(catalogId: number | undefined): Promise<KeystoreDetails> {
-  if (catalogId === undefined || Number.isNaN(catalogId)) {
-    return Promise.reject(new Error('A catalog ID is required.'));
+export function getKeystoreDetails(location: Partial<KeystoreLocation>): Promise<KeystoreDetails> {
+  if (!isCompleteKeystoreLocation(location)) {
+    return Promise.reject(new Error('A secret engine, path, and property are required.'));
   }
 
-  return getJson<KeystoreDetails>(`${VAULT_DETAIL_ENDPOINT}/${catalogId}.json`);
+  return getJson<KeystoreDetails>(`${VAULT_DETAIL_ENDPOINT}.json`, {
+    params: location,
+  });
 }

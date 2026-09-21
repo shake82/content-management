@@ -1,6 +1,8 @@
+import type { KeystoreLocation } from '../features/vault/keystoreLocation';
+
 export const routes = {
   vault: '/vault',
-  vaultKeystorePattern: '/vault/keystore/:catalogId',
+  vaultKeystore: '/vault/keystore',
   certificates: '/certificates',
   reports: '/reports',
   toolsImport: '/tools/import',
@@ -9,8 +11,9 @@ export const routes = {
   settings: '/settings',
 } as const;
 
-export function keystoreDetailsRoute(catalogId: number) {
-  return `/vault/keystore/${catalogId}`;
+export function keystoreDetailsRoute({ secretEngine, path, prop }: KeystoreLocation) {
+  const query = new URLSearchParams({ secretEngine, path, prop });
+  return `${routes.vaultKeystore}?${query}`;
 }
 
 export function vaultPathRoute(path: string) {

@@ -56,7 +56,11 @@ export function VaultItemsTable({ items }: VaultItemsTableProps) {
                 <Tooltip label={`View keystore #${item.catalogId}`}>
                   <ActionIcon
                     component={Link}
-                    to={keystoreDetailsRoute(item.catalogId)}
+                    to={keystoreDetailsRoute({
+                      secretEngine: item.secretEngine,
+                      path: item.path,
+                      prop: item.property,
+                    })}
                     variant="subtle"
                     color="blue"
                     aria-label={`View keystore #${item.catalogId}`}

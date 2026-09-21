@@ -6,6 +6,7 @@ import { CertificateTree } from './CertificateTree';
 import type { KeystoreCertificate, KeystoreKeyEntry } from './detailTypes';
 import { EntryValidity } from './EntryValidity';
 import { useKeystoreComparison } from './useKeystoreComparison';
+import type { KeystoreLocation } from './keystoreLocation';
 
 function displayComparisonResult(value: string) {
   return value
@@ -34,17 +35,17 @@ function ComparisonTree({
 }
 
 export function KeystoreComparisonTable({
-  catalogId,
+  location,
   currentVersion,
   selectedVersion,
   onSelectCertificate,
 }: {
-  catalogId: number | undefined;
+  location: Partial<KeystoreLocation>;
   currentVersion: number;
   selectedVersion: number;
   onSelectCertificate: (certificate: KeystoreCertificate) => void;
 }) {
-  const comparison = useKeystoreComparison(catalogId, currentVersion, selectedVersion);
+  const comparison = useKeystoreComparison(location, currentVersion, selectedVersion);
   const [expandedAliases, setExpandedAliases] = useState<Set<string>>(() => new Set());
 
   const toggleExpanded = (alias: string) => {
