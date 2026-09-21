@@ -49,9 +49,10 @@ function CertificateNode({ node, onSelect }: { node: CertificateChainNode; onSel
 }
 
 export function CertificateTree({ entry, onSelect }: { entry: KeystoreKeyEntry; onSelect?: (certificate: KeystoreCertificate) => void }) {
-  const roots = useMemo(() => buildCertificateChain(entry.certificates), [entry.certificates]);
+  const certificates = entry.certificates ?? [];
+  const roots = useMemo(() => buildCertificateChain(certificates), [certificates]);
 
-  if (entry.certificates.length === 0) {
+  if (certificates.length === 0) {
     return <StatusView kind="empty" message="No certificates are attached to this entry." />;
   }
 

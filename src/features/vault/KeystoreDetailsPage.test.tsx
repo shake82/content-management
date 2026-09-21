@@ -73,7 +73,7 @@ const detailsFixture: KeystoreDetails = {
       {
       alias: 'cert-warning',
       entryType: 'TRUST_CERT',
-      certificates: [],
+      certificates: null,
       expirationDate: '2027-01-28T00:00:000Z',
       issues: [{ type: 'EXPIRING_CERTIFICATE', severity: 'MEDIUM' }],
       lastModifiedDate: '2025-05-28T00:00:000Z',
@@ -96,7 +96,7 @@ const comparisonFixture: KeystoreComparison = {
       targetKeyEntry: {
         ...detailsFixture.secretMetadata.keyEntries[0]!,
         certificates: [{
-          ...detailsFixture.secretMetadata.keyEntries[0]!.certificates[0]!,
+          ...detailsFixture.secretMetadata.keyEntries[0]!.certificates![0]!,
           shortName: 'Historical Cert1',
           fingerpring: 'historical-fingerprint',
         }],

@@ -16,3 +16,18 @@ it('filters entries, expands certificate chains, and opens certificate details',
   await userEvent.click(screen.getByText('With issues'));
   expect(screen.getByText('No key entries match this filter.')).toBeInTheDocument();
 });
+
+it('supports entries with a null certificate list', async () => {
+  const entry = {
+    ...parsedSecretFixture.keyEntries[0]!,
+    alias: 'certificate-free-entry',
+    certificates: null,
+  };
+  renderApp(<KeystoreEntriesTable entries={[entry]} />);
+
+  await userEvent.type(screen.getByRole('textbox', { name: 'Search key entries' }), 'certificate-free');
+  expect(screen.getByText('certificate-free-entry')).toBeInTheDocument();
+
+  await userEvent.click(screen.getByRole('button', { name: 'Expand certificate-free-entry' }));
+  expect(screen.getByText('No certificates are attached to this entry.')).toBeInTheDocument();
+});

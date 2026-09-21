@@ -47,7 +47,7 @@ export function KeystoreEntriesTable({
     const query = search.trim().toLocaleLowerCase();
     const searchableValues = [
       entry.alias,
-      ...entry.certificates.flatMap((certificate) => [
+      ...(entry.certificates ?? []).flatMap((certificate) => [
         certificate.shortName,
         certificate.shortname,
         certificate.hexSerialNumber,

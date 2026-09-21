@@ -20,7 +20,7 @@ export interface KeystoreCertificate {
 export interface KeystoreKeyEntry {
   alias: string;
   entryType: string;
-  certificates: KeystoreCertificate[];
+  certificates: KeystoreCertificate[] | null;
   expirationDate: string | null;
   issues: KeystoreIssue[];
   lastModifiedDate: string | null;
