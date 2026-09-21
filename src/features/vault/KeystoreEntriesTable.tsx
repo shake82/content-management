@@ -13,7 +13,7 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core';
-import { IconChevronDown, IconChevronRight, IconSearch } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronRight, IconSearch, IconX } from '@tabler/icons-react';
 import { Fragment, useState } from 'react';
 import { CertificateDetailsModal } from './CertificateDetailsModal';
 import { CertificateTree } from './CertificateTree';
@@ -70,6 +70,13 @@ export function KeystoreEntriesTable({
               aria-label="Search key entries"
               placeholder="Search name, serial, or subject"
               leftSection={<IconSearch size={17} />}
+              rightSection={search ? (
+                <Tooltip label="Clear search">
+                  <ActionIcon variant="subtle" color="gray" aria-label="Clear search" onClick={() => setSearch('')}>
+                    <IconX size={16} />
+                  </ActionIcon>
+                </Tooltip>
+              ) : undefined}
               value={search}
               onChange={(event) => setSearch(event.currentTarget.value)}
               className="keystore-entry-search"

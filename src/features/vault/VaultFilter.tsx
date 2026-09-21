@@ -1,5 +1,5 @@
-import { TextInput } from '@mantine/core';
-import { IconSearch } from '@tabler/icons-react';
+import { ActionIcon, TextInput, Tooltip } from '@mantine/core';
+import { IconSearch, IconX } from '@tabler/icons-react';
 
 interface VaultFilterProps {
   value: string;
@@ -12,6 +12,13 @@ export function VaultFilter({ value, onChange }: VaultFilterProps) {
       aria-label="Filter folders and records"
       placeholder="Filter this level"
       leftSection={<IconSearch size={17} />}
+      rightSection={value ? (
+        <Tooltip label="Clear filter">
+          <ActionIcon variant="subtle" color="gray" aria-label="Clear filter" onClick={() => onChange('')}>
+            <IconX size={16} />
+          </ActionIcon>
+        </Tooltip>
+      ) : undefined}
       value={value}
       onChange={(event) => onChange(event.currentTarget.value)}
       className="vault-filter"

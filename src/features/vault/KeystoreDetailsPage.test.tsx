@@ -194,7 +194,9 @@ it('searches key entries by certificate name, serial number, and subject', async
   expect(screen.getByText('kp1')).toBeInTheDocument();
   expect(screen.queryByText('cert1')).not.toBeInTheDocument();
 
-  await userEvent.clear(search);
+  await userEvent.click(screen.getByRole('button', { name: 'Clear search' }));
+  expect(search).toHaveValue('');
+  expect(screen.getByText('3 of 3 entries')).toBeInTheDocument();
   await userEvent.type(search, '0x01');
   expect(screen.getByText('cert1')).toBeInTheDocument();
   expect(screen.queryByText('kp1')).not.toBeInTheDocument();
@@ -305,7 +307,9 @@ it('searches and filters comparisons and returns to keystore details', async () 
   expect(screen.queryByText('cert1')).not.toBeInTheDocument();
   expect(screen.getByText('1 of 2 entries')).toBeInTheDocument();
 
-  await userEvent.clear(search);
+  await userEvent.click(screen.getByRole('button', { name: 'Clear search' }));
+  expect(search).toHaveValue('');
+  expect(screen.getByText('2 of 2 entries')).toBeInTheDocument();
   await userEvent.click(screen.getByText('Mismatches'));
   expect(screen.getByText('cert1')).toBeInTheDocument();
   expect(screen.queryByText('unchanged-entry')).not.toBeInTheDocument();

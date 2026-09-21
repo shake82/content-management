@@ -14,4 +14,8 @@ it('reports and displays the current filter value', async () => {
   const input = screen.getByRole('textbox', { name: 'Filter folders and records' });
   await userEvent.type(input, 'platform');
   expect(input).toHaveValue('platform');
+
+  await userEvent.click(screen.getByRole('button', { name: 'Clear filter' }));
+  expect(input).toHaveValue('');
+  expect(screen.queryByRole('button', { name: 'Clear filter' })).not.toBeInTheDocument();
 });

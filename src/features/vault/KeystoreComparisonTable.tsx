@@ -14,7 +14,7 @@ import {
   Title,
   Tooltip,
 } from '@mantine/core';
-import { IconArrowLeft, IconChevronDown, IconChevronRight, IconSearch } from '@tabler/icons-react';
+import { IconArrowLeft, IconChevronDown, IconChevronRight, IconSearch, IconX } from '@tabler/icons-react';
 import { Fragment, useState } from 'react';
 import { StatusView } from '../../components/StatusView';
 import { CertificateTree } from './CertificateTree';
@@ -110,6 +110,13 @@ export function KeystoreComparisonTable({
             aria-label="Search key entries"
             placeholder="Search name, serial, or subject"
             leftSection={<IconSearch size={17} />}
+            rightSection={search ? (
+              <Tooltip label="Clear search">
+                <ActionIcon variant="subtle" color="gray" aria-label="Clear search" onClick={() => setSearch('')}>
+                  <IconX size={16} />
+                </ActionIcon>
+              </Tooltip>
+            ) : undefined}
             value={search}
             onChange={(event) => setSearch(event.currentTarget.value)}
             className="keystore-entry-search"
