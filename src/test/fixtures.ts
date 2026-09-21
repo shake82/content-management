@@ -10,7 +10,7 @@ export const catalogFixture: VaultCatalogItem[] = [
     type: 'JKS',
     secretSummary: {
       type: 'JKS',
-      keyCountByType: { KEY_PAIR: 1 },
+      keyCountsByType: { KEY_PAIR: 1 },
       issueSummaryBySeverity: {
         HIGH: { count: 1, issueCountsByType: { EXPIRED_CERTIFICATE: 1 } },
       },
@@ -25,7 +25,7 @@ export const catalogFixture: VaultCatalogItem[] = [
     type: 'PKCS12',
     secretSummary: {
       type: 'PKCS12',
-      keyCountByType: { TRUSTED_CERTIFICATE: 2 },
+      keyCountsByType: { TRUSTED_CERTIFICATE: 2 },
       issueSummaryBySeverity: {
         LOW: { count: 2, issueCountsByType: { EXPIRING_SOON: 2 } },
       },
@@ -40,7 +40,7 @@ export const catalogFixture: VaultCatalogItem[] = [
     type: 'PEM_BUNDLE',
     secretSummary: {
       type: 'PEM_BUNDLE',
-      keyCountByType: { CERTIFICATE: 3 },
+      keyCountsByType: { CERTIFICATE: 3 },
       issueSummaryBySeverity: {},
     },
   },

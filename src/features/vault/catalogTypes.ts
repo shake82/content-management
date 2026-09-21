@@ -12,7 +12,7 @@ export interface VaultCatalogItem {
   type: string;
   secretSummary: {
     type: string;
-    keyCountByType: Record<string, number>;
+    keyCountsByType: Record<string, number>;
     issueSummaryBySeverity: Record<string, IssueSeveritySummary>;
   };
 }

@@ -34,7 +34,7 @@ function addIssueSummary(
 
 function addItemToAggregate(aggregate: VaultAggregateSummary, item: VaultCatalogItem) {
   aggregate.itemCount += 1;
-  Object.entries(item.secretSummary.keyCountByType).forEach(([type, count]) => {
+  Object.entries(item.secretSummary.keyCountsByType).forEach(([type, count]) => {
     aggregate.keyCountByType[type] = (aggregate.keyCountByType[type] ?? 0) + count;
   });
   addIssueSummary(aggregate.issueSummaryBySeverity, item.secretSummary.issueSummaryBySeverity);

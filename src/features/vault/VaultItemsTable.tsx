@@ -33,7 +33,7 @@ export function VaultItemsTable({ items }: VaultItemsTableProps) {
               <Table.Td><Text size="sm">v{item.secretVersion}</Text></Table.Td>
               <Table.Td>
                 <Group gap={5}>
-                  {Object.entries(item.secretSummary.keyCountByType).map(([type, count]) => (
+                  {Object.entries(item.secretSummary.keyCountsByType).map(([type, count]) => (
                     <Badge key={type} variant="light" color="blue">{count} {type.replaceAll('_', ' ').toLocaleLowerCase()}</Badge>
                   ))}
                 </Group>
