@@ -1,6 +1,5 @@
-import { getCurrentUser } from '../../api/userApi';
-import { useApi } from '../../hooks/useApi';
+import { useCurrentUserContext } from './CurrentUserContext';
 
 export function useCurrentUser() {
-  return useApi(getCurrentUser);
+  return useCurrentUserContext();
 }

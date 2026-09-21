@@ -8,7 +8,10 @@ vi.mock('../features/user/CurrentUser', () => ({ CurrentUser: () => <span>Curren
 
 it('renders product identity, navigation, user area, and mobile toggle', async () => {
   const toggle = vi.fn();
-  renderApp(<AppHeader mobileOpened={false} onMobileToggle={toggle} />, { route: '/vault' });
+  renderApp(<AppHeader mobileOpened={false} onMobileToggle={toggle} />, {
+    route: '/vault',
+    currentUser: { name: 'Maya Chen', email: 'maya@example.com', permissions: { 'vault.view': true } },
+  });
 
   expect(screen.getByText('PHO')).toBeInTheDocument();
   expect(screen.getByRole('img', { name: 'ELIS vault' })).toHaveAttribute('src', '/elis-vault-icon-readable.svg');

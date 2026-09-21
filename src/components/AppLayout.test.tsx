@@ -9,7 +9,10 @@ vi.mock('./AppHeader', () => ({ AppHeader: () => <header>Application header</hea
 it('renders the application shell and nested route content', () => {
   renderApp(
     <Routes><Route element={<AppLayout />}><Route path="/vault" element={<main>Vault content</main>} /></Route></Routes>,
-    { route: '/vault' },
+    {
+      route: '/vault',
+      currentUser: { name: 'Maya Chen', email: 'maya@example.com', permissions: { 'vault.view': true } },
+    },
   );
 
   expect(screen.getByText('Application header')).toBeInTheDocument();

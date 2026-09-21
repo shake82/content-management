@@ -1,6 +1,7 @@
 {
-  "id": "usr-1042",
-  "displayName": "Maya Chen",
+  "name": "Maya Chen",
   "email": "maya.chen@example.com",
-  "roles": ["Vault Auditor", "Platform Engineering"]
+  "permissions": {
+    "reports.view": true
+  }
 }

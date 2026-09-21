@@ -14,7 +14,7 @@ vi.mock('../api/certificateApi', () => ({ getCertificateCatalog: vi.fn() }));
 
 it('redirects to the default Vault View and renders the application header', async () => {
   vi.mocked(getCurrentUser).mockResolvedValue({
-    id: 'u1', displayName: 'Maya Chen', email: 'maya@example.com', roles: ['Auditor'],
+    name: 'Maya Chen', email: 'maya@example.com', permissions: {},
   });
   vi.mocked(getVaultCatalog).mockResolvedValue(catalogFixture);
   renderApp(<App />);
@@ -28,7 +28,7 @@ it('redirects to the default Vault View and renders the application header', asy
 
 it('renders Certificate View at its header navigation route', async () => {
   vi.mocked(getCurrentUser).mockResolvedValue({
-    id: 'u1', displayName: 'Maya Chen', email: 'maya@example.com', roles: ['Auditor'],
+    name: 'Maya Chen', email: 'maya@example.com', permissions: {},
   });
   vi.mocked(getCertificateCatalog).mockResolvedValue(certificateCatalogFixture);
   renderApp(<App />, { route: '/certificates' });
@@ -40,11 +40,23 @@ it('renders Certificate View at its header navigation route', async () => {
 
 it('renders Local Cert Viewer at its tools route', async () => {
   vi.mocked(getCurrentUser).mockResolvedValue({
-    id: 'u1', displayName: 'Maya Chen', email: 'maya@example.com', roles: ['Auditor'],
+    name: 'Maya Chen', email: 'maya@example.com', permissions: {},
   });
   renderApp(<App />, { route: '/tools/local-cert-viewer' });
 
   expect(await screen.findByRole('heading', { name: 'Local Cert Viewer' })).toBeInTheDocument();
   expect(screen.getByRole('tab', { name: 'Upload file' })).toBeInTheDocument();
   expect(screen.getAllByRole('button', { name: /Tools/ })[0]).toHaveAttribute('data-variant', 'light');
+});
+
+it('redirects Reports when the current user lacks its permission', async () => {
+  vi.mocked(getCurrentUser).mockResolvedValue({
+    name: 'Maya Chen', email: 'maya@example.com', permissions: {},
+  });
+  vi.mocked(getVaultCatalog).mockResolvedValue(catalogFixture);
+
+  renderApp(<App />, { route: '/reports' });
+
+  expect(await screen.findByRole('heading', { name: 'Vault View' })).toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Reports' })).not.toBeInTheDocument();
 });
