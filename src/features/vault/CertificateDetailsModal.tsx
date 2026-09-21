@@ -1,5 +1,5 @@
 import { Code, Modal, Table } from '@mantine/core';
-import { getCertificateTitle } from './certificateChain';
+import { parseKeystoreDate } from './certificateStatus';
 import type { KeystoreCertificate } from './detailTypes';
 import { formatKeystoreDate } from './keystoreDisplay';
 
@@ -8,14 +8,22 @@ interface CertificateDetailsModalProps {
   onClose: () => void;
 }
 
+const expiredDateStyle = { color: 'var(--mantine-color-red-6)' };
+
+function isExpiredDate(value: string | null) {
+  const date = parseKeystoreDate(value);
+
+  return Boolean(date && date.getTime() < Date.now());
+}
+
 export function CertificateDetailsModal({ certificate, onClose }: CertificateDetailsModalProps) {
-  const fingerprint = certificate?.fingerprint ?? certificate?.fingerpring ?? 'None';
+  const showRevocationDate = Boolean(certificate?.revocationDate?.trim());
 
   return (
     <Modal
       opened={Boolean(certificate)}
       onClose={onClose}
-      title={certificate ? getCertificateTitle(certificate) : 'Certificate details'}
+      title="Certificate Detail"
       size="lg"
       closeButtonProps={{ 'aria-label': 'Close certificate details' }}
     >
@@ -24,12 +32,22 @@ export function CertificateDetailsModal({ certificate, onClose }: CertificateDet
           <Table.Tbody>
             <Table.Tr><Table.Th>Subject</Table.Th><Table.Td>{certificate.subject}</Table.Td></Table.Tr>
             <Table.Tr><Table.Th>Issuer</Table.Th><Table.Td>{certificate.issuer}</Table.Td></Table.Tr>
-            <Table.Tr><Table.Th>Version</Table.Th><Table.Td>{certificate.version}</Table.Td></Table.Tr>
-            <Table.Tr><Table.Th>Serial number</Table.Th><Table.Td><Code>{certificate.hexSerialNumber}</Code></Table.Td></Table.Tr>
-            <Table.Tr><Table.Th>Start date</Table.Th><Table.Td>{formatKeystoreDate(certificate.startDate)}</Table.Td></Table.Tr>
-            <Table.Tr><Table.Th>End date</Table.Th><Table.Td>{formatKeystoreDate(certificate.endDate)}</Table.Td></Table.Tr>
-            <Table.Tr><Table.Th>Revocation date</Table.Th><Table.Td>{formatKeystoreDate(certificate.revocationDate)}</Table.Td></Table.Tr>
-            <Table.Tr><Table.Th>Fingerprint</Table.Th><Table.Td><Code>{fingerprint}</Code></Table.Td></Table.Tr>
+            <Table.Tr><Table.Th>Serial Number</Table.Th><Table.Td><Code>{certificate.hexSerialNumber}</Code></Table.Td></Table.Tr>
+            <Table.Tr><Table.Th>Start Date</Table.Th><Table.Td>{formatKeystoreDate(certificate.startDate)}</Table.Td></Table.Tr>
+            <Table.Tr>
+              <Table.Th>End Date</Table.Th>
+              <Table.Td style={isExpiredDate(certificate.endDate) ? expiredDateStyle : undefined}>
+                {formatKeystoreDate(certificate.endDate)}
+              </Table.Td>
+            </Table.Tr>
+            {showRevocationDate && (
+              <Table.Tr>
+                <Table.Th>Revocation Date</Table.Th>
+                <Table.Td style={isExpiredDate(certificate.revocationDate) ? expiredDateStyle : undefined}>
+                  {formatKeystoreDate(certificate.revocationDate)}
+                </Table.Td>
+              </Table.Tr>
+            )}
           </Table.Tbody>
         </Table>
       )}
