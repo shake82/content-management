@@ -13,7 +13,7 @@ vi.mock('./useKeystoreComparison', () => ({ useKeystoreComparison: vi.fn() }));
 
 const detailsFixture: KeystoreDetails = {
   version: 17,
-  secretMetaData: {
+  secretMetadata: {
     type: 'JKS',
     keyEntries: [
       {
@@ -89,11 +89,11 @@ const comparisonFixture: KeystoreComparison = {
     {
       alias: 'cert1',
       comparisonResult: 'CERTIFICATE_MISMATCH',
-      sourceKeyEntry: detailsFixture.secretMetaData.keyEntries[0]!,
+      sourceKeyEntry: detailsFixture.secretMetadata.keyEntries[0]!,
       targetKeyEntry: {
-        ...detailsFixture.secretMetaData.keyEntries[0]!,
+        ...detailsFixture.secretMetadata.keyEntries[0]!,
         certificates: [{
-          ...detailsFixture.secretMetaData.keyEntries[0]!.certificates[0]!,
+          ...detailsFixture.secretMetadata.keyEntries[0]!.certificates[0]!,
           shortName: 'Historical Cert1',
           fingerpring: 'historical-fingerprint',
         }],

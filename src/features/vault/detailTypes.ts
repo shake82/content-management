@@ -28,11 +28,11 @@ export interface KeystoreKeyEntry {
 
 export interface KeystoreDetails {
   version: number;
-  secretMetaData: SecretMetaData;
+  secretMetadata: SecretMetadata;
   versions: KeystoreVersion[];
 }
 
-export interface SecretMetaData {
+export interface SecretMetadata {
   type: string;
   keyEntries: KeystoreKeyEntry[];
 }
