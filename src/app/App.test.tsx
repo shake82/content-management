@@ -1,4 +1,5 @@
 import { screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
 import { catalogFixture } from '../test/fixtures';
 import { renderApp } from '../test/render';
@@ -24,6 +25,21 @@ it('redirects to the default Vault View and renders the application header', asy
   expect(screen.getAllByRole('link', { name: 'Vault View' })).toHaveLength(2);
   expect(screen.getAllByRole('link', { name: 'Vault View' })[0]).toHaveAttribute('data-variant', 'light');
   expect(screen.getByText('Maya Chen')).toBeInTheDocument();
+});
+
+it('reuses the loaded vault catalog when navigating between paths', async () => {
+  vi.mocked(getCurrentUser).mockResolvedValue({
+    name: 'Maya Chen', email: 'maya@example.com', permissions: {},
+  });
+  vi.mocked(getVaultCatalog).mockClear();
+  vi.mocked(getVaultCatalog).mockResolvedValue(catalogFixture);
+  renderApp(<App />, { route: '/vault' });
+
+  await screen.findByRole('heading', { name: 'Vault View' });
+  await userEvent.click(screen.getByRole('button', { name: 'Open engine-a' }));
+
+  expect(screen.getByRole('link', { name: 'engine-a' })).toHaveAttribute('aria-current', 'page');
+  expect(getVaultCatalog).toHaveBeenCalledOnce();
 });
 
 it('renders Certificate View at its header navigation route', async () => {

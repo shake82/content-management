@@ -29,7 +29,7 @@ it('loads its folder from the URL and keeps breadcrumb navigation in sync', asyn
   expect(screen.getByRole('heading', { name: 'Key store records' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'View keystore #2' })).toHaveAttribute(
     'href',
-    '/vault/keystore?secretEngine=engine-b&path=apps%2Fdev%2Fsearch&prop=truststore',
+    '/vault/keystore?engine=engine-b&path=apps%2Fdev%2Fsearch&prop=truststore',
   );
   await userEvent.click(screen.getByRole('link', { name: 'dev' }));
   expect(screen.getByLabelText('Current URL')).toHaveTextContent('/vault/engine-b/apps/dev');

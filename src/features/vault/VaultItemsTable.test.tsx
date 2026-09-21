@@ -14,7 +14,7 @@ it('renders key store details, issue tooltip, and detail navigation', async () =
   expect(screen.getByText('1 key pair')).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'View keystore #1' })).toHaveAttribute(
     'href',
-    '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store',
+    '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store',
   );
   await userEvent.hover(screen.getByText('1 high'));
   expect(await screen.findByText('expired certificate: 1')).toBeInTheDocument();

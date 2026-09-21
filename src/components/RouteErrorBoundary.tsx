@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 
 interface BoundaryProps {
   children: ReactNode;
+  resetKey?: string;
 }
 
 interface BoundaryState {
@@ -20,6 +21,12 @@ class RouteErrorBoundaryInner extends Component<BoundaryProps, BoundaryState> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo) {
     console.error('Route rendering failed', error, errorInfo);
+  }
+
+  componentDidUpdate(previousProps: BoundaryProps) {
+    if (this.state.error && previousProps.resetKey !== this.props.resetKey) {
+      this.setState({ error: undefined });
+    }
   }
 
   retry = () => this.setState({ error: undefined });
@@ -41,6 +48,10 @@ class RouteErrorBoundaryInner extends Component<BoundaryProps, BoundaryState> {
 }
 
 export function RouteErrorBoundary({ children }: BoundaryProps) {
-  const { key } = useLocation();
-  return <RouteErrorBoundaryInner key={key}>{children}</RouteErrorBoundaryInner>;
+  const { pathname, search } = useLocation();
+  return (
+    <RouteErrorBoundaryInner resetKey={`${pathname}${search}`}>
+      {children}
+    </RouteErrorBoundaryInner>
+  );
 }

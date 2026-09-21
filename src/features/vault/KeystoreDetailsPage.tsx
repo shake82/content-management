@@ -22,7 +22,7 @@ import { useKeystoreDetails } from './useKeystoreDetails';
 export function KeystoreDetailsPage() {
   const [searchParams] = useSearchParams();
   const location = {
-    secretEngine: searchParams.get('secretEngine') ?? undefined,
+    engine: searchParams.get('engine') ?? undefined,
     path: searchParams.get('path') ?? undefined,
     prop: searchParams.get('prop') ?? undefined,
   };
@@ -37,8 +37,8 @@ export function KeystoreDetailsPage() {
   if (!details.data) return <StatusView kind="empty" message="No keystore details found." />;
 
   const currentVersion = details.data.version;
-  const pathSegments = location.secretEngine && location.path
-    ? [location.secretEngine, ...location.path.split('/').filter(Boolean)]
+  const pathSegments = location.engine && location.path
+    ? [location.engine, ...location.path.split('/').filter(Boolean)]
     : [];
   const activeVersion = selectedVersion ?? currentVersion;
   const versionOptions = [...details.data.versions]

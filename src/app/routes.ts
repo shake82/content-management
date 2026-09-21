@@ -11,8 +11,8 @@ export const routes = {
   settings: '/settings',
 } as const;
 
-export function keystoreDetailsRoute({ secretEngine, path, prop }: KeystoreLocation) {
-  const query = new URLSearchParams({ secretEngine, path, prop });
+export function keystoreDetailsRoute({ engine, path, prop }: KeystoreLocation) {
+  const query = new URLSearchParams({ engine, path, prop });
   return `${routes.vaultKeystore}?${query}`;
 }
 

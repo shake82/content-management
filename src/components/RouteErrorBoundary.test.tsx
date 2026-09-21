@@ -1,6 +1,8 @@
 import { screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { vi } from 'vitest';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { renderApp } from '../test/render';
 import { RouteErrorBoundary } from './RouteErrorBoundary';
 
@@ -30,4 +32,25 @@ it('isolates route rendering errors and allows the page to retry', async () => {
   expect(consoleError).toHaveBeenCalled();
 
   consoleError.mockRestore();
+});
+
+it('keeps healthy route content mounted when the location changes', async () => {
+  const mounted = vi.fn();
+
+  function VaultPage() {
+    useEffect(() => {
+      mounted();
+    }, []);
+    return <Link to="/vault/engine-a/apps">Open path</Link>;
+  }
+
+  renderApp(
+    <RouteErrorBoundary>
+      <VaultPage />
+    </RouteErrorBoundary>,
+    { route: '/vault' },
+  );
+
+  await userEvent.click(screen.getByRole('link', { name: 'Open path' }));
+  expect(mounted).toHaveBeenCalledOnce();
 });

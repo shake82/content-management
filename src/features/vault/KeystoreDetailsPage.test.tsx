@@ -112,12 +112,12 @@ beforeEach(() => {
 it('renders the detail title and effective-path breadcrumbs', () => {
   renderApp(
     <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
+    { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   expect(screen.getByRole('heading', { name: 'Keystore Details' })).toBeInTheDocument();
   expect(useKeystoreDetails).toHaveBeenCalledWith({
-    secretEngine: 'engine-a',
+    engine: 'engine-a',
     path: 'apps/prod/payments',
     prop: 'store',
   });
@@ -132,7 +132,7 @@ it('renders the detail title and effective-path breadcrumbs', () => {
 it('renders key entries with validity status and issue details', async () => {
   renderApp(
     <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
+    { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
@@ -152,7 +152,7 @@ it('renders key entries with validity status and issue details', async () => {
 it('filters key entries by issue presence and high severity', async () => {
   renderApp(
     <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
+    { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   await userEvent.click(screen.getByText('With issues'));
@@ -174,7 +174,7 @@ it('filters key entries by issue presence and high severity', async () => {
 it('keeps multiple entries expanded and opens certificate details', async () => {
   renderApp(
     <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
+    { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   await userEvent.click(screen.getByRole('button', { name: 'Expand cert1' }));
@@ -198,7 +198,7 @@ it('keeps multiple entries expanded and opens certificate details', async () => 
 it('selects a historical version and renders side-by-side comparison trees', async () => {
   renderApp(
     <Routes><Route path="/vault/keystore" element={<KeystoreDetailsPage />} /></Routes>,
-    { route: '/vault/keystore?secretEngine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
+    { route: '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store' },
   );
 
   const versionSelect = screen.getByRole('combobox', { name: 'Compare version' });
@@ -208,7 +208,7 @@ it('selects a historical version and renders side-by-side comparison trees', asy
   await userEvent.keyboard('{ArrowDown}{Enter}');
 
   expect(useKeystoreComparison).toHaveBeenCalledWith(
-    { secretEngine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
+    { engine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
     17,
     16,
   );

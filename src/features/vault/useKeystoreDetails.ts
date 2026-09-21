@@ -6,6 +6,6 @@ import type { KeystoreLocation } from './keystoreLocation';
 export function useKeystoreDetails(location: Partial<KeystoreLocation>) {
   return useApi<KeystoreDetails>(
     () => getKeystoreDetails(location),
-    [location.secretEngine, location.path, location.prop],
+    [location.engine, location.path, location.prop],
   );
 }

@@ -10,7 +10,7 @@ it('renders certificate references with links to keystore details', () => {
   expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'apps/prod/payments' })).toHaveAttribute(
     'href',
-    '/vault/keystore?secretEngine=kubernetes&path=apps%2Fprod%2Fpayments&prop=keystore',
+    '/vault/keystore?engine=kubernetes&path=apps%2Fprod%2Fpayments&prop=keystore',
   );
   expect(screen.getByText('JKS')).toBeInTheDocument();
 });

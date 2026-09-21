@@ -10,6 +10,6 @@ export function useKeystoreComparison(
 ) {
   return useApi<KeystoreComparison>(
     () => getKeystoreComparison(location, currentVersion, selectedVersion),
-    [location.secretEngine, location.path, location.prop, currentVersion, selectedVersion],
+    [location.engine, location.path, location.prop, currentVersion, selectedVersion],
   );
 }

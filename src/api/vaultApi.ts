@@ -4,7 +4,7 @@ import { isCompleteKeystoreLocation, type KeystoreLocation } from '../features/v
 import { getJson } from './apiClient';
 
 export const VAULT_CATALOG_ENDPOINT = '/secret/vaultcatalog';
-export const VAULT_DETAIL_ENDPOINT = '/secret/vaultcatalog';
+export const VAULT_DETAIL_ENDPOINT = '/secret/vault';
 export const VAULT_COMPARE_ENDPOINT = '/secret/vault-compare';
 
 export function getVaultCatalog(): Promise<VaultCatalogItem[]> {
@@ -22,7 +22,7 @@ export function getKeystoreComparison(
 
   return getJson<KeystoreComparison>(`${VAULT_COMPARE_ENDPOINT}.json`, {
     params: {
-      secretEngine: location.secretEngine,
+      engine: location.engine,
       path: location.path,
       prop: location.prop,
       sourceVersion: currentVersion,

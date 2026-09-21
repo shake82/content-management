@@ -22,7 +22,7 @@ export function CertificateReferencesTable({ references }: { references: Certifi
             <Table.Tr key={`${reference.catalogId}-${reference.secretVersion}-${reference.property}`}>
               <Table.Td>
                 <Anchor component={Link} to={keystoreDetailsRoute({
-                  secretEngine: reference.secretEngine,
+                  engine: reference.secretEngine,
                   path: reference.path,
                   prop: reference.property,
                 })} size="sm">

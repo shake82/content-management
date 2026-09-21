@@ -57,7 +57,7 @@ export function VaultItemsTable({ items }: VaultItemsTableProps) {
                   <ActionIcon
                     component={Link}
                     to={keystoreDetailsRoute({
-                      secretEngine: item.secretEngine,
+                      engine: item.secretEngine,
                       path: item.path,
                       prop: item.property,
                     })}

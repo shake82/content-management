@@ -17,14 +17,14 @@ beforeEach(() => {
 
 it('requests a comparison between the current and selected versions', async () => {
   await getKeystoreComparison(
-    { secretEngine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
+    { engine: 'engine-a', path: 'apps/prod/payments', prop: 'store' },
     17,
     16,
   );
 
   expect(getJson).toHaveBeenCalledWith(`${VAULT_COMPARE_ENDPOINT}.json`, {
     params: {
-      secretEngine: 'engine-a',
+      engine: 'engine-a',
       path: 'apps/prod/payments',
       prop: 'store',
       sourceVersion: 17,
@@ -34,7 +34,7 @@ it('requests a comparison between the current and selected versions', async () =
 });
 
 it('requests keystore details using its secret location', async () => {
-  const location = { secretEngine: 'engine-a', path: 'apps/prod/payments', prop: 'store' };
+  const location = { engine: 'engine-a', path: 'apps/prod/payments', prop: 'store' };
 
   await getKeystoreDetails(location);
 
