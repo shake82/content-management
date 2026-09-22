@@ -7,6 +7,7 @@ import { CertificateViewPage } from '../features/certificates/CertificateViewPag
 import { KeystoreDetailsPage } from '../features/vault/KeystoreDetailsPage';
 import { VaultViewPage } from '../features/vault/VaultViewPage';
 import { LocalCertViewerPage } from '../features/tools/localCertViewer/LocalCertViewerPage';
+import { CertificateRequestGeneratorPage } from '../features/tools/certificateRequestGenerator/CertificateRequestGeneratorPage';
 import { CurrentUserProvider } from '../features/user/CurrentUserContext';
 import { RequirePermission } from '../features/user/RequirePermission';
 import { permissions } from './navigation';
@@ -32,6 +33,7 @@ function AppRoutes() {
         <Route path={routes.toolsImport} element={routePage(<DummyPage title="Import certificates" description="Certificate import workflows will appear here." />)} />
         <Route path={routes.toolsAudit} element={routePage(<DummyPage title="Audit history" description="Vault catalog audit history will appear here." />)} />
         <Route path={routes.toolsLocalCertViewer} element={routePage(<LocalCertViewerPage />)} />
+        <Route path={routes.toolsCertificateRequestGenerator} element={routePage(<CertificateRequestGeneratorPage />)} />
         <Route path={routes.settings} element={routePage(<DummyPage title="Settings" description="Secret Browser preferences will appear here." />)} />
         <Route path="*" element={<Navigate to={routes.vault} replace />} />
       </Route>

@@ -24,6 +24,7 @@ it('highlights the active route and exposes grouped tool destinations', async ()
   expect(screen.getByText('Import certificates').closest('a')).toHaveAttribute('aria-current', 'page');
   expect(screen.getByText('Audit history').closest('a')).toHaveAttribute('href', '/tools/audit');
   expect(screen.getByText('Local Cert Viewer').closest('a')).toHaveAttribute('href', '/tools/local-cert-viewer');
+  expect(screen.getByText('Certificate Request Generator').closest('a')).toHaveAttribute('href', '/tools/certificate-request-generator');
 });
 
 it('hides Reports when the user lacks its permission and leaves other destinations accessible', async () => {
@@ -40,4 +41,5 @@ it('hides Reports when the user lacks its permission and leaves other destinatio
   expect(screen.getByText('Local Cert Viewer')).toBeInTheDocument();
   expect(screen.getByText('Import certificates')).toBeInTheDocument();
   expect(screen.getByText('Audit history')).toBeInTheDocument();
+  expect(screen.getByText('Certificate Request Generator')).toBeInTheDocument();
 });

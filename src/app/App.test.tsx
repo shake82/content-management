@@ -65,6 +65,17 @@ it('renders Local Cert Viewer at its tools route', async () => {
   expect(screen.getAllByRole('button', { name: /Tools/ })[0]).toHaveAttribute('data-variant', 'light');
 });
 
+it('renders Certificate Request Generator at its tools route', async () => {
+  vi.mocked(getCurrentUser).mockResolvedValue({
+    name: 'Maya Chen', email: 'maya@example.com', permissions: {},
+  });
+  renderApp(<App />, { route: '/tools/certificate-request-generator' });
+
+  expect(await screen.findByRole('heading', { name: 'Certificate Request Generator' })).toBeInTheDocument();
+  expect(screen.getByRole('button', { name: 'Generate request' })).toBeInTheDocument();
+  expect(screen.getAllByRole('button', { name: /Tools/ })[0]).toHaveAttribute('data-variant', 'light');
+});
+
 it('redirects Reports when the current user lacks its permission', async () => {
   vi.mocked(getCurrentUser).mockResolvedValue({
     name: 'Maya Chen', email: 'maya@example.com', permissions: {},

@@ -1,8 +1,13 @@
 import type { KeystoreKeyEntry } from '../features/vault/detailTypes';
 import type { ParseSecretRequest, ParsedSecretResponse } from '../features/tools/localCertViewer/localCertViewerTypes';
-import { postFormData } from './apiClient';
+import type {
+  GenerateCertificateRequestPayload,
+  GenerateCertificateRequestResponse,
+} from '../features/tools/certificateRequestGenerator/certificateRequestTypes';
+import { postFormData, postJson } from './apiClient';
 
 export const PARSE_SECRET_ENDPOINT = '/tools/parsesecret';
+export const GENERATE_CERTIFICATE_REQUEST_ENDPOINT = '/tools/generateCertificateRequest';
 
 function normalizeEntries(entries: KeystoreKeyEntry[] | undefined): KeystoreKeyEntry[] {
   return (entries ?? []).map((entry) => ({
@@ -30,4 +35,13 @@ export async function parseSecret(request: ParseSecretRequest): Promise<ParsedSe
     issueSeveritySummary: response.issueSeveritySummary ?? {},
     keyEntries: normalizeEntries(response.keyEntries),
   };
+}
+
+export function generateCertificateRequest(
+  request: GenerateCertificateRequestPayload,
+): Promise<GenerateCertificateRequestResponse> {
+  return postJson<GenerateCertificateRequestResponse, GenerateCertificateRequestPayload>(
+    GENERATE_CERTIFICATE_REQUEST_ENDPOINT,
+    request,
+  );
 }

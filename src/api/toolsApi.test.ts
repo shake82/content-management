@@ -1,11 +1,19 @@
 import { beforeEach, expect, it, vi } from 'vitest';
 import { parsedSecretFixture } from '../features/tools/localCertViewer/localCertViewerTestFixture';
-import { postFormData } from './apiClient';
-import { parseSecret, PARSE_SECRET_ENDPOINT } from './toolsApi';
+import { postFormData, postJson } from './apiClient';
+import {
+  generateCertificateRequest,
+  GENERATE_CERTIFICATE_REQUEST_ENDPOINT,
+  parseSecret,
+  PARSE_SECRET_ENDPOINT,
+} from './toolsApi';
 
-vi.mock('./apiClient', () => ({ postFormData: vi.fn() }));
+vi.mock('./apiClient', () => ({ postFormData: vi.fn(), postJson: vi.fn() }));
 
-beforeEach(() => vi.mocked(postFormData).mockReset());
+beforeEach(() => {
+  vi.mocked(postFormData).mockReset();
+  vi.mocked(postJson).mockReset();
+});
 
 it('posts secret files as multipart form data and normalizes missing response collections', async () => {
   vi.mocked(postFormData).mockResolvedValueOnce(parsedSecretFixture).mockResolvedValueOnce({ type: 'PEM' });
@@ -22,4 +30,13 @@ it('posts secret files as multipart form data and normalizes missing response co
   const textFile = (vi.mocked(postFormData).mock.calls[1]?.[1] as FormData).get('file') as File;
   expect(textFile.name).toBe('secret.txt');
   expect(await textFile.text()).toBe('pem');
+});
+
+it('posts normalized certificate request data to the generator endpoint', async () => {
+  const request = { subject: 'CN=service.example.gov,C=US', alternateSubjects: ['api.example.gov'] };
+  const response = { privateKey: 'FAKE-PRIVATE-PEM', certificateRequest: 'FAKE-CSR-PEM' };
+  vi.mocked(postJson).mockResolvedValue(response);
+
+  expect(await generateCertificateRequest(request)).toEqual(response);
+  expect(postJson).toHaveBeenCalledWith(GENERATE_CERTIFICATE_REQUEST_ENDPOINT, request);
 });

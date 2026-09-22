@@ -296,6 +296,45 @@ input {
   padding-bottom: 18px;
 }
 
+.certificate-request-section {
+  padding-bottom: 18px;
+}
+
+.certificate-request-subject-row {
+  display: grid;
+  grid-template-columns: minmax(190px, 0.6fr) minmax(240px, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.certificate-request-results {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.certificate-request-pem-block {
+  min-width: 0;
+}
+
+.certificate-request-pem-block pre {
+  box-sizing: border-box;
+  min-height: 260px;
+  max-height: 430px;
+  margin: 0;
+  padding: 14px;
+  overflow: auto;
+  color: var(--sb-text);
+  background: color-mix(in srgb, var(--sb-page-bg) 72%, var(--sb-surface));
+  border: 1px solid var(--sb-border);
+  border-radius: 4px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
 .comparison-trees {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
@@ -348,6 +387,15 @@ section {
 
   .comparison-trees {
     grid-template-columns: 1fr;
+  }
+
+  .certificate-request-subject-row,
+  .certificate-request-results {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-request-subject-row .mantine-Button-root {
+    justify-self: start;
   }
 
   .local-cert-result-summary > .mantine-Group-root:first-child {

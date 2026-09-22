@@ -19,6 +19,7 @@ export const directNavigationItems: NavigationItem[] = [
 
 export const toolNavigationItems: NavigationItem[] = [
   { label: 'Local Cert Viewer', to: routes.toolsLocalCertViewer },
+  { label: 'Certificate Request Generator', to: routes.toolsCertificateRequestGenerator },
   { label: 'Import certificates', to: routes.toolsImport },
   { label: 'Audit history', to: routes.toolsAudit },
 ];

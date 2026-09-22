@@ -9,7 +9,7 @@ export function LocalCertViewerPage() {
 
   if (parser.status === 'success' && parser.data) {
     return (
-      <Box maw={1200} mx="auto">
+      <Box mx="auto">
         <ParsedSecretResult result={parser.data} onReset={parser.reset} />
       </Box>
     );

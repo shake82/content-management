@@ -8,6 +8,7 @@ export const routes = {
   toolsImport: '/tools/import',
   toolsAudit: '/tools/audit',
   toolsLocalCertViewer: '/tools/local-cert-viewer',
+  toolsCertificateRequestGenerator: '/tools/certificate-request-generator',
   settings: '/settings',
 } as const;
 
