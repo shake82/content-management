@@ -6,7 +6,7 @@ import { TextSecretInput } from './TextSecretInput';
 interface SecretInputTabsProps {
   disabled?: boolean;
   loading?: boolean;
-  onFileSubmit: (content: string, fileName: string) => void;
+  onFileSubmit: (file: File) => void;
   onTextSubmit: (content: string) => void;
 }
 

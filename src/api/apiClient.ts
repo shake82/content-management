@@ -22,3 +22,12 @@ export async function postJson<TResponse, TRequest>(
   const response = await apiClient.post<TResponse>(url, data, config);
   return response.data;
 }
+
+export async function postFormData<TResponse>(
+  url: string,
+  data: FormData,
+  config?: AxiosRequestConfig,
+): Promise<TResponse> {
+  const response = await apiClient.post<TResponse>(url, data, config);
+  return response.data;
+}

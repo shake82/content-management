@@ -2,11 +2,9 @@ import type { KeystoreKeyEntry } from '../../vault/detailTypes';
 
 export type SecretSourceType = 'file' | 'text';
 
-export interface ParseSecretRequest {
-  content: string;
-  sourceType: SecretSourceType;
-  fileName?: string;
-}
+export type ParseSecretRequest =
+  | { sourceType: 'file'; file: File }
+  | { sourceType: 'text'; content: string; fileName?: string };
 
 export interface ParsedSecretResponse {
   type: string;

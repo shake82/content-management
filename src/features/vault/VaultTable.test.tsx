@@ -16,7 +16,7 @@ it('renders aggregate folder details and opens the selected folder', async () =>
   expect(screen.queryByRole('columnheader', { name: 'Secret engines' })).not.toBeInTheDocument();
   expect(screen.getByText('1 high')).toBeInTheDocument();
   await userEvent.hover(screen.getByText('1 high'));
-  expect(await screen.findByText('expired certificate: 1')).toBeInTheDocument();
+  expect(await screen.findByText('HIGH: ExpiredCertificate')).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Open engine-a' }));
   expect(open).toHaveBeenCalledWith('engine-a');
 });

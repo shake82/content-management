@@ -1,7 +1,7 @@
 import { ActionIcon, Badge, Group, Table, Text, Tooltip } from '@mantine/core';
 import { IconChevronRight, IconFolder } from '@tabler/icons-react';
 import type { VaultTreeNode } from './catalogTypes';
-import { formatIssueDetails } from './issueSummary';
+import { IssueTooltipContent, issueSummaryTooltipItems } from './IssueTooltipContent';
 
 interface VaultTableProps {
   folders: VaultTreeNode[];
@@ -53,7 +53,11 @@ export function VaultTable({ folders, onOpen }: VaultTableProps) {
                 <Group gap={5}>
                   {Object.keys(folder.aggregate.issueSummaryBySeverity).length === 0 && <Text size="sm" c="green.7">Clear</Text>}
                   {Object.entries(folder.aggregate.issueSummaryBySeverity).map(([severity, summary]) => (
-                    <Tooltip key={severity} label={formatIssueDetails(summary.issueCountsByType)}>
+                    <Tooltip
+                      key={severity}
+                      multiline
+                      label={<IssueTooltipContent issues={issueSummaryTooltipItems(severity, summary.issueCountsByType)} />}
+                    >
                       <Badge color={severityColor[severity] ?? 'gray'} variant="dot" size="sm" tabIndex={0}>
                         {summary.count} {severity.toLocaleLowerCase()}
                       </Badge>

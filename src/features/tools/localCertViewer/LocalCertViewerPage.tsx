@@ -37,7 +37,7 @@ export function LocalCertViewerPage() {
           <SecretInputTabs
             disabled={parser.status === 'loading'}
             loading={parser.status === 'loading'}
-            onFileSubmit={(content, fileName) => void parser.parseSecret({ content, sourceType: 'file', fileName })}
+            onFileSubmit={(file) => void parser.parseSecret({ file, sourceType: 'file' })}
             onTextSubmit={(content) => void parser.parseSecret({ content, sourceType: 'text' })}
           />
         </section>

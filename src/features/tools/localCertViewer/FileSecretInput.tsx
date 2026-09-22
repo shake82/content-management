@@ -4,7 +4,7 @@ import { type ChangeEvent, type DragEvent, type KeyboardEvent, type MouseEvent, 
 
 interface FileSecretInputProps {
   disabled?: boolean;
-  onSubmit: (content: string, fileName: string) => void;
+  onSubmit: (file: File) => void;
 }
 
 export function FileSecretInput({ disabled = false, onSubmit }: FileSecretInputProps) {
@@ -12,21 +12,17 @@ export function FileSecretInput({ disabled = false, onSubmit }: FileSecretInputP
   const [fileName, setFileName] = useState<string>();
   const [error, setError] = useState<string>();
 
-  const readFile = async (file?: File) => {
+  const readFile = (file?: File) => {
     if (!file || disabled) return;
     setFileName(file.name);
     setError(undefined);
 
-    try {
-      const content = await file.text();
-      if (!content.trim()) {
-        setError('The selected file is empty.');
-        return;
-      }
-      onSubmit(content, file.name);
-    } catch {
-      setError('The selected file could not be read.');
+    if (file.size === 0) {
+      setError('The selected file is empty.');
+      return;
     }
+
+    onSubmit(file);
   };
 
   const handleDrop = (event: DragEvent<HTMLDivElement>) => {
@@ -59,7 +55,7 @@ export function FileSecretInput({ disabled = false, onSubmit }: FileSecretInputP
       >
         <IconFileUpload size={34} aria-hidden />
         <Text fw={600}>Drop a certificate or secret file here</Text>
-        <Text size="sm" c="dimmed">The file is read locally and sent only when selected.</Text>
+        <Text size="sm" c="dimmed">The file is sent only when selected.</Text>
         <Button
           component="span"
           variant="light"

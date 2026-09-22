@@ -16,5 +16,5 @@ it('renders aggregates and reveals issue details on hover', async () => {
   expect(screen.getByText('4 trusted certificate')).toBeInTheDocument();
   expect(screen.getByText('1 high')).toBeInTheDocument();
   await userEvent.hover(screen.getByText('1 high'));
-  expect(await screen.findByText('expired certificate: 1')).toBeInTheDocument();
+  expect(await screen.findByText('HIGH: ExpiredCertificate')).toBeInTheDocument();
 });

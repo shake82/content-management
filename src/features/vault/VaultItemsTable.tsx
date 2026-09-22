@@ -3,7 +3,7 @@ import { IconChevronRight } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { keystoreDetailsRoute } from '../../app/routes';
 import type { VaultCatalogItem } from './catalogTypes';
-import { formatIssueDetails } from './issueSummary';
+import { IssueTooltipContent, issueSummaryTooltipItems } from './IssueTooltipContent';
 
 interface VaultItemsTableProps {
   items: VaultCatalogItem[];
@@ -44,7 +44,11 @@ export function VaultItemsTable({ items }: VaultItemsTableProps) {
                     <Text size="sm" c="green.7">Clear</Text>
                   )}
                   {Object.entries(item.secretSummary.issueSummaryBySeverity).map(([severity, summary]) => (
-                    <Tooltip key={severity} label={formatIssueDetails(summary.issueCountsByType)}>
+                    <Tooltip
+                      key={severity}
+                      multiline
+                      label={<IssueTooltipContent issues={issueSummaryTooltipItems(severity, summary.issueCountsByType)} />}
+                    >
                       <Badge variant="dot" color={severity === 'HIGH' ? 'orange' : severity === 'CRITICAL' ? 'red' : severity === 'MEDIUM' ? 'yellow' : 'blue'} tabIndex={0}>
                         {summary.count} {severity.toLocaleLowerCase()}
                       </Badge>

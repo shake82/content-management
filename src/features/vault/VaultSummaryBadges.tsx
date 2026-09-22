@@ -1,6 +1,6 @@
 import { Badge, Group, Stack, Text, Tooltip } from '@mantine/core';
 import type { VaultAggregateSummary } from './catalogTypes';
-import { formatIssueDetails } from './issueSummary';
+import { IssueTooltipContent, issueSummaryTooltipItems } from './IssueTooltipContent';
 
 interface VaultSummaryBadgesProps {
   summary: VaultAggregateSummary;
@@ -37,7 +37,11 @@ export function VaultSummaryBadges({ summary }: VaultSummaryBadgesProps) {
         <Group gap={6}>
           {issues.length === 0 && <Badge variant="light" color="green">No issues</Badge>}
           {issues.map(([severity, detail]) => (
-            <Tooltip key={severity} label={formatIssueDetails(detail.issueCountsByType)}>
+            <Tooltip
+              key={severity}
+              multiline
+              label={<IssueTooltipContent issues={issueSummaryTooltipItems(severity, detail.issueCountsByType)} />}
+            >
               <Badge variant="light" color={severityColor[severity] ?? 'gray'} tabIndex={0}>
                 {detail.count} {severity.toLocaleLowerCase()}
               </Badge>

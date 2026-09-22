@@ -17,5 +17,5 @@ it('renders key store details, issue tooltip, and detail navigation', async () =
     '/vault/keystore?engine=engine-a&path=apps%2Fprod%2Fpayments&prop=store',
   );
   await userEvent.hover(screen.getByText('1 high'));
-  expect(await screen.findByText('expired certificate: 1')).toBeInTheDocument();
+  expect(await screen.findByText('HIGH: ExpiredCertificate')).toBeInTheDocument();
 });

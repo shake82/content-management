@@ -1,5 +1,6 @@
-import { Badge, Stack, Text, Tooltip } from '@mantine/core';
+import { Badge, Tooltip } from '@mantine/core';
 import type { KeystoreKeyEntry } from './detailTypes';
+import { IssueTooltipContent } from './IssueTooltipContent';
 
 const severityRank: Record<string, number> = {
   CRITICAL: 4,
@@ -22,15 +23,6 @@ function highestSeverity(issues: KeystoreKeyEntry['issues']) {
   }, '');
 }
 
-function toPascalCase(value: string) {
-  return value
-    .toLocaleLowerCase()
-    .split('_')
-    .filter(Boolean)
-    .map((word) => word[0]!.toLocaleUpperCase() + word.slice(1))
-    .join('');
-}
-
 export function EntryValidity({ entry }: { entry: KeystoreKeyEntry | null }) {
   if (!entry) return <Badge color="gray" variant="light">N/A</Badge>;
   if (entry.issues.length === 0) return <Badge color="green" variant="light">Yes</Badge>;
@@ -39,15 +31,7 @@ export function EntryValidity({ entry }: { entry: KeystoreKeyEntry | null }) {
   return (
     <Tooltip
       multiline
-      label={(
-        <Stack gap={2}>
-          {entry.issues.map((issue, index) => (
-            <Text size="xs" key={`${issue.severity}-${issue.type}-${index}`}>
-              {issue.severity.toUpperCase()}: {toPascalCase(issue.type)}
-            </Text>
-          ))}
-        </Stack>
-      )}
+      label={<IssueTooltipContent issues={entry.issues} />}
     >
       <Badge color={severityColor[severity] ?? 'red'} variant="light" tabIndex={0} data-severity={severity}>
         {severity || 'Invalid'}
