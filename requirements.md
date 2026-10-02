@@ -4,10 +4,10 @@ Create a new component called "Staging Certificates" the follows the following r
 1. Create a nav for it in the header
 2. The nav and page should only be accessible if the current user has the permission "MANAGE_STAGING_CERTS"
 ### API
-1. Use the API "/api/stagingCert" to get data. Response is a simple string array with vault keys. All data is retrieved in one go and no server side paging is required
-2. For each item in the response, use the API "/api/stagingCert/<key>/getStatus" to get the detailed status on the item. Using axios, rate limit the requests such that only 3 requests should be in flight at a time with the rest waiting until space is available
+1. Use the API "/api/stagingCerts" to get data. Response is a simple string array with vault keys. All data is retrieved in one go and no server side paging is required
+2. For each item in the response, use the API "/api/stagingCerts/<key>/getStatus" to get the detailed status on the item. Using axios, rate limit the requests such that only 3 requests should be in flight at a time with the rest waiting until space is available
   - format of this response is available in the sample.json file
-3. Create Certificate request API: POST request to "/api/stagingCert". data format is the same as the GenerateCertificateRequestPayload interface. Reponse has two properties: "path" and "version"
+3. Create Certificate request API: POST request to "/api/stagingCerts". data format is the same as the GenerateCertificateRequestPayload interface. Reponse has two properties: "path" and "version"
 ### Render
 #### Data table
 1. Render similar to the "Certificate View" with a datatable. However the paging is entirely on the client side.

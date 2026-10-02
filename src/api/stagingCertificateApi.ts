@@ -5,7 +5,7 @@ import type {
 } from '../features/stagingCertificates/stagingCertificateTypes';
 import { getJson, postJson } from './apiClient';
 
-export const STAGING_CERTIFICATE_ENDPOINT = '/stagingCert';
+export const STAGING_CERTIFICATE_ENDPOINT = '/stagingCerts';
 export const STAGING_CERTIFICATE_STATUS_CONCURRENCY = 3;
 
 function normalizeStatus(status: Partial<StagingCertificateStatus>): StagingCertificateStatus {

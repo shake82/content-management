@@ -90,7 +90,7 @@ Render both the list route and detail route through `RequirePermission`. The nav
 
 ## API Contract
 
-The product requirement names `/api/stagingCert`. Because `apiClient` already prepends `/api` in production and uses `http://localhost:8050/api` in development, app helpers should use paths without the `/api` prefix.
+The product requirement names `/api/stagingCerts`. Because `apiClient` already prepends `/api` in production and uses `http://localhost:8050/api` in development, app helpers should use paths without the `/api` prefix.
 
 Endpoints:
 
@@ -103,9 +103,9 @@ POST /stagingCert
 Backend-visible URLs:
 
 ```text
-GET /api/stagingCert
-GET /api/stagingCert/<key>/getStatus
-POST /api/stagingCert
+GET /api/stagingCerts
+GET /api/stagingCerts/<key>/getStatus
+POST /api/stagingCerts
 ```
 
 Types:
@@ -482,7 +482,7 @@ Recommended tests:
 
 - `Staging Certificates` appears in the header only for users with `MANAGE_STAGING_CERTS`.
 - Direct access to staging list and detail routes is protected by `RequirePermission`.
-- The list page fetches all keys from `/api/stagingCert`.
+- The list page fetches all keys from `/api/stagingCerts`.
 - Filtering and paging are entirely client side.
 - Status is fetched only for currently rendered table rows.
 - No more than three status requests are in flight at once.
