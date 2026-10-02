@@ -63,7 +63,10 @@ export function StagingCertificatesPage() {
           <Title order={1} size="h2">Staging Certificates</Title>
           <Text c="dimmed" size="sm" mt={4}>Review staging certificate readiness and workflow status.</Text>
         </div>
-        <Group align="flex-end">
+        <Stack gap="xs" align="flex-end">
+          <Button leftSection={<IconPlus size={16} />} onClick={() => setModalOpened(true)}>
+            New
+          </Button>
           <TextInput
             className="staging-certificates-filter"
             aria-label="Filter staging certificates"
@@ -79,16 +82,13 @@ export function StagingCertificatesPage() {
             value={filter}
             onChange={(event) => updateFilter(event.currentTarget.value)}
           />
-          <Button leftSection={<IconPlus size={16} />} onClick={() => setModalOpened(true)}>
-            New
-          </Button>
-        </Group>
+        </Stack>
       </Group>
 
       <section aria-labelledby="staging-certificates-heading">
         <Group justify="space-between" mb="xs">
           <Title id="staging-certificates-heading" order={2} size="h4">Certificates</Title>
-          {keysRequest.status === 'success' && <Text size="sm" c="dimmed">{filteredKeys.length} visible</Text>}
+          {keysRequest.status === 'success' && <Text size="sm" c="dimmed">{filteredKeys.length} total</Text>}
         </Group>
         <Divider />
         {isLoading && <StatusView kind="loading" message="Loading staging certificates..." />}
