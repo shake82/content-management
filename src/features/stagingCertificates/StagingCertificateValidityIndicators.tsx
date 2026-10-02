@@ -56,7 +56,7 @@ export function StagingCertificateValidityIndicators({
 }) {
   if (!state || state.status === 'idle' || state.status === 'loading') {
     return (
-      <Group gap={6} wrap="nowrap" aria-label="Status loading">
+      <Group gap={6} wrap="wrap" aria-label="Status loading" className="staging-certificate-status-badges">
         <Loader size="xs" />
         <Badge color="gray" variant="light" className="staging-certificate-status-badge">Loading</Badge>
       </Group>
@@ -65,7 +65,7 @@ export function StagingCertificateValidityIndicators({
 
   if (state.status === 'error') {
     return (
-      <Group gap={6} wrap="nowrap">
+      <Group gap={6} wrap="wrap" className="staging-certificate-status-badges">
         <Tooltip label={state.error.message}>
           <Badge color="red" variant="light" leftSection={<IconAlertTriangle size={13} />} className="staging-certificate-status-badge">
             Error
@@ -97,7 +97,7 @@ export function StagingCertificateValidityIndicators({
   );
 
   return (
-    <Group gap={6} wrap="nowrap">
+    <Group gap={6} wrap="wrap" className="staging-certificate-status-badges">
       {issueLabels.length > 0 ? (
         <Tooltip label={issueLabels.join('\n')} multiline>{validityBadge}</Tooltip>
       ) : validityBadge}

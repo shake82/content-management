@@ -24,6 +24,7 @@ it('renders validity, workflow, loading, and retryable error indicators', async 
   expect(screen.getByLabelText('High severity issues')).toBeInTheDocument();
   expect(screen.getByLabelText('Missing keystore')).toBeInTheDocument();
   expect(screen.getByLabelText('Pending certificate request')).toBeInTheDocument();
+  expect(screen.getByLabelText('High severity issues').closest('.staging-certificate-status-badges')).toHaveStyle({ '--group-wrap': 'wrap' });
   await userEvent.hover(screen.getByText('HIGH'));
   expect(await screen.findByText('HIGH: Expired Certificate')).toBeInTheDocument();
 

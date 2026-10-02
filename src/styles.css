@@ -204,6 +204,11 @@ input {
   width: 260px;
 }
 
+
+.staging-certificate-status-badges {
+  max-width: 100%;
+}
+
 .staging-certificate-status-badge {
   flex: 0 0 auto;
   white-space: nowrap;
