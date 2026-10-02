@@ -3,6 +3,7 @@ import { routes } from './routes';
 
 export const permissions = {
   viewReports: 'reports.view',
+  manageStagingCertificates: 'MANAGE_STAGING_CERTS',
 } as const;
 
 export interface NavigationItem {
@@ -14,6 +15,7 @@ export interface NavigationItem {
 export const directNavigationItems: NavigationItem[] = [
   { label: 'Vault View', to: routes.vault },
   { label: 'Certificate View', to: routes.certificates },
+  { label: 'Staging Certificates', to: routes.stagingCertificates, permission: permissions.manageStagingCertificates },
   { label: 'Reports', to: routes.reports, permission: permissions.viewReports },
 ];
 

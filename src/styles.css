@@ -123,6 +123,10 @@ input {
   width: min(360px, 100%);
 }
 
+.staging-certificates-filter {
+  width: min(360px, 100%);
+}
+
 .certificate-view-expanded-cell {
   padding-top: 0;
   padding-bottom: 0;
@@ -157,6 +161,10 @@ input {
 }
 
 .certificate-view-pagination {
+  padding: 0 4px 12px;
+}
+
+.staging-certificates-pagination {
   padding: 0 4px 12px;
 }
 
@@ -377,6 +385,10 @@ section {
   }
 
   .certificate-view-search {
+    width: 100%;
+  }
+
+  .staging-certificates-filter {
     width: 100%;
   }
 

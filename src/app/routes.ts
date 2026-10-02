@@ -4,6 +4,8 @@ export const routes = {
   vault: '/vault',
   vaultKeystore: '/vault/keystore',
   certificates: '/certificates',
+  stagingCertificates: '/staging-certificates',
+  stagingCertificateDetail: '/staging-certificates/detail',
   reports: '/reports',
   toolsImport: '/tools/import',
   toolsAudit: '/tools/audit',
@@ -24,4 +26,9 @@ export function vaultPathRoute(path: string) {
     .map(encodeURIComponent)
     .join('/');
   return encodedPath ? `${routes.vault}/${encodedPath}` : routes.vault;
+}
+
+export function stagingCertificateDetailRoute(key: string) {
+  const query = new URLSearchParams({ key });
+  return `${routes.stagingCertificateDetail}?${query}`;
 }

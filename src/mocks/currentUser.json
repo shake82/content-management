@@ -2,6 +2,7 @@
   "name": "Maya Chen",
   "email": "maya.chen@example.com",
   "permissions": {
-    "reports.view": true
+    "reports.view": true,
+    "MANAGE_STAGING_CERTS": true
   }
 }
