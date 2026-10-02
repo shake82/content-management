@@ -241,6 +241,22 @@ input {
   text-decoration: underline;
 }
 
+
+.certificate-details-table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.certificate-details-table th {
+  width: 9rem;
+}
+
+.certificate-details-long-value {
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  white-space: normal;
+}
+
 .keystore-chain-cell {
   padding-top: 0;
   padding-bottom: 0;

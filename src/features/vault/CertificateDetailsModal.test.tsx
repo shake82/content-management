@@ -23,8 +23,8 @@ it('renders only the requested certificate details and closes', async () => {
 
   const dialog = screen.getByRole('dialog');
   expect(within(dialog).getByText('Certificate Detail')).toBeInTheDocument();
-  expect(within(dialog).getByText('CN=TEST')).toBeInTheDocument();
-  expect(within(dialog).getByText('CN=ROOT')).toBeInTheDocument();
+  expect(within(dialog).getByText('CN=TEST')).toHaveClass('certificate-details-long-value');
+  expect(within(dialog).getByText('CN=ROOT')).toHaveClass('certificate-details-long-value');
   expect(within(dialog).getByText('0x01')).toBeInTheDocument();
   expect(within(dialog).getByText('Jan 1, 2020')).toBeInTheDocument();
   expect(within(dialog).getByText('Feb 1, 2020')).toHaveStyle({ color: 'var(--mantine-color-red-6)' });

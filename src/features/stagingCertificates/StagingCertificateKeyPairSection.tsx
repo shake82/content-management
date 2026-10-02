@@ -22,8 +22,9 @@ export function StagingCertificateKeyPairSection({ keyPair }: StagingCertificate
   return (
     <KeystoreEntriesTable
       entries={normalizeEntries(keyPair.keyEntries ?? [])}
-      title="Key Pair"
-      subtitle={keyPair.type}
+      title="Key pair entries"
+      enableFilters={false}
+      showHeader={false}
     />
   );
 }

@@ -28,10 +28,10 @@ export function CertificateDetailsModal({ certificate, onClose }: CertificateDet
       closeButtonProps={{ 'aria-label': 'Close certificate details' }}
     >
       {certificate && (
-        <Table verticalSpacing="sm">
+        <Table verticalSpacing="sm" className="certificate-details-table">
           <Table.Tbody>
-            <Table.Tr><Table.Th>Subject</Table.Th><Table.Td>{certificate.subject}</Table.Td></Table.Tr>
-            <Table.Tr><Table.Th>Issuer</Table.Th><Table.Td>{certificate.issuer}</Table.Td></Table.Tr>
+            <Table.Tr><Table.Th>Subject</Table.Th><Table.Td className="certificate-details-long-value">{certificate.subject}</Table.Td></Table.Tr>
+            <Table.Tr><Table.Th>Issuer</Table.Th><Table.Td className="certificate-details-long-value">{certificate.issuer}</Table.Td></Table.Tr>
             <Table.Tr><Table.Th>Serial Number</Table.Th><Table.Td><Code>{certificate.hexSerialNumber}</Code></Table.Td></Table.Tr>
             <Table.Tr><Table.Th>Start Date</Table.Th><Table.Td>{formatKeystoreDate(certificate.startDate)}</Table.Td></Table.Tr>
             <Table.Tr>

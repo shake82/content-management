@@ -27,6 +27,7 @@ interface KeystoreEntriesTableProps {
   title?: string;
   subtitle?: string;
   enableFilters?: boolean;
+  showHeader?: boolean;
 }
 
 type EntryFilter = 'all' | 'issues' | 'high';
@@ -36,6 +37,7 @@ export function KeystoreEntriesTable({
   title = 'Key entries',
   subtitle,
   enableFilters = true,
+  showHeader = true,
 }: KeystoreEntriesTableProps) {
   const [entryFilter, setEntryFilter] = useState<EntryFilter>('all');
   const [search, setSearch] = useState('');
@@ -58,7 +60,8 @@ export function KeystoreEntriesTable({
   };
 
   return (
-    <section aria-labelledby="keystore-entry-heading">
+    <section aria-labelledby={showHeader ? 'keystore-entry-heading' : undefined} aria-label={showHeader ? undefined : title}>
+      {showHeader && (
       <Group justify="space-between" align="flex-end" mb="xs">
         <div>
           <Title id="keystore-entry-heading" order={2} size="h4">{title}</Title>
@@ -95,7 +98,8 @@ export function KeystoreEntriesTable({
           </Stack>
         )}
       </Group>
-      <Divider />
+      )}
+      {showHeader && <Divider />}
       <Table.ScrollContainer minWidth={780}>
         <Table verticalSpacing="sm" highlightOnHover>
           <Table.Thead>

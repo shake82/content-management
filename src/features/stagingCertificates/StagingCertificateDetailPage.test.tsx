@@ -59,7 +59,12 @@ it('loads a path-based staging certificate, completes a pending request, and han
   expect(screen.getByRole('link', { name: 'Staging Certificates' })).toHaveAttribute('href', '/staging');
   expect(screen.getByText(/There is a current pending certificate request/)).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'View In Vault' })).toHaveAttribute('href', 'https://vault.example.com/ui/apps/prod/payments');
-  expect(screen.getByRole('heading', { name: 'Key Pair' })).toBeInTheDocument();
+  expect(screen.getByRole('columnheader', { name: 'Type' })).toBeInTheDocument();
+  expect(screen.getByText('Primary')).toBeInTheDocument();
+  expect(screen.queryByRole('heading', { name: 'Key Pair' })).not.toBeInTheDocument();
+  expect(screen.queryByText('PEM')).not.toBeInTheDocument();
+  expect(screen.queryByRole('textbox', { name: 'Search key entries' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('radiogroup', { name: 'Filter key entries' })).not.toBeInTheDocument();
 
   await userEvent.click(screen.getByRole('button', { name: 'Upload Certificate' }));
   await userEvent.click(screen.getAllByRole('button', { name: 'Upload Certificate' }).at(-1)!);
