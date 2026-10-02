@@ -14,7 +14,7 @@ it('renders staging certificate rows, status indicators, detail links, and retry
           status: 'success',
           data: {
             hasMissingKeyPair: false,
-            hasMissingKeystore: true,
+            hasMissingKeyStore: true,
             hasPendingCertRequest: false,
             issues: [{ severity: 'HIGH', type: 'EXPIRED_CERTIFICATE' }],
           },

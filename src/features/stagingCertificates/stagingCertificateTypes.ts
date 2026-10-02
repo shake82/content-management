@@ -5,7 +5,7 @@ export interface StagingCertificateIssue {
 
 export interface StagingCertificateStatus {
   hasMissingKeyPair: boolean;
-  hasMissingKeystore: boolean;
+  hasMissingKeyStore: boolean;
   hasPendingCertRequest: boolean;
   issues: StagingCertificateIssue[];
 }

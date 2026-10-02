@@ -19,7 +19,7 @@ function deferredStatus() {
 
 const validStatus: StagingCertificateStatus = {
   hasMissingKeyPair: false,
-  hasMissingKeystore: false,
+  hasMissingKeyStore: false,
   hasPendingCertRequest: false,
   issues: [],
 };
@@ -57,7 +57,7 @@ it('streams visible row statuses as each request resolves and retries idle rows'
   }));
 
   await act(async () => {
-    second.resolve({ ...validStatus, hasMissingKeystore: true });
+    second.resolve({ ...validStatus, hasMissingKeyStore: true });
     await second.promise;
   });
 

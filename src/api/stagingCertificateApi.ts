@@ -11,7 +11,7 @@ export const STAGING_CERTIFICATE_STATUS_CONCURRENCY = 3;
 function normalizeStatus(status: Partial<StagingCertificateStatus>): StagingCertificateStatus {
   return {
     hasMissingKeyPair: status.hasMissingKeyPair ?? false,
-    hasMissingKeystore: status.hasMissingKeystore ?? false,
+    hasMissingKeyStore: status.hasMissingKeyStore ?? false,
     hasPendingCertRequest: status.hasPendingCertRequest ?? false,
     issues: status.issues ?? [],
   };

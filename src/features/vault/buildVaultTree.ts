@@ -53,6 +53,7 @@ export function buildVaultTree(items: VaultCatalogItem[]): VaultTreeNode {
       ...item.path.split('/').map((segment) => segment.trim()),
     ].filter(Boolean);
     let current = root;
+    // Add the item to every ancestor so folders can render aggregate counts without walking descendants.
     addItemToAggregate(current.aggregate, item);
 
     segments.forEach((segment, index) => {

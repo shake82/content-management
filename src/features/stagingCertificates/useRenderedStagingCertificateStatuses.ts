@@ -13,6 +13,7 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
   const [retryAttempt, setRetryAttempt] = useState(0);
   const statusesRef = useRef(statuses);
   const mountedRef = useRef(true);
+  // Depend on the key contents, not the array identity; callers often create a new array on each render.
   const visibleKeySignature = useMemo(() => visibleKeys.join('\u001f'), [visibleKeys]);
 
   useEffect(() => {
@@ -20,6 +21,7 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
   }, [statuses]);
 
   useEffect(() => {
+    // React development mode can mount, clean up, and remount effects; reset before starting workers.
     mountedRef.current = true;
     return () => {
       mountedRef.current = false;
@@ -34,6 +36,7 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
 
     if (keysToLoad.length === 0) return undefined;
 
+    // Shared by the worker functions below so only three status requests are active at a time.
     let nextIndex = 0;
 
     setStatuses((current) => {
@@ -44,6 +47,7 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
       return next;
     });
 
+    // Each worker publishes its own result immediately, then pulls another key from the queue.
     async function runNext(): Promise<void> {
       const key = keysToLoad[nextIndex];
       nextIndex += 1;
@@ -87,6 +91,7 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
       ...current,
       [key]: { status: 'idle' } satisfies StagingCertificateStatusLoadState,
     }));
+    // Bump a separate trigger because mutating the status cache alone should not be an effect dependency.
     setRetryAttempt((attempt) => attempt + 1);
   }, []);
 

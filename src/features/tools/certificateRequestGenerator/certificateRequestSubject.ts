@@ -20,6 +20,7 @@ export const DEFAULT_SUBJECTS: readonly CertificateSubjectEntry[] = [
 ];
 
 export function sortSubjectEntries<T extends CertificateSubjectEntry>(entries: readonly T[]): T[] {
+  // Keep same-code entries stable so default OU order and user insertion order are preserved.
   return SUBJECT_ORDER.flatMap((code) => entries.filter((entry) => entry.code === code));
 }
 

@@ -16,6 +16,7 @@ export function getHighestIssueSeverity(issues: StagingCertificateIssue[]) {
 
   let highest: 'none' | 'LOW' | 'MEDIUM' | 'HIGH' | 'UNKNOWN' = 'none';
   issues.forEach((issue) => {
+    // Unknown severities should not crash rendering; keep them visible as an unknown state.
     const severity = issue.severity.toUpperCase();
     if (!(severity in severityRank)) {
       if (highest === 'none') highest = 'UNKNOWN';
@@ -41,7 +42,7 @@ export function formatStagingCertificateIssue(issue: StagingCertificateIssue) {
 export function getWorkflowIndicators(status: StagingCertificateStatus): StagingCertificateWorkflowIndicator[] {
   const workflow: StagingCertificateWorkflowIndicator[] = [];
   if (status.hasMissingKeyPair) workflow.push('missing-key-pair');
-  if (status.hasMissingKeystore) workflow.push('missing-keystore');
+  if (status.hasMissingKeyStore) workflow.push('missing-keystore');
   if (status.hasPendingCertRequest) workflow.push('pending-cert-request');
   return workflow;
 }

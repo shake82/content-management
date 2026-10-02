@@ -7,7 +7,7 @@ import {
 it('uses the highest issue severity and maps workflow flags to indicator models', () => {
   const model = getStagingCertificateIndicatorModel({
     hasMissingKeyPair: true,
-    hasMissingKeystore: true,
+    hasMissingKeyStore: true,
     hasPendingCertRequest: false,
     issues: [
       { severity: 'MEDIUM', type: 'EXPIRING_SOON' },

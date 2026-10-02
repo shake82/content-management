@@ -25,7 +25,7 @@ it('protects staging certificate routes and renders them for authorized users', 
   vi.mocked(getStagingCertificateKeys).mockResolvedValue(['apps/prod/payments']);
   vi.mocked(getStagingCertificateStatus).mockResolvedValue({
     hasMissingKeyPair: false,
-    hasMissingKeystore: true,
+    hasMissingKeyStore: true,
     hasPendingCertRequest: false,
     issues: [],
   });

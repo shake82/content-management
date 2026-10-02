@@ -13,6 +13,7 @@ export async function runWithConcurrencyLimit<TInput, TOutput>(
   const safeLimit = Math.max(1, limit);
   let nextIndex = 0;
 
+  // A fixed number of workers drains the shared index, preserving input order in results.
   async function runNext(): Promise<void> {
     const index = nextIndex;
     nextIndex += 1;

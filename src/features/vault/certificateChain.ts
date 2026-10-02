@@ -25,6 +25,7 @@ export function buildCertificateChain(certificates: KeystoreCertificate[]): Cert
   const roots: KeystoreCertificate[] = [];
 
   certificates.forEach((certificate) => {
+    // Self-signed certificates and certificates with missing issuers become roots of the displayed chain.
     const parent = certificate.issuer !== certificate.subject ? bySubject.get(certificate.issuer) : undefined;
 
     if (!parent) {

@@ -12,7 +12,7 @@ it('renders validity, workflow, loading, and retryable error indicators', async 
         status: 'success',
         data: {
           hasMissingKeyPair: false,
-          hasMissingKeystore: true,
+          hasMissingKeyStore: true,
           hasPendingCertRequest: true,
           issues: [{ severity: 'HIGH', type: 'EXPIRED_CERTIFICATE' }],
         },
