@@ -3,7 +3,6 @@ import {
   getStagingCertificateStatus,
   STAGING_CERTIFICATE_STATUS_CONCURRENCY,
 } from '../../api/stagingCertificateApi';
-import { runWithConcurrencyLimit } from './stagingCertificateConcurrency';
 import type {
   StagingCertificateStatusByKey,
   StagingCertificateStatusLoadState,
@@ -11,13 +10,18 @@ import type {
 
 export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
   const [statuses, setStatuses] = useState<StagingCertificateStatusByKey>({});
+  const [retryAttempt, setRetryAttempt] = useState(0);
   const statusesRef = useRef(statuses);
-  const requestIdRef = useRef(0);
+  const mountedRef = useRef(true);
   const visibleKeySignature = useMemo(() => visibleKeys.join('\u001f'), [visibleKeys]);
 
   useEffect(() => {
     statusesRef.current = statuses;
   }, [statuses]);
+
+  useEffect(() => () => {
+    mountedRef.current = false;
+  }, []);
 
   useEffect(() => {
     const keysToLoad = visibleKeys.filter((key) => {
@@ -27,9 +31,7 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
 
     if (keysToLoad.length === 0) return undefined;
 
-    const requestId = requestIdRef.current + 1;
-    requestIdRef.current = requestId;
-    let active = true;
+    let nextIndex = 0;
 
     setStatuses((current) => {
       const next = { ...current };
@@ -39,33 +41,50 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
       return next;
     });
 
-    void runWithConcurrencyLimit(
-      keysToLoad,
-      STAGING_CERTIFICATE_STATUS_CONCURRENCY,
-      getStagingCertificateStatus,
-    ).then((results) => {
-      if (!active || requestIdRef.current !== requestId) return;
-      setStatuses((current) => {
-        const next: StagingCertificateStatusByKey = { ...current };
-        results.forEach(({ input, result, error }) => {
-          next[input] = error
-            ? { status: 'error', error }
-            : { status: 'success', data: result! };
-        });
-        return next;
-      });
-    });
+    async function runNext(): Promise<void> {
+      const key = keysToLoad[nextIndex];
+      nextIndex += 1;
+      if (!key) return;
 
-    return () => {
-      active = false;
-    };
-  }, [statuses, visibleKeySignature, visibleKeys]);
+      try {
+        const status = await getStagingCertificateStatus(key);
+        if (mountedRef.current) {
+          setStatuses((current) => ({
+            ...current,
+            [key]: { status: 'success', data: status },
+          }));
+        }
+      } catch (reason: unknown) {
+        if (mountedRef.current) {
+          setStatuses((current) => ({
+            ...current,
+            [key]: {
+              status: 'error',
+              error: reason instanceof Error ? reason : new Error('Unexpected API error'),
+            },
+          }));
+        }
+      }
+
+      if (mountedRef.current) await runNext();
+    }
+
+    void Promise.all(
+      Array.from(
+        { length: Math.min(STAGING_CERTIFICATE_STATUS_CONCURRENCY, keysToLoad.length) },
+        () => runNext(),
+      ),
+    );
+
+    return undefined;
+  }, [retryAttempt, visibleKeySignature]);
 
   const retryStatus = useCallback((key: string) => {
     setStatuses((current) => ({
       ...current,
       [key]: { status: 'idle' } satisfies StagingCertificateStatusLoadState,
     }));
+    setRetryAttempt((attempt) => attempt + 1);
   }, []);
 
   return { statuses, retryStatus };

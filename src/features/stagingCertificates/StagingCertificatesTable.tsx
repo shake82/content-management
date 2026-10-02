@@ -22,7 +22,7 @@ export function StagingCertificatesTable({
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Name</Table.Th>
-            <Table.Th>Is Valid</Table.Th>
+            <Table.Th className="staging-certificates-status-column">Is Valid</Table.Th>
             <Table.Th aria-label="Open detail" />
           </Table.Tr>
         </Table.Thead>
@@ -30,11 +30,11 @@ export function StagingCertificatesTable({
           {keys.map((key) => (
             <Table.Tr key={key}>
               <Table.Td>
-                <Anchor component={Link} to={stagingCertificateDetailRoute(key)} fw={600}>
+                <Anchor component={Link} to={stagingCertificateDetailRoute(key)} size="sm" fw={600}>
                   {key}
                 </Anchor>
               </Table.Td>
-              <Table.Td>
+              <Table.Td className="staging-certificates-status-column">
                 <StagingCertificateValidityIndicators
                   state={statuses[key]}
                   onRetry={() => onRetryStatus(key)}

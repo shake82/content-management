@@ -60,7 +60,7 @@ export function StagingCertificateValidityIndicators({
     return (
       <Group gap={6} wrap="nowrap" aria-label="Status loading">
         <Loader size="xs" />
-        <Badge color="gray" variant="light">Loading</Badge>
+        <Badge color="gray" variant="light" className="staging-certificate-status-badge">Loading</Badge>
       </Group>
     );
   }
@@ -69,7 +69,7 @@ export function StagingCertificateValidityIndicators({
     return (
       <Group gap={6} wrap="nowrap">
         <Tooltip label={state.error.message}>
-          <Badge color="red" variant="light" leftSection={<IconAlertTriangle size={13} />}>
+          <Badge color="red" variant="light" leftSection={<IconAlertTriangle size={13} />} className="staging-certificate-status-badge">
             Error
           </Badge>
         </Tooltip>
@@ -93,6 +93,7 @@ export function StagingCertificateValidityIndicators({
       leftSection={model.validity.severity === 'none' ? <IconCircleCheck size={13} /> : <IconAlertCircle size={13} />}
       tabIndex={issueLabels.length > 0 ? 0 : undefined}
       aria-label={severityLabel(model.validity.severity)}
+      className="staging-certificate-status-badge"
     >
       {model.validity.severity === 'none' ? 'Valid' : model.validity.severity}
     </Badge>
@@ -110,6 +111,7 @@ export function StagingCertificateValidityIndicators({
             variant="light"
             leftSection={<WorkflowIcon workflow={workflow} />}
             aria-label={workflowLabels[workflow]}
+            className="staging-certificate-status-badge"
           >
             {workflowLabels[workflow]}
           </Badge>

@@ -168,6 +168,19 @@ input {
   padding: 0 4px 12px;
 }
 
+.staging-certificates-status-column {
+  min-width: 260px;
+}
+
+.staging-certificate-status-badge {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
+.staging-certificate-status-badge .mantine-Badge-label {
+  white-space: nowrap;
+}
+
 .summary-strip {
   display: grid;
   grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
