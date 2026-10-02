@@ -1,8 +1,6 @@
 import { ActionIcon, Badge, Group, Loader, Tooltip } from '@mantine/core';
 import {
-  IconAlertCircle,
   IconAlertTriangle,
-  IconCircleCheck,
   IconClock,
   IconKeyOff,
   IconRefresh,
@@ -90,7 +88,6 @@ export function StagingCertificateValidityIndicators({
     <Badge
       color={severityColor(model.validity.severity)}
       variant={model.validity.severity === 'none' ? 'light' : 'dot'}
-      leftSection={model.validity.severity === 'none' ? <IconCircleCheck size={13} /> : <IconAlertCircle size={13} />}
       tabIndex={issueLabels.length > 0 ? 0 : undefined}
       aria-label={severityLabel(model.validity.severity)}
       className="staging-certificate-status-badge"

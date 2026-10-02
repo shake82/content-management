@@ -168,8 +168,28 @@ input {
   padding: 0 4px 12px;
 }
 
+.staging-certificates-table {
+  table-layout: fixed;
+}
+
+.staging-certificates-name-column {
+  width: 420px;
+}
+
+.staging-certificates-name-link {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.staging-certificates-action-column {
+  width: 52px;
+  text-align: center;
+}
+
 .staging-certificates-status-column {
-  min-width: 260px;
+  width: 260px;
 }
 
 .staging-certificate-status-badge {

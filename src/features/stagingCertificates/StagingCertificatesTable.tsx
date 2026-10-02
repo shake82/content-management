@@ -18,19 +18,19 @@ export function StagingCertificatesTable({
 }: StagingCertificatesTableProps) {
   return (
     <Table.ScrollContainer minWidth={620}>
-      <Table verticalSpacing="sm" highlightOnHover>
+      <Table verticalSpacing="sm" highlightOnHover className="staging-certificates-table">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Name</Table.Th>
+            <Table.Th className="staging-certificates-name-column">Name</Table.Th>
             <Table.Th className="staging-certificates-status-column">Is Valid</Table.Th>
-            <Table.Th aria-label="Open detail" />
+            <Table.Th className="staging-certificates-action-column" aria-label="Open detail" />
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
           {keys.map((key) => (
             <Table.Tr key={key}>
-              <Table.Td>
-                <Anchor component={Link} to={stagingCertificateDetailRoute(key)} size="sm" fw={600}>
+              <Table.Td className="staging-certificates-name-column">
+                <Anchor component={Link} to={stagingCertificateDetailRoute(key)} size="sm" fw={600} title={key} className="staging-certificates-name-link">
                   {key}
                 </Anchor>
               </Table.Td>
@@ -40,7 +40,7 @@ export function StagingCertificatesTable({
                   onRetry={() => onRetryStatus(key)}
                 />
               </Table.Td>
-              <Table.Td>
+              <Table.Td className="staging-certificates-action-column">
                 <Tooltip label={`Open ${key}`}>
                   <ActionIcon
                     component={Link}
