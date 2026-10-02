@@ -66,3 +66,21 @@ it('streams visible row statuses as each request resolves and retries idle rows'
     data: { ...validStatus, hasMissingKeystore: true },
   }));
 });
+
+
+it('continues loading visible statuses beyond the initial concurrency batch', async () => {
+  vi.mocked(getStagingCertificateStatus).mockImplementation(async (key) => ({
+    ...validStatus,
+    hasPendingCertRequest: key === 'echo',
+  }));
+
+  const { result } = renderHook(() => useRenderedStagingCertificateStatuses(['alpha', 'bravo', 'charlie', 'delta', 'echo']));
+
+  await waitFor(() => expect(vi.mocked(getStagingCertificateStatus)).toHaveBeenCalledTimes(5));
+  await waitFor(() => expect(result.current.statuses.echo).toEqual({
+    status: 'success',
+    data: { ...validStatus, hasPendingCertRequest: true },
+  }));
+  expect(result.current.statuses.alpha?.status).toBe('success');
+  expect(result.current.statuses.delta?.status).toBe('success');
+});

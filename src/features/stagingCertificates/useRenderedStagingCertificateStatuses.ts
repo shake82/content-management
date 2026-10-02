@@ -19,8 +19,11 @@ export function useRenderedStagingCertificateStatuses(visibleKeys: string[]) {
     statusesRef.current = statuses;
   }, [statuses]);
 
-  useEffect(() => () => {
-    mountedRef.current = false;
+  useEffect(() => {
+    mountedRef.current = true;
+    return () => {
+      mountedRef.current = false;
+    };
   }, []);
 
   useEffect(() => {
