@@ -33,7 +33,7 @@ beforeEach(() => {
 
 it('loads a path-based staging certificate, completes a pending request, and handles missing keys', async () => {
   vi.mocked(getStagingCertificateDetail).mockResolvedValue({
-    hasMissingKeystore: true,
+    hasMissingKeyStore: true,
     certificateRequestInfo: {
       certificateRequest: { type: 'PEM' },
       privateKey: { type: 'PEM' },
@@ -51,7 +51,7 @@ it('loads a path-based staging certificate, completes a pending request, and han
       }],
     },
   });
-  vi.mocked(completeCertificateRequest).mockResolvedValue({ hasMissingKeystore: false, certificateRequestInfo: null });
+  vi.mocked(completeCertificateRequest).mockResolvedValue({ hasMissingKeyStore: false, certificateRequestInfo: null });
 
   renderDetail('/staging/apps/prod/payments');
 
@@ -88,7 +88,7 @@ it('loads a path-based staging certificate, completes a pending request, and han
 it('shows new request and generate keystore actions when no request is pending', async () => {
   const alert = vi.spyOn(window, 'alert').mockImplementation(() => undefined);
   vi.mocked(getStagingCertificateDetail).mockResolvedValue({
-    hasMissingKeystore: true,
+    hasMissingKeyStore: true,
     certificateRequestInfo: null,
   });
   vi.mocked(createStagingCertificate).mockResolvedValue({ path: 'apps/prod/payments', version: 1 });

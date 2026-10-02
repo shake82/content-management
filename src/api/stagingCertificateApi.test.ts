@@ -19,12 +19,12 @@ beforeEach(() => {
 it('loads keys, encoded status, detail data, create requests, and completion uploads through expected endpoints', async () => {
   vi.mocked(getJson).mockResolvedValueOnce(['apps/prod/payments']);
   vi.mocked(getJson).mockResolvedValueOnce({
-    hasMissingKeystore: true,
+    hasMissingKeyStore: true,
     issues: [{ severity: 'HIGH', type: 'EXPIRED_CERTIFICATE' }],
   });
-  vi.mocked(getJson).mockResolvedValueOnce({ hasMissingKeystore: true, certificateRequestInfo: null });
+  vi.mocked(getJson).mockResolvedValueOnce({ hasMissingKeyStore: true, certificateRequestInfo: null });
   vi.mocked(postJson).mockResolvedValueOnce({ path: 'apps/prod/payments', version: 3 });
-  vi.mocked(postJson).mockResolvedValueOnce({ hasMissingKeystore: false, certificateRequestInfo: null });
+  vi.mocked(postJson).mockResolvedValueOnce({ hasMissingKeyStore: false, certificateRequestInfo: null });
 
   const keys = await getStagingCertificateKeys();
   const status = await getStagingCertificateStatus('apps/prod/payments');
@@ -45,7 +45,7 @@ it('loads keys, encoded status, detail data, create requests, and completion upl
     hasPendingCertRequest: false,
     issues: [{ severity: 'HIGH', type: 'EXPIRED_CERTIFICATE' }],
   });
-  expect(detail).toEqual({ hasMissingKeystore: true, certificateRequestInfo: null });
+  expect(detail).toEqual({ hasMissingKeyStore: true, certificateRequestInfo: null });
   expect(postJson).toHaveBeenNthCalledWith(
     1,
     STAGING_CERTIFICATE_ENDPOINT,
@@ -57,5 +57,5 @@ it('loads keys, encoded status, detail data, create requests, and completion upl
     { cert: '-----BEGIN CERTIFICATE-----', parentChain: '' },
   );
   expect(response).toEqual({ path: 'apps/prod/payments', version: 3 });
-  expect(completed).toEqual({ hasMissingKeystore: false, certificateRequestInfo: null });
+  expect(completed).toEqual({ hasMissingKeyStore: false, certificateRequestInfo: null });
 });

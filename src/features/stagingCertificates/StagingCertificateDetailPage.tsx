@@ -54,7 +54,7 @@ export function StagingCertificateDetailPage() {
           </div>
           {!requestInfo && (
             <StagingCertificateDetailActions
-              hasMissingKeystore={detail.data.hasMissingKeystore}
+              hasMissingKeyStore={detail.data.hasMissingKeyStore}
               onNewRequest={() => setNewRequestOpened(true)}
               onGenerateKeystore={() => window.alert('Generate Keystore is not implemented yet.')}
             />

@@ -51,7 +51,7 @@ export interface StagingCertificateKeyPair {
 }
 
 export interface StagingCertificateDetail {
-  hasMissingKeystore: boolean;
+  hasMissingKeyStore: boolean;
   keyPair?: StagingCertificateKeyPair;
   certificateRequestInfo: StagingCertificateRequestInfo | null;
 }
