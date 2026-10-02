@@ -32,7 +32,7 @@ function AppRoutes() {
         <Route path={`${routes.vault}/*`} element={routePage(<VaultViewPage />)} />
         <Route path={routes.certificates} element={routePage(<CertificateViewPage />)} />
         <Route path={routes.stagingCertificates} element={routePage(protectedPage(permissions.manageStagingCertificates, <StagingCertificatesPage />))} />
-        <Route path={routes.stagingCertificateDetail} element={routePage(protectedPage(permissions.manageStagingCertificates, <StagingCertificateDetailPage />))} />
+        <Route path={`${routes.stagingCertificateDetail}/*`} element={routePage(protectedPage(permissions.manageStagingCertificates, <StagingCertificateDetailPage />))} />
         <Route path={routes.reports} element={routePage(protectedPage(permissions.viewReports, <DummyPage title="Reports" description="Certificate inventory reporting will appear here." />))} />
         <Route path={routes.toolsImport} element={routePage(<DummyPage title="Import certificates" description="Certificate import workflows will appear here." />)} />
         <Route path={routes.toolsAudit} element={routePage(<DummyPage title="Audit history" description="Vault catalog audit history will appear here." />)} />

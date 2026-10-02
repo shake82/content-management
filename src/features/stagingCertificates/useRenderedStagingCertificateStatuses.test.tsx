@@ -63,7 +63,7 @@ it('streams visible row statuses as each request resolves and retries idle rows'
 
   await waitFor(() => expect(result.current.statuses.bravo).toEqual({
     status: 'success',
-    data: { ...validStatus, hasMissingKeystore: true },
+    data: { ...validStatus, hasMissingKeyStore: true },
   }));
 });
 

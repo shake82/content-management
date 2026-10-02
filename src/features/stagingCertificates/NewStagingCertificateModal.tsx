@@ -4,24 +4,35 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { stagingCertificateDetailRoute } from '../../app/routes';
 import { CertificateRequestFields } from '../tools/certificateRequestGenerator/CertificateRequestFields';
+import type { CreateStagingCertificateResponse } from './stagingCertificateTypes';
 import { useCreateStagingCertificate } from './useCreateStagingCertificate';
 
 interface NewStagingCertificateModalProps {
   opened: boolean;
   onClose: () => void;
+  defaultCommonName?: string;
+  navigateOnSuccess?: boolean;
+  onSuccess?: (response: CreateStagingCertificateResponse) => void;
 }
 
-export function NewStagingCertificateModal({ opened, onClose }: NewStagingCertificateModalProps) {
+export function NewStagingCertificateModal({
+  opened,
+  onClose,
+  defaultCommonName,
+  navigateOnSuccess = true,
+  onSuccess,
+}: NewStagingCertificateModalProps) {
   const navigate = useNavigate();
   const creator = useCreateStagingCertificate();
 
   useEffect(() => {
     if (creator.status !== 'success' || !creator.data) return;
-    const detailRoute = stagingCertificateDetailRoute(creator.data.path);
+    const response = creator.data;
     creator.reset();
     onClose();
-    navigate(detailRoute);
-  }, [creator, navigate, onClose]);
+    onSuccess?.(response);
+    if (navigateOnSuccess) navigate(stagingCertificateDetailRoute(response.path));
+  }, [creator, navigate, navigateOnSuccess, onClose, onSuccess]);
 
   const close = () => {
     if (creator.status === 'loading') return;
@@ -37,6 +48,7 @@ export function NewStagingCertificateModal({ opened, onClose }: NewStagingCertif
         </Alert>
       )}
       <CertificateRequestFields
+        defaultSubjects={defaultCommonName ? [{ code: 'CN', value: defaultCommonName }] : undefined}
         disabled={creator.status === 'loading'}
         loading={creator.status === 'loading'}
         onSubmit={(payload) => {

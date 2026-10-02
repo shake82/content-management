@@ -12,6 +12,8 @@ vi.mock('../api/vaultApi', () => ({ getVaultCatalog: vi.fn() }));
 vi.mock('../api/stagingCertificateApi', () => ({
   getStagingCertificateKeys: vi.fn(),
   getStagingCertificateStatus: vi.fn(),
+  getStagingCertificateDetail: vi.fn(),
+  completeCertificateRequest: vi.fn(),
   createStagingCertificate: vi.fn(),
   STAGING_CERTIFICATE_STATUS_CONCURRENCY: 3,
 }));
@@ -30,7 +32,7 @@ it('protects staging certificate routes and renders them for authorized users', 
     issues: [],
   });
 
-  renderApp(<App />, { route: '/staging-certificates' });
+  renderApp(<App />, { route: '/staging' });
 
   expect(await screen.findByRole('heading', { name: 'Staging Certificates' })).toBeInTheDocument();
   expect(await screen.findByRole('link', { name: 'apps/prod/payments' })).toBeInTheDocument();
@@ -45,7 +47,7 @@ it('redirects staging certificate routes when the user lacks permission', async 
   });
   vi.mocked(getVaultCatalog).mockResolvedValue(catalogFixture);
 
-  renderApp(<App />, { route: '/staging-certificates/detail?key=apps%2Fprod%2Fpayments' });
+  renderApp(<App />, { route: '/staging/apps/prod/payments' });
 
   expect(await screen.findByRole('heading', { name: 'Vault View' })).toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Staging Certificates' })).not.toBeInTheDocument();

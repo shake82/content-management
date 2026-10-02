@@ -1,11 +1,23 @@
-import { Alert, Box, Stack, Text, Title } from '@mantine/core';
+import { Alert, Box, Group, Stack, Text, Title } from '@mantine/core';
 import { IconAlertTriangle } from '@tabler/icons-react';
-import { useSearchParams } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { decodeStagingCertificatePath } from '../../app/routes';
+import { StatusView } from '../../components/StatusView';
+import { CompleteCertificateRequestModal } from './CompleteCertificateRequestModal';
+import { NewStagingCertificateModal } from './NewStagingCertificateModal';
 import { StagingCertificateBreadcrumbs } from './StagingCertificateBreadcrumbs';
+import { StagingCertificateDetailActions } from './StagingCertificateDetailActions';
+import { StagingCertificateKeyPairSection } from './StagingCertificateKeyPairSection';
+import { StagingCertificateRequestBanner } from './StagingCertificateRequestBanner';
+import { useStagingCertificateDetail } from './useStagingCertificateDetail';
 
 export function StagingCertificateDetailPage() {
-  const [searchParams] = useSearchParams();
-  const certificateKey = searchParams.get('key') ?? '';
+  const params = useParams();
+  const certificateKey = decodeStagingCertificatePath(params['*'] ?? '');
+  const detail = useStagingCertificateDetail(certificateKey);
+  const [uploadOpened, setUploadOpened] = useState(false);
+  const [newRequestOpened, setNewRequestOpened] = useState(false);
 
   if (!certificateKey) {
     return (
@@ -17,15 +29,63 @@ export function StagingCertificateDetailPage() {
     );
   }
 
+  if (detail.status === 'idle' || detail.status === 'loading') {
+    return <StatusView kind="loading" message="Loading staging certificate..." />;
+  }
+
+  if (detail.status === 'error') {
+    return <StatusView kind="error" message={detail.error?.message} onRetry={detail.refetch} />;
+  }
+
+  if (!detail.data) {
+    return <StatusView kind="empty" message="No staging certificate details found." />;
+  }
+
+  const requestInfo = detail.data.certificateRequestInfo;
+
   return (
     <Box mx="auto">
-      <Stack gap="md">
+      <Stack gap="lg">
         <StagingCertificateBreadcrumbs certificateKey={certificateKey} />
-        <section aria-labelledby="staging-certificate-detail-heading">
-          <Text className="page-eyebrow">Staging certificate</Text>
-          <Title id="staging-certificate-detail-heading" order={1} size="h2">{certificateKey}</Title>
-        </section>
+        <Group justify="space-between" align="flex-end" className="page-heading">
+          <div>
+            <Text className="page-eyebrow">Staging certificate</Text>
+            <Title id="staging-certificate-detail-heading" order={1} size="h2">{certificateKey}</Title>
+          </div>
+          {!requestInfo && (
+            <StagingCertificateDetailActions
+              hasMissingKeystore={detail.data.hasMissingKeystore}
+              onNewRequest={() => setNewRequestOpened(true)}
+              onGenerateKeystore={() => window.alert('Generate Keystore is not implemented yet.')}
+            />
+          )}
+        </Group>
+
+        {requestInfo && (
+          <StagingCertificateRequestBanner
+            requestInfo={requestInfo}
+            onUpload={() => setUploadOpened(true)}
+          />
+        )}
+
+        <StagingCertificateKeyPairSection keyPair={detail.data.keyPair} />
       </Stack>
+
+      {requestInfo && (
+        <CompleteCertificateRequestModal
+          opened={uploadOpened}
+          path={certificateKey}
+          onClose={() => setUploadOpened(false)}
+          onSuccess={detail.refetch}
+        />
+      )}
+      <NewStagingCertificateModal
+        opened={newRequestOpened}
+        onClose={() => setNewRequestOpened(false)}
+        defaultCommonName={certificateKey}
+        navigateOnSuccess={false}
+        onSuccess={() => detail.refetch()}
+      />
     </Box>
   );
 }

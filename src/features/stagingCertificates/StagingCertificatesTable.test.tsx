@@ -29,7 +29,7 @@ it('renders staging certificate rows, status indicators, detail links, and retry
   expect(screen.getByRole('columnheader', { name: 'Is Valid' })).toBeInTheDocument();
   expect(screen.getByRole('link', { name: 'apps/prod/payments' })).toHaveAttribute(
     'href',
-    '/staging-certificates/detail?key=apps%2Fprod%2Fpayments',
+    '/staging/apps/prod/payments',
   );
   expect(screen.getByLabelText('Missing keystore')).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Retry status' }));

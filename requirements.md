@@ -1,28 +1,36 @@
 ## Requirement
-Create a new component called "Staging Certificates" the follows the following requirements
-### Navigation and Access
-1. Create a nav for it in the header
-2. The nav and page should only be accessible if the current user has the permission "MANAGE_STAGING_CERTS"
+Update the StagingCertificateDetailPage
+### Route
+1. Change the route of stagingCertificates to "/staging"
+2. Change the route of stagingCertificateDetail to "/staging/${key}"
 ### API
-1. Use the API "/api/stagingCerts" to get data. Response is a simple string array with vault keys. All data is retrieved in one go and no server side paging is required
-2. For each item in the response, use the API "/api/stagingCerts/<key>/getStatus" to get the detailed status on the item. Using axios, rate limit the requests such that only 3 requests should be in flight at a time with the rest waiting until space is available
-  - format of this response is available in the sample.json file
-3. Create Certificate request API: POST request to "/api/stagingCerts". data format is the same as the GenerateCertificateRequestPayload interface. Reponse has two properties: "path" and "version"
-### Render
-#### Data table
-1. Render similar to the "Certificate View" with a datatable. However the paging is entirely on the client side.
-2. Only retreive the status of a row that has been rendered (from teh API section)
-3. Table columns: 
-  - "Name" coming from the first API
-  - "Is Valid" coming from the Second API. These needs to show to seperate indicators:
-    - Validity indicator with tooltip just like the "Certificate View" component. Color the indicator based on the highest severity. e.g. if both medium and high severity issues are present, show the highest severity indicator. And show all issues in the tooltip
-    - Workflow issues indicator based on the missing/pending flags in the response. Have a seperate icon/color for each state
-4. Add the ability to filter data in table as elsewhere. Filtering is entirely client side. 
-5. Allow to navigate to a new detail component that takes the key as an argument. At the moment show only the title with the key name and a breadcrumb component to return back on this component.
-#### New button
-1. Create a "New" button with icon. This open a modal window with the Certificate Request Generator component. The existing validations remain the same
-2. On successfull submit response, navigate toe the detail component using the "path" prop in the response as key
+1. Use the API "/api/stagingCerts/${path}" to get data. Response format is defined in the sample.json file
+2. Upload Certificate API: POST to the path "/api/stagingCerts/${path}". Post data contains two properties: "cert" and "parentChain"
 
+### Render
+#### Certificate Request
+1. If a certificate request exists (certificateRequestInfo is not null), then show a banner saying that there is a current pending certificate request and upload a new Certificate response to generate a key pair
+2. In the banner add three buttons with relavent icons
+  - View In Vault: Opens the related vaultPath in a new tab
+  - Device enrollment: Opens the device enrolement URL in a new tab. Make this url configurable through a constant variable
+  - Upload Certificate: Open the Complete Certificate Request Modal
+### Complete Certificate Request Modal
+1. Add Two textboxes for PEM content. 
+  - New Certificate (Required)
+  - Parent Chain (Not Required)
+2. Use functionality similar to the Local Certificate Browser 
+  - Action button to copy from clipboard
+  - Action button to select a file and copy its contents to the related textbox
+3. On successful submit, refetch the "/api/stagingCerts/${path}" on the page to refresh data
+4. Show errors on the modal itself and do not close it
+### key Pair
+1. If "keyPair" property is missing and then dont render anything.
+2. If present then render the data same as the KeystoreDetailsPage page
+  - Show the standard columns
+  - Expand to show the certificate chain
+3. If certificateRequestInfo is null then show:
+  1. The same new button as the Parent Staging Certificate page. The only difference is that default the Common Name to the current key. API call and functionality remains the same. One success,  refetch the "/api/stagingCerts/${path}" on the page to refresh data
+  2. Generate Keystore button if hasMissingKeystore is true. Right now just show an alert on click
 
 ## Unit Tests
 1. Every UI component will have a unit test
