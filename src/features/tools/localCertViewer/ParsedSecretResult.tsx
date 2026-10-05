@@ -1,6 +1,6 @@
 import { Badge, Button, Group, Stack, Text, Title } from '@mantine/core';
 import { IconRefresh } from '@tabler/icons-react';
-import { KeystoreEntriesTable } from '../../vault/KeystoreEntriesTable';
+import { KeystoreEntriesTable } from '../../vault/keystore-detail/KeystoreEntriesTable';
 import { IssueSeveritySummary } from './IssueSeveritySummary';
 import type { ParsedSecretResponse } from './localCertViewerTypes';
 

@@ -1,4 +1,4 @@
-import type { KeystoreKeyEntry } from '../features/vault/detailTypes';
+import type { KeystoreKeyEntry } from '../features/vault/common/detailTypes';
 import type { ParseSecretRequest, ParsedSecretResponse } from '../features/tools/localCertViewer/localCertViewerTypes';
 import type {
   GenerateCertificateRequestPayload,

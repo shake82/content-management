@@ -2,7 +2,7 @@ import { ActionIcon, Box, Divider, Group, Pagination, Stack, Text, TextInput, Ti
 import { useDebouncedValue } from '@mantine/hooks';
 import { IconSearch, IconX } from '@tabler/icons-react';
 import { useState } from 'react';
-import { StatusView } from '../../components/StatusView';
+import { StatusView } from '../../components/feedback/StatusView';
 import { CertificateCatalogTable } from './CertificateCatalogTable';
 import { useCertificateCatalog } from './useCertificateCatalog';
 

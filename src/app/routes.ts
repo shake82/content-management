@@ -1,4 +1,4 @@
-import type { KeystoreLocation } from '../features/vault/keystoreLocation';
+import type { KeystoreLocation } from '../features/vault/common/keystoreLocation';
 
 export const routes = {
   vault: '/vault',

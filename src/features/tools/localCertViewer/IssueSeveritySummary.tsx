@@ -1,5 +1,5 @@
 import { Badge, Group, Stack, Text } from '@mantine/core';
-import { formatIssueDetails } from '../../vault/issueSummary';
+import { formatIssueDetails } from '../../vault/common/issueSummary';
 
 const severityColor: Record<string, string> = {
   CRITICAL: 'red',

@@ -11,8 +11,8 @@ import {
 } from '@mantine/core';
 import { IconChevronDown, IconChevronRight } from '@tabler/icons-react';
 import { Fragment, useState } from 'react';
-import { CertificateTree } from '../vault/CertificateTree';
-import type { KeystoreKeyEntry } from '../vault/detailTypes';
+import { CertificateTree } from '../vault/common/CertificateTree';
+import type { KeystoreKeyEntry } from '../vault/common/detailTypes';
 import type { CertificateCatalogItem } from './certificateCatalogTypes';
 import { formatCertificateDate, getCertificateCatalogValidity } from './certificateCatalogStatus';
 import { CertificateReferencesTable } from './CertificateReferencesTable';

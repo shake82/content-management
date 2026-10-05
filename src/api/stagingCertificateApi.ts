@@ -6,7 +6,7 @@ import type {
   GenerateKeyStorePayload,
   StagingCertificateDetail,
   StagingCertificateStatus,
-} from '../features/stagingCertificates/stagingCertificateTypes';
+} from '../features/stagingCertificates/common/stagingCertificateTypes';
 import { getJson, postJson } from './apiClient';
 
 export const STAGING_CERTIFICATE_ENDPOINT = '/stagingCerts';

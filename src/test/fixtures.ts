@@ -1,4 +1,4 @@
-import type { VaultCatalogItem } from '../features/vault/catalogTypes';
+import type { VaultCatalogItem } from '../features/vault/vault-view/catalogTypes';
 
 export const catalogFixture: VaultCatalogItem[] = [
   {

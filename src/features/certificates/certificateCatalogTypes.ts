@@ -1,4 +1,4 @@
-import type { KeystoreCertificate, KeystoreIssue } from '../vault/detailTypes';
+import type { KeystoreCertificate, KeystoreIssue } from '../vault/common/detailTypes';
 
 export interface CertificateVaultReference {
   catalogId: number;

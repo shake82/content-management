@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react';
 import { Navigate } from 'react-router-dom';
 import { firstAccessibleRoute } from '../../app/navigation';
-import { StatusView } from '../../components/StatusView';
+import { StatusView } from '../../components/feedback/StatusView';
 import { useCurrentUser } from './useCurrentUser';
 
 interface RequirePermissionProps {

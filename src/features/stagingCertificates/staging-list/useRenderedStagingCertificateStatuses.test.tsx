@@ -1,0 +1,86 @@
+import { act, renderHook, waitFor } from '@testing-library/react';
+import { beforeEach, expect, it, vi } from 'vitest';
+import { getStagingCertificateStatus } from '../../../api/stagingCertificateApi';
+import { useRenderedStagingCertificateStatuses } from './useRenderedStagingCertificateStatuses';
+import type { StagingCertificateStatus } from '../common/stagingCertificateTypes';
+
+vi.mock('../../../api/stagingCertificateApi', () => ({
+  getStagingCertificateStatus: vi.fn(),
+  STAGING_CERTIFICATE_STATUS_CONCURRENCY: 3,
+}));
+
+function deferredStatus() {
+  let resolve!: (status: StagingCertificateStatus) => void;
+  const promise = new Promise<StagingCertificateStatus>((nextResolve) => {
+    resolve = nextResolve;
+  });
+  return { promise, resolve };
+}
+
+const validStatus: StagingCertificateStatus = {
+  hasMissingKeyPair: false,
+  hasMissingKeyStore: false,
+  hasPendingCertRequest: false,
+  issues: [],
+};
+
+beforeEach(() => {
+  vi.mocked(getStagingCertificateStatus).mockReset();
+});
+
+it('streams visible row statuses as each request resolves and retries idle rows', async () => {
+  const first = deferredStatus();
+  const second = deferredStatus();
+  vi.mocked(getStagingCertificateStatus)
+    .mockReturnValueOnce(first.promise)
+    .mockReturnValueOnce(second.promise)
+    .mockResolvedValueOnce({ ...validStatus, hasPendingCertRequest: true });
+
+  const { result } = renderHook(() => useRenderedStagingCertificateStatuses(['alpha', 'bravo']));
+
+  await waitFor(() => expect(result.current.statuses.alpha?.status).toBe('loading'));
+  expect(result.current.statuses.bravo?.status).toBe('loading');
+
+  await act(async () => {
+    first.resolve({ ...validStatus, issues: [{ severity: 'HIGH', type: 'EXPIRED_CERTIFICATE' }] });
+    await first.promise;
+  });
+
+  await waitFor(() => expect(result.current.statuses.alpha?.status).toBe('success'));
+  expect(result.current.statuses.bravo?.status).toBe('loading');
+
+  act(() => result.current.retryStatus('alpha'));
+  await waitFor(() => expect(vi.mocked(getStagingCertificateStatus)).toHaveBeenCalledTimes(3));
+  await waitFor(() => expect(result.current.statuses.alpha).toEqual({
+    status: 'success',
+    data: { ...validStatus, hasPendingCertRequest: true },
+  }));
+
+  await act(async () => {
+    second.resolve({ ...validStatus, hasMissingKeyStore: true });
+    await second.promise;
+  });
+
+  await waitFor(() => expect(result.current.statuses.bravo).toEqual({
+    status: 'success',
+    data: { ...validStatus, hasMissingKeyStore: true },
+  }));
+});
+
+
+it('continues loading visible statuses beyond the initial concurrency batch', async () => {
+  vi.mocked(getStagingCertificateStatus).mockImplementation(async (key) => ({
+    ...validStatus,
+    hasPendingCertRequest: key === 'echo',
+  }));
+
+  const { result } = renderHook(() => useRenderedStagingCertificateStatuses(['alpha', 'bravo', 'charlie', 'delta', 'echo']));
+
+  await waitFor(() => expect(vi.mocked(getStagingCertificateStatus)).toHaveBeenCalledTimes(5));
+  await waitFor(() => expect(result.current.statuses.echo).toEqual({
+    status: 'success',
+    data: { ...validStatus, hasPendingCertRequest: true },
+  }));
+  expect(result.current.statuses.alpha?.status).toBe('success');
+  expect(result.current.statuses.delta?.status).toBe('success');
+});

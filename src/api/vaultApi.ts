@@ -1,6 +1,6 @@
-import type { VaultCatalogItem } from '../features/vault/catalogTypes';
-import type { KeystoreComparison, KeystoreDetails } from '../features/vault/detailTypes';
-import { isCompleteKeystoreLocation, type KeystoreLocation } from '../features/vault/keystoreLocation';
+import type { VaultCatalogItem } from '../features/vault/vault-view/catalogTypes';
+import type { KeystoreComparison, KeystoreDetails } from '../features/vault/common/detailTypes';
+import { isCompleteKeystoreLocation, type KeystoreLocation } from '../features/vault/common/keystoreLocation';
 import { getJson } from './apiClient';
 
 export const VAULT_CATALOG_ENDPOINT = '/secret/vaultcatalog';

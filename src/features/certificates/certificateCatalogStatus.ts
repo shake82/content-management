@@ -2,8 +2,8 @@ import {
   getCertificateStatuses,
   parseKeystoreDate,
   type CertificateStatus,
-} from '../vault/certificateStatus';
-import type { KeystoreIssue } from '../vault/detailTypes';
+} from '../vault/common/certificateStatus';
+import type { KeystoreIssue } from '../vault/common/detailTypes';
 import type { CertificateCatalogItem } from './certificateCatalogTypes';
 
 export interface CertificateCatalogValidity {

@@ -1,4 +1,4 @@
-import type { KeystoreKeyEntry } from '../../vault/detailTypes';
+import type { KeystoreKeyEntry } from '../../vault/common/detailTypes';
 
 export type SecretSourceType = 'file' | 'text';
 
