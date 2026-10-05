@@ -53,6 +53,7 @@ it('omits parent chain upload when it is not allowed and keeps API errors in the
   );
 
   expect(screen.queryByRole('textbox', { name: 'Parent Chain' })).not.toBeInTheDocument();
+  expect(screen.getByText('Both public and private keys are already present. Click to Generate.')).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Generate' }));
 
   await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', ''));

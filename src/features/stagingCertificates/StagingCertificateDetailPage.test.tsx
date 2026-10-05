@@ -171,6 +171,7 @@ it('generates a keystore without parent chain upload when the first key entry ha
   const generateDialog = await screen.findByRole('dialog', { name: 'Generate keystore' });
   const generateSubmit = within(generateDialog).getByRole('button', { name: 'Generate' });
   expect(within(generateDialog).queryByRole('textbox', { name: 'Parent Chain' })).not.toBeInTheDocument();
+  expect(within(generateDialog).getByText('Both public and private keys are already present. Click to Generate.')).toBeInTheDocument();
   await userEvent.click(generateSubmit);
 
   await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', ''));

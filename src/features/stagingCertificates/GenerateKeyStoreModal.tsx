@@ -1,4 +1,4 @@
-import { Alert, Button, Group, Modal, Stack } from '@mantine/core';
+import { Alert, Button, Group, Modal, Stack, Text } from '@mantine/core';
 import { IconAlertTriangle, IconKey } from '@tabler/icons-react';
 import { type FormEvent, useState } from 'react';
 import { PemTextareaWithActions } from './PemTextareaWithActions';
@@ -70,7 +70,7 @@ export function GenerateKeyStoreModal({
               {generator.error?.message ?? 'An unexpected error occurred.'}
             </Alert>
           )}
-          {parentChainRequired && (
+          {parentChainRequired ? (
             <PemTextareaWithActions
               label="Parent Chain"
               required
@@ -78,6 +78,10 @@ export function GenerateKeyStoreModal({
               onChange={setParentChain}
               disabled={loading}
             />
+          ) : (
+            <Text size="sm">
+              Both public and private keys are already present. Click to Generate.
+            </Text>
           )}
           <Group justify="flex-end">
             <Button type="button" variant="subtle" onClick={close} disabled={loading}>Cancel</Button>
