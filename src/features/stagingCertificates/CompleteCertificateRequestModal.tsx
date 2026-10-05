@@ -53,7 +53,7 @@ export function CompleteCertificateRequestModal({
   };
 
   return (
-    <Modal opened={opened} onClose={close} title="Complete certificate request" size="lg" centered>
+    <Modal opened={opened} onClose={close} title="Complete certificate request" size="xl" centered>
       <form onSubmit={(event) => void submit(event)}>
         <Stack gap="md">
           {validationError && <Alert color="red" title="Missing certificate">{validationError}</Alert>}

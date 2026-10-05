@@ -6,12 +6,8 @@ export const routes = {
   certificates: '/certificates',
   stagingCertificates: '/staging',
   stagingCertificateDetail: '/staging',
-  reports: '/reports',
-  toolsImport: '/tools/import',
-  toolsAudit: '/tools/audit',
   toolsLocalCertViewer: '/tools/local-cert-viewer',
   toolsCertificateRequestGenerator: '/tools/certificate-request-generator',
-  settings: '/settings',
 } as const;
 
 export function keystoreDetailsRoute({ engine, path, prop }: KeystoreLocation) {

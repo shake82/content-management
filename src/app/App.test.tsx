@@ -76,7 +76,7 @@ it('renders Certificate Request Generator at its tools route', async () => {
   expect(screen.getAllByRole('button', { name: /Tools/ })[0]).toHaveAttribute('data-variant', 'light');
 });
 
-it('redirects Reports when the current user lacks its permission', async () => {
+it('redirects removed placeholder routes to Vault View', async () => {
   vi.mocked(getCurrentUser).mockResolvedValue({
     name: 'Maya Chen', email: 'maya@example.com', permissions: {},
   });
@@ -86,4 +86,5 @@ it('redirects Reports when the current user lacks its permission', async () => {
 
   expect(await screen.findByRole('heading', { name: 'Vault View' })).toBeInTheDocument();
   expect(screen.queryByRole('link', { name: 'Reports' })).not.toBeInTheDocument();
+  expect(screen.queryByRole('link', { name: 'Settings' })).not.toBeInTheDocument();
 });

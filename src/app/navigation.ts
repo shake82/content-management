@@ -2,7 +2,6 @@ import type { CurrentUser } from '../features/user/userTypes';
 import { routes } from './routes';
 
 export const permissions = {
-  viewReports: 'reports.view',
   manageStagingCertificates: 'MANAGE_STAGING_CERTS',
 } as const;
 
@@ -16,19 +15,14 @@ export const directNavigationItems: NavigationItem[] = [
   { label: 'Vault View', to: routes.vault },
   { label: 'Certificate View', to: routes.certificates },
   { label: 'Staging Certificates', to: routes.stagingCertificates, permission: permissions.manageStagingCertificates },
-  { label: 'Reports', to: routes.reports, permission: permissions.viewReports },
 ];
 
 export const toolNavigationItems: NavigationItem[] = [
   { label: 'Local Cert Viewer', to: routes.toolsLocalCertViewer },
   { label: 'Certificate Request Generator', to: routes.toolsCertificateRequestGenerator },
-  { label: 'Import certificates', to: routes.toolsImport },
-  { label: 'Audit history', to: routes.toolsAudit },
 ];
 
-export const settingsNavigationItem: NavigationItem = { label: 'Settings', to: routes.settings };
-
-const navigationItems = [...directNavigationItems, ...toolNavigationItems, settingsNavigationItem];
+const navigationItems = [...directNavigationItems, ...toolNavigationItems];
 
 export function canAccess(user: CurrentUser, permission?: string) {
   return permission === undefined || user.permissions[permission] === true;

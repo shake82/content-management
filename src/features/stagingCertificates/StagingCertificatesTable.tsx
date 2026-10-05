@@ -57,9 +57,6 @@ export function StagingCertificatesTable({
           ))}
         </Table.Tbody>
       </Table>
-      <Text size="xs" c="dimmed" mt="xs">
-        Status loads only for rows on the current page.
-      </Text>
     </Table.ScrollContainer>
   );
 }

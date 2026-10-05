@@ -4,7 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 import {
   canAccess,
   directNavigationItems,
-  settingsNavigationItem,
   toolNavigationItems,
   type NavigationItem,
 } from '../app/navigation';
@@ -75,20 +74,6 @@ export function NavMenu({ orientation = 'horizontal', onNavigate }: NavMenuProps
             ))}
           </Menu.Dropdown>
         </Menu>
-      )}
-      {isVisible(settingsNavigationItem) && (
-        <Button
-          component={Link}
-          to={settingsNavigationItem.to}
-          variant={isActive(settingsNavigationItem.to) ? 'light' : 'subtle'}
-          color={isActive(settingsNavigationItem.to) ? 'blue' : 'gray'}
-          className="nav-button"
-          onClick={onNavigate}
-          fullWidth={vertical}
-          justify={vertical ? 'flex-start' : 'center'}
-        >
-          {settingsNavigationItem.label}
-        </Button>
       )}
     </Stack>
   );
