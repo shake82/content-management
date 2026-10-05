@@ -5,11 +5,13 @@ import { useParams } from 'react-router-dom';
 import { decodeStagingCertificatePath } from '../../app/routes';
 import { StatusView } from '../../components/StatusView';
 import { CompleteCertificateRequestModal } from './CompleteCertificateRequestModal';
+import { GenerateKeyStoreModal } from './GenerateKeyStoreModal';
 import { NewStagingCertificateModal } from './NewStagingCertificateModal';
 import { StagingCertificateBreadcrumbs } from './StagingCertificateBreadcrumbs';
 import { StagingCertificateDetailActions } from './StagingCertificateDetailActions';
 import { StagingCertificateKeyPairSection } from './StagingCertificateKeyPairSection';
 import { StagingCertificateRequestBanner } from './StagingCertificateRequestBanner';
+import { shouldRequireParentChain } from './generateKeyStore';
 import { useStagingCertificateDetail } from './useStagingCertificateDetail';
 
 export function StagingCertificateDetailPage() {
@@ -18,6 +20,7 @@ export function StagingCertificateDetailPage() {
   const detail = useStagingCertificateDetail(certificateKey);
   const [uploadOpened, setUploadOpened] = useState(false);
   const [newRequestOpened, setNewRequestOpened] = useState(false);
+  const [generateOpened, setGenerateOpened] = useState(false);
 
   if (!certificateKey) {
     return (
@@ -42,6 +45,7 @@ export function StagingCertificateDetailPage() {
   }
 
   const requestInfo = detail.data.certificateRequestInfo;
+  const parentChainRequired = shouldRequireParentChain(detail.data);
 
   return (
     <Box mx="auto">
@@ -56,7 +60,7 @@ export function StagingCertificateDetailPage() {
             <StagingCertificateDetailActions
               hasMissingKeyStore={detail.data.hasMissingKeyStore}
               onNewRequest={() => setNewRequestOpened(true)}
-              onGenerateKeystore={() => window.alert('Generate Keystore is not implemented yet.')}
+              onGenerateKeystore={() => setGenerateOpened(true)}
             />
           )}
         </Group>
@@ -86,6 +90,15 @@ export function StagingCertificateDetailPage() {
         navigateOnSuccess={false}
         onSuccess={() => detail.refetch()}
       />
+      {!requestInfo && (
+        <GenerateKeyStoreModal
+          opened={generateOpened}
+          path={certificateKey}
+          parentChainRequired={parentChainRequired}
+          onClose={() => setGenerateOpened(false)}
+          onSuccess={detail.refetch}
+        />
+      )}
     </Box>
   );
 }

@@ -3,6 +3,7 @@ import type { GenerateCertificateRequestPayload } from '../features/tools/certif
 import type {
   CompleteCertificateRequestPayload,
   CreateStagingCertificateResponse,
+  GenerateKeyStorePayload,
   StagingCertificateDetail,
   StagingCertificateStatus,
 } from '../features/stagingCertificates/stagingCertificateTypes';
@@ -56,6 +57,16 @@ export function completeCertificateRequest(
 ) {
   return postJson<StagingCertificateDetail, CompleteCertificateRequestPayload>(
     stagingCertificateResource(path),
+    payload,
+  );
+}
+
+export function generateKeyStore(
+  path: string,
+  payload: GenerateKeyStorePayload,
+) {
+  return postJson<StagingCertificateDetail, GenerateKeyStorePayload>(
+    `${stagingCertificateResource(path)}/generateKeyStore`,
     payload,
   );
 }

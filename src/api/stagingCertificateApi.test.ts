@@ -3,6 +3,7 @@ import { getJson, postJson } from './apiClient';
 import {
   completeCertificateRequest,
   createStagingCertificate,
+  generateKeyStore,
   getStagingCertificateDetail,
   getStagingCertificateKeys,
   getStagingCertificateStatus,
@@ -16,7 +17,7 @@ beforeEach(() => {
   vi.mocked(postJson).mockReset();
 });
 
-it('loads keys, encoded status, detail data, create requests, and completion uploads through expected endpoints', async () => {
+it('loads keys, encoded status, detail data, create requests, completion uploads, and keystore generation through expected endpoints', async () => {
   vi.mocked(getJson).mockResolvedValueOnce(['apps/prod/payments']);
   vi.mocked(getJson).mockResolvedValueOnce({
     hasMissingKeyStore: true,
@@ -24,6 +25,7 @@ it('loads keys, encoded status, detail data, create requests, and completion upl
   });
   vi.mocked(getJson).mockResolvedValueOnce({ hasMissingKeyStore: true, certificateRequestInfo: null });
   vi.mocked(postJson).mockResolvedValueOnce({ path: 'apps/prod/payments', version: 3 });
+  vi.mocked(postJson).mockResolvedValueOnce({ hasMissingKeyStore: false, certificateRequestInfo: null });
   vi.mocked(postJson).mockResolvedValueOnce({ hasMissingKeyStore: false, certificateRequestInfo: null });
 
   const keys = await getStagingCertificateKeys();
@@ -33,6 +35,9 @@ it('loads keys, encoded status, detail data, create requests, and completion upl
   const completed = await completeCertificateRequest('apps/prod/payments', {
     cert: '-----BEGIN CERTIFICATE-----',
     parentChain: '',
+  });
+  const generated = await generateKeyStore('apps/prod/payments', {
+    parentChain: '-----BEGIN CERTIFICATE-----parent',
   });
 
   expect(keys).toEqual(['apps/prod/payments']);
@@ -56,6 +61,12 @@ it('loads keys, encoded status, detail data, create requests, and completion upl
     `${STAGING_CERTIFICATE_ENDPOINT}/apps/prod/payments`,
     { cert: '-----BEGIN CERTIFICATE-----', parentChain: '' },
   );
+  expect(postJson).toHaveBeenNthCalledWith(
+    3,
+    `${STAGING_CERTIFICATE_ENDPOINT}/apps/prod/payments/generateKeyStore`,
+    { parentChain: '-----BEGIN CERTIFICATE-----parent' },
+  );
   expect(response).toEqual({ path: 'apps/prod/payments', version: 3 });
   expect(completed).toEqual({ hasMissingKeyStore: false, certificateRequestInfo: null });
+  expect(generated).toEqual({ hasMissingKeyStore: false, certificateRequestInfo: null });
 });

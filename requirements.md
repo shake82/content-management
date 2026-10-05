@@ -1,36 +1,14 @@
 ## Requirement
-Update the StagingCertificateDetailPage
-### Route
-1. Change the route of stagingCertificates to "/staging"
-2. Change the route of stagingCertificateDetail to "/staging/${key}"
+Implement the Generate Keystore feature
 ### API
-1. Use the API "/api/stagingCerts/${path}" to get data. Response format is defined in the sample.json file
-2. Upload Certificate API: POST to the path "/api/stagingCerts/${path}". Post data contains two properties: "cert" and "parentChain"
+1. Use the API "/api/stagingCerts/${path}/generateKeyStore" to generate a keystore
 
 ### Render
-#### Certificate Request
-1. If a certificate request exists (certificateRequestInfo is not null), then show a banner saying that there is a current pending certificate request and upload a new Certificate response to generate a key pair
-2. In the banner add three buttons with relavent icons
-  - View In Vault: Opens the related vaultPath in a new tab
-  - Device enrollment: Opens the device enrolement URL in a new tab. Make this url configurable through a constant variable
-  - Upload Certificate: Open the Complete Certificate Request Modal
-### Complete Certificate Request Modal
-1. Add Two textboxes for PEM content. 
-  - New Certificate (Required)
-  - Parent Chain (Not Required)
-2. Use functionality similar to the Local Certificate Browser 
-  - Action button to copy from clipboard
-  - Action button to select a file and copy its contents to the related textbox
-3. On successful submit, refetch the "/api/stagingCerts/${path}" on the page to refresh data
-4. Show errors on the modal itself and do not close it
-### key Pair
-1. If "keyPair" property is missing and then dont render anything.
-2. If present then render the data same as the KeystoreDetailsPage page
-  - Show the standard columns
-  - Expand to show the certificate chain
-3. If certificateRequestInfo is null then show:
-  1. The same new button as the Parent Staging Certificate page. The only difference is that default the Common Name to the current key. API call and functionality remains the same. One success,  refetch the "/api/stagingCerts/${path}" on the page to refresh data
-  2. Generate Keystore button if hasMissingKeystore is true. Right now just show an alert on click
+1. On click of a button, show a modal dialog.
+2. If in the original page response, under the first item in the keyEntries array, if the certificates array is a single item, then show a Parent Chain text box required field. If there are multiple certificates then do not allow uploading a Parent Chain
+3. On clicking generate, call the api to generate keystore. pass the parent chain string as body of the request.
+4. On success refresh the data on the page to show updated information.
+5. On error, show error on the modal and do not close it 
 
 ## Unit Tests
 1. Every UI component will have a unit test

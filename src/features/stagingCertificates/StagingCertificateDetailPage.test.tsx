@@ -1,10 +1,11 @@
-import { cleanup, screen, waitFor } from '@testing-library/react';
+import { cleanup, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { Route, Routes } from 'react-router-dom';
 import { beforeEach, expect, it, vi } from 'vitest';
 import {
   completeCertificateRequest,
   createStagingCertificate,
+  generateKeyStore,
   getStagingCertificateDetail,
 } from '../../api/stagingCertificateApi';
 import { renderApp } from '../../test/render';
@@ -23,12 +24,14 @@ vi.mock('../../api/stagingCertificateApi', () => ({
   getStagingCertificateDetail: vi.fn(),
   completeCertificateRequest: vi.fn(),
   createStagingCertificate: vi.fn(),
+  generateKeyStore: vi.fn(),
 }));
 
 beforeEach(() => {
   vi.mocked(getStagingCertificateDetail).mockReset();
   vi.mocked(completeCertificateRequest).mockReset();
   vi.mocked(createStagingCertificate).mockReset();
+  vi.mocked(generateKeyStore).mockReset();
 });
 
 it('loads a path-based staging certificate, completes a pending request, and handles missing keys', async () => {
@@ -67,12 +70,14 @@ it('loads a path-based staging certificate, completes a pending request, and han
   expect(screen.queryByRole('radiogroup', { name: 'Filter key entries' })).not.toBeInTheDocument();
 
   await userEvent.click(screen.getByRole('button', { name: 'Upload Certificate' }));
-  await userEvent.click(screen.getAllByRole('button', { name: 'Upload Certificate' }).at(-1)!);
-  expect(screen.getByText('New Certificate is required.')).toBeInTheDocument();
+  const uploadDialog = await screen.findByRole('dialog', { name: 'Complete certificate request' });
+  const uploadSubmit = within(uploadDialog).getByRole('button', { name: 'Upload Certificate' });
+  await userEvent.click(uploadSubmit);
+  expect(await within(uploadDialog).findByText('New Certificate is required.')).toBeInTheDocument();
 
-  await userEvent.type(screen.getByRole('textbox', { name: 'New Certificate' }), '-----BEGIN CERTIFICATE-----');
-  await userEvent.type(screen.getByRole('textbox', { name: 'Parent Chain' }), '-----BEGIN CERTIFICATE-----parent');
-  await userEvent.click(screen.getAllByRole('button', { name: 'Upload Certificate' }).at(-1)!);
+  await userEvent.type(within(uploadDialog).getByRole('textbox', { name: 'New Certificate' }), '-----BEGIN CERTIFICATE-----');
+  await userEvent.type(within(uploadDialog).getByRole('textbox', { name: 'Parent Chain' }), '-----BEGIN CERTIFICATE-----parent');
+  await userEvent.click(uploadSubmit);
 
   await waitFor(() => expect(completeCertificateRequest).toHaveBeenCalledWith('apps/prod/payments', {
     cert: '-----BEGIN CERTIFICATE-----',
@@ -86,18 +91,48 @@ it('loads a path-based staging certificate, completes a pending request, and han
 });
 
 it('shows new request and generate keystore actions when no request is pending', async () => {
-  const alert = vi.spyOn(window, 'alert').mockImplementation(() => undefined);
   vi.mocked(getStagingCertificateDetail).mockResolvedValue({
     hasMissingKeyStore: true,
     certificateRequestInfo: null,
+    keyPair: {
+      type: 'PEM',
+      keyEntries: [{
+        alias: 'Primary',
+        entryType: 'KEY_PAIR',
+        expirationDate: null,
+        lastModifiedDate: null,
+        certificates: [{
+          startDate: null,
+          endDate: null,
+          revocationDate: null,
+          version: 1,
+          subject: 'CN=payments',
+          issuer: 'CN=issuer',
+          hexSerialNumber: '01',
+        }],
+        issues: [],
+      }],
+    },
   });
   vi.mocked(createStagingCertificate).mockResolvedValue({ path: 'apps/prod/payments', version: 1 });
+  vi.mocked(generateKeyStore).mockResolvedValue({ hasMissingKeyStore: false, certificateRequestInfo: null });
 
   renderDetail('/staging/apps/prod/payments');
 
   expect(await screen.findByRole('heading', { name: 'apps/prod/payments' })).toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Generate Keystore' }));
-  expect(alert).toHaveBeenCalledWith('Generate Keystore is not implemented yet.');
+  const generateDialog = await screen.findByRole('dialog', { name: 'Generate keystore' });
+  const generateSubmit = within(generateDialog).getByRole('button', { name: 'Generate' });
+  await userEvent.click(generateSubmit);
+  expect(await within(generateDialog).findByText('Parent Chain is required.')).toBeInTheDocument();
+
+  await userEvent.type(within(generateDialog).getByRole('textbox', { name: 'Parent Chain' }), '-----BEGIN CERTIFICATE-----parent');
+  await userEvent.click(generateSubmit);
+
+  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', {
+    parentChain: '-----BEGIN CERTIFICATE-----parent',
+  }));
+  await waitFor(() => expect(getStagingCertificateDetail).toHaveBeenCalledTimes(2));
 
   await userEvent.click(screen.getByRole('button', { name: 'New' }));
   expect(await screen.findByLabelText('Certificate subjects')).toHaveTextContent('CN=apps/prod/payments');
@@ -107,6 +142,39 @@ it('shows new request and generate keystore actions when no request is pending',
     subject: 'CN=apps/prod/payments,OU=Devices,OU=USCIS,OU=Department of Homeland Security,O=U.S. Government,C=US',
     alternateSubjects: [],
   }));
+  await waitFor(() => expect(getStagingCertificateDetail).toHaveBeenCalledTimes(3));
+});
+
+it('generates a keystore without parent chain upload when the first key entry has multiple certificates', async () => {
+  vi.mocked(getStagingCertificateDetail).mockResolvedValue({
+    hasMissingKeyStore: true,
+    certificateRequestInfo: null,
+    keyPair: {
+      type: 'PEM',
+      keyEntries: [{
+        alias: 'Primary',
+        entryType: 'KEY_PAIR',
+        expirationDate: null,
+        lastModifiedDate: null,
+        certificates: [
+          { startDate: null, endDate: null, revocationDate: null, version: 1, subject: 'CN=payments', issuer: 'CN=issuer', hexSerialNumber: '01' },
+          { startDate: null, endDate: null, revocationDate: null, version: 1, subject: 'CN=issuer', issuer: 'CN=root', hexSerialNumber: '02' },
+        ],
+        issues: [],
+      }],
+    },
+  });
+  vi.mocked(generateKeyStore).mockResolvedValue({ hasMissingKeyStore: false, certificateRequestInfo: null });
+
+  renderDetail('/staging/apps/prod/payments');
+
+  expect(await screen.findByRole('heading', { name: 'apps/prod/payments' })).toBeInTheDocument();
+  await userEvent.click(screen.getByRole('button', { name: 'Generate Keystore' }));
+  const generateDialog = await screen.findByRole('dialog', { name: 'Generate keystore' });
+  const generateSubmit = within(generateDialog).getByRole('button', { name: 'Generate' });
+  expect(within(generateDialog).queryByRole('textbox', { name: 'Parent Chain' })).not.toBeInTheDocument();
+  await userEvent.click(generateSubmit);
+
+  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', { parentChain: '' }));
   await waitFor(() => expect(getStagingCertificateDetail).toHaveBeenCalledTimes(2));
-  alert.mockRestore();
 });
