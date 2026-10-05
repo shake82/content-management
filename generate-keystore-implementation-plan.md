@@ -60,7 +60,7 @@ Add request and response contracts in `src/features/stagingCertificates/stagingC
 export type GenerateKeyStorePayload = string;
 ```
 
-The request body is the parent-chain string itself, not a JSON object. The safest response type is `StagingCertificateDetail`, because the page immediately refetches and existing staging mutations use detail-shaped responses. If the backend returns an empty response, keep the hook tolerant by not depending on the returned data for the UI refresh.
+The request body is the parent-chain string itself, not a JSON object, and the request must send `Content-Type: text/plain; charset=utf-8`. The safest response type is `StagingCertificateDetail`, because the page immediately refetches and existing staging mutations use detail-shaped responses. If the backend returns an empty response, keep the hook tolerant by not depending on the returned data for the UI refresh.
 
 Add API helper in `src/api/stagingCertificateApi.ts`:
 
@@ -69,6 +69,7 @@ export function generateKeyStore(path: string, payload: GenerateKeyStorePayload)
   return postJson<StagingCertificateDetail, GenerateKeyStorePayload>(
     `${stagingCertificateResource(path)}/generateKeyStore`,
     payload,
+    { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
   );
 }
 ```
@@ -223,7 +224,7 @@ The tasks below are intentionally sliced small so the implementation can be dist
 | --- | --- | --- | --- |
 | 1 | Payload type | Add `GenerateKeyStorePayload` as a string alias in staging certificate types | None |
 | 2 | API helper contract | Add `generateKeyStore(path, payload)` in `stagingCertificateApi.ts` | 1 |
-| 3 | API helper test | Extend API test to verify `/generateKeyStore` endpoint and payload | 2 |
+| 3 | API helper test | Extend API test to verify `/generateKeyStore` endpoint, string payload, and plain-text UTF-8 content type | 2 |
 | 4 | Parent-chain helper | Add `shouldRequireParentChain(detail)` pure helper | None |
 | 5 | Parent-chain helper tests | Cover one certificate, multiple certificates, empty array, null certificates, missing keyPair | 4 |
 | 6 | Hook shell | Create `useGenerateKeyStore` with idle state and reset | 1, 2 |
@@ -300,7 +301,7 @@ Manual verification:
 - The modal opens from the detail-page action.
 - The modal requires `Parent Chain` only when the first key entry has exactly one certificate.
 - The modal hides `Parent Chain` and submits an empty string body when the first key entry has multiple certificates.
-- The API helper posts to `/stagingCerts/${path}/generateKeyStore`.
+- The API helper posts the parent-chain string to `/stagingCerts/${path}/generateKeyStore` with `Content-Type: text/plain; charset=utf-8`.
 - A successful generate call refreshes the detail page data.
 - A failed generate call leaves the modal open and shows the error inside the modal.
 - Every new UI component has a unit test.

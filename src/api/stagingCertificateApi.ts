@@ -68,5 +68,6 @@ export function generateKeyStore(
   return postJson<StagingCertificateDetail, GenerateKeyStorePayload>(
     `${stagingCertificateResource(path)}/generateKeyStore`,
     payload,
+    { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
   );
 }

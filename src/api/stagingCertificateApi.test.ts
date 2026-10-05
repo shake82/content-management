@@ -63,6 +63,7 @@ it('loads keys, encoded status, detail data, create requests, completion uploads
     3,
     `${STAGING_CERTIFICATE_ENDPOINT}/apps/prod/payments/generateKeyStore`,
     '-----BEGIN CERTIFICATE-----parent',
+    { headers: { 'Content-Type': 'text/plain; charset=utf-8' } },
   );
   expect(response).toEqual({ path: 'apps/prod/payments', version: 3 });
   expect(completed).toEqual({ hasMissingKeyStore: false, certificateRequestInfo: null });
