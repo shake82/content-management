@@ -129,9 +129,7 @@ it('shows new request and generate keystore actions when no request is pending',
   await userEvent.type(within(generateDialog).getByRole('textbox', { name: 'Parent Chain' }), '-----BEGIN CERTIFICATE-----parent');
   await userEvent.click(generateSubmit);
 
-  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', {
-    parentChain: '-----BEGIN CERTIFICATE-----parent',
-  }));
+  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', '-----BEGIN CERTIFICATE-----parent'));
   await waitFor(() => expect(getStagingCertificateDetail).toHaveBeenCalledTimes(2));
 
   await userEvent.click(screen.getByRole('button', { name: 'New' }));
@@ -175,6 +173,6 @@ it('generates a keystore without parent chain upload when the first key entry ha
   expect(within(generateDialog).queryByRole('textbox', { name: 'Parent Chain' })).not.toBeInTheDocument();
   await userEvent.click(generateSubmit);
 
-  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', { parentChain: '' }));
+  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', ''));
   await waitFor(() => expect(getStagingCertificateDetail).toHaveBeenCalledTimes(2));
 });

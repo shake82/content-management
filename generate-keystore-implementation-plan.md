@@ -57,12 +57,10 @@ POST /stagingCerts/${encodedPath}/generateKeyStore
 Add request and response contracts in `src/features/stagingCertificates/stagingCertificateTypes.ts`:
 
 ```ts
-export interface GenerateKeyStorePayload {
-  parentChain: string;
-}
+export type GenerateKeyStorePayload = string;
 ```
 
-The safest response type is `StagingCertificateDetail`, because the page immediately refetches and existing staging mutations use detail-shaped responses. If the backend returns an empty response, keep the hook tolerant by not depending on the returned data for the UI refresh.
+The request body is the parent-chain string itself, not a JSON object. The safest response type is `StagingCertificateDetail`, because the page immediately refetches and existing staging mutations use detail-shaped responses. If the backend returns an empty response, keep the hook tolerant by not depending on the returned data for the UI refresh.
 
 Add API helper in `src/api/stagingCertificateApi.ts`:
 
@@ -94,7 +92,7 @@ Recommended location: `src/features/stagingCertificates/generateKeyStore.ts`.
 Interpretation:
 
 - Exactly one certificate in the first key entry means show `Parent Chain` and require non-empty trimmed content.
-- More than one certificate means hide the `Parent Chain` input and submit `parentChain: ''`.
+- More than one certificate means hide the `Parent Chain` input and submit an empty string body.
 - Zero, null, or missing certificates should not show the parent-chain field unless product clarifies otherwise; this avoids blocking users on incomplete API data.
 
 ## Proposed Feature Layout
@@ -139,7 +137,7 @@ Behavior:
 - If `parentChainRequired` is false, do not render the parent-chain field.
 - On submit, trim `parentChain`.
 - If required and empty, show a validation error and do not call the API.
-- If not required, submit `parentChain: ''`.
+- If not required, submit an empty string body.
 - While loading, disable close/cancel and form controls, matching `CompleteCertificateRequestModal`.
 - On success, reset local input and hook state, close the modal, and call `onSuccess`.
 - On error, show a modal-local error alert and keep the modal open with user-entered parent-chain content intact.
@@ -158,7 +156,7 @@ Create `useGenerateKeyStore(path: string)` mirroring `useCompleteCertificateRequ
 - State: `idle`, `loading`, `success`, `error`.
 - Data: optional `StagingCertificateDetail`.
 - Error: optional `Error`.
-- `submit(payload: GenerateKeyStorePayload)`.
+- `submit(parentChain: GenerateKeyStorePayload)`.
 - `reset()`.
 
 The hook should not refetch detail itself. It should leave refetch orchestration to `StagingCertificateDetailPage`, keeping mutation state local and page data ownership clear.
@@ -223,7 +221,7 @@ The tasks below are intentionally sliced small so the implementation can be dist
 
 | Subagent | Area | Deliverable | Depends On |
 | --- | --- | --- | --- |
-| 1 | Payload type | Add `GenerateKeyStorePayload` to staging certificate types | None |
+| 1 | Payload type | Add `GenerateKeyStorePayload` as a string alias in staging certificate types | None |
 | 2 | API helper contract | Add `generateKeyStore(path, payload)` in `stagingCertificateApi.ts` | 1 |
 | 3 | API helper test | Extend API test to verify `/generateKeyStore` endpoint and payload | 2 |
 | 4 | Parent-chain helper | Add `shouldRequireParentChain(detail)` pure helper | None |
@@ -301,7 +299,7 @@ Manual verification:
 - `Generate Keystore` no longer calls the placeholder alert.
 - The modal opens from the detail-page action.
 - The modal requires `Parent Chain` only when the first key entry has exactly one certificate.
-- The modal hides `Parent Chain` and submits `parentChain: ''` when the first key entry has multiple certificates.
+- The modal hides `Parent Chain` and submits an empty string body when the first key entry has multiple certificates.
 - The API helper posts to `/stagingCerts/${path}/generateKeyStore`.
 - A successful generate call refreshes the detail page data.
 - A failed generate call leaves the modal open and shows the error inside the modal.

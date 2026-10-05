@@ -36,9 +36,7 @@ it('loads keys, encoded status, detail data, create requests, completion uploads
     cert: '-----BEGIN CERTIFICATE-----',
     parentChain: '',
   });
-  const generated = await generateKeyStore('apps/prod/payments', {
-    parentChain: '-----BEGIN CERTIFICATE-----parent',
-  });
+  const generated = await generateKeyStore('apps/prod/payments', '-----BEGIN CERTIFICATE-----parent');
 
   expect(keys).toEqual(['apps/prod/payments']);
   expect(getJson).toHaveBeenNthCalledWith(1, STAGING_CERTIFICATE_ENDPOINT);
@@ -64,7 +62,7 @@ it('loads keys, encoded status, detail data, create requests, completion uploads
   expect(postJson).toHaveBeenNthCalledWith(
     3,
     `${STAGING_CERTIFICATE_ENDPOINT}/apps/prod/payments/generateKeyStore`,
-    { parentChain: '-----BEGIN CERTIFICATE-----parent' },
+    '-----BEGIN CERTIFICATE-----parent',
   );
   expect(response).toEqual({ path: 'apps/prod/payments', version: 3 });
   expect(completed).toEqual({ hasMissingKeyStore: false, certificateRequestInfo: null });

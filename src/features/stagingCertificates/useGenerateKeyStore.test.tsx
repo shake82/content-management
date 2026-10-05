@@ -15,17 +15,17 @@ it('submits keystore generation, exposes success data, captures errors, and rese
   const { result } = renderHook(() => useGenerateKeyStore('apps/prod/payments'));
 
   await act(async () => {
-    await result.current.submit({ parentChain: 'chain' });
+    await result.current.submit('chain');
   });
 
-  expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', { parentChain: 'chain' });
+  expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', 'chain');
   expect(result.current.status).toBe('success');
   expect(result.current.data).toEqual(success);
 
   const error = new Error('Generate failed');
   vi.mocked(generateKeyStore).mockRejectedValueOnce(error);
   await act(async () => {
-    await expect(result.current.submit({ parentChain: '' })).rejects.toThrow('Generate failed');
+    await expect(result.current.submit('')).rejects.toThrow('Generate failed');
   });
 
   await waitFor(() => expect(result.current.status).toBe('error'));

@@ -32,9 +32,7 @@ it('requires a parent chain when needed, trims it on submit, and reports success
   await userEvent.type(screen.getByRole('textbox', { name: 'Parent Chain' }), '  -----BEGIN CERTIFICATE-----parent  ');
   await userEvent.click(screen.getByRole('button', { name: 'Generate' }));
 
-  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', {
-    parentChain: '-----BEGIN CERTIFICATE-----parent',
-  }));
+  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', '-----BEGIN CERTIFICATE-----parent'));
   await waitFor(() => expect(close).toHaveBeenCalledOnce());
   expect(success).toHaveBeenCalledOnce();
 });
@@ -57,7 +55,7 @@ it('omits parent chain upload when it is not allowed and keeps API errors in the
   expect(screen.queryByRole('textbox', { name: 'Parent Chain' })).not.toBeInTheDocument();
   await userEvent.click(screen.getByRole('button', { name: 'Generate' }));
 
-  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', { parentChain: '' }));
+  await waitFor(() => expect(generateKeyStore).toHaveBeenCalledWith('apps/prod/payments', ''));
   expect(await screen.findByText('Keystore generation failed')).toBeInTheDocument();
   expect(close).not.toHaveBeenCalled();
   expect(success).not.toHaveBeenCalled();

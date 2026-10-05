@@ -61,6 +61,4 @@ export interface CompleteCertificateRequestPayload {
   parentChain: string;
 }
 
-export interface GenerateKeyStorePayload {
-  parentChain: string;
-}
+export type GenerateKeyStorePayload = string;

@@ -42,7 +42,7 @@ export function GenerateKeyStoreModal({
 
     setValidationError(undefined);
     try {
-      await generator.submit({ parentChain: parentChainRequired ? nextParentChain : '' });
+      await generator.submit(parentChainRequired ? nextParentChain : '');
       setParentChain('');
       generator.reset();
       onClose();
